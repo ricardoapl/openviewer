@@ -48,6 +48,9 @@ export default {
       // TODO As part of US12
       console.log('deleteServer() called on InstanceListItemActions for server ' + this.server.id)
     }
+  },
+  mounted () {
+    console.log('Child InstanceListItemActions created and mounted for server with id ' + this.server.id)
   }
 }
 </script>

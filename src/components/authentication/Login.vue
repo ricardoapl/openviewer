@@ -9,10 +9,10 @@
     <p class="mt-5 mb-5">
       <span class="text-secondary">
         <strong>
-          <em>- Are you ready to control some stacks?? -</em>
+          <em>- Are you ready to control some stacks? -</em>
         </strong>
       </span>
-      <br /> Control everthing you company wants with only a few clicks
+      <br /> Control everything you want with only a few clicks
     </p>
     <form class="w-25 m-auto" v-on:submit.prevent="login">
       <div class="alert alert-danger" role="alert" v-if="hasErrors">
@@ -91,24 +91,24 @@
 </template>
 
 <script>
-import { required, minLength, maxLength, helpers } from "vuelidate/lib/validators";
- const alphaSpaces = helpers.regex('alphaSpaces', /^[a-zA-ZÀ-ž\s]*$/);
+import { required, minLength, maxLength, helpers } from 'vuelidate/lib/validators'
+const alphaSpaces = helpers.regex('alphaSpaces', /^[a-zA-ZÀ-ž\s]*$/)
 export default {
-  name: "login",
-  data() {
+  name: 'login',
+  data () {
     return {
-      openstackAddress: "",
-      name: "",
-      password: "",
-      serverErrors: "",
+      openstackAddress: '',
+      name: '',
+      password: '',
+      serverErrors: '',
       submitStatus: false
-    };
+    }
   },
   validations: {
     openstackAddress: {
-      required,
+      required
     },
-      name: {
+    name: {
       required,
       alphaSpaces,
       minLength: minLength(3),
@@ -120,57 +120,55 @@ export default {
     }
   },
   computed: {
-    hasErrors() {
+    hasErrors () {
       return (
-        this.$v.openstackAddress.$error ||this.$v.name.$error || this.$v.password.$error || this.serverErrors
-      );
+        this.$v.openstackAddress.$error || this.$v.name.$error || this.$v.password.$error || this.serverErrors
+      )
     }
   },
   methods: {
-    login() {
-      this.$v.$touch(); 
+    login () {
+      this.$v.$touch()
       if (!this.$v.$invalid) {
-        this.submitStatus = true;
+        this.submitStatus = true
         axios.post('http://' + this.openstackAddress + '/identity/v3/auth/tokens', {
-            "auth": {
-              "identity": {
-                "methods": ["password"],
-                "password": {
-                  "user": {
-                    "name": this.name,
-                    "domain": {
-                      "name": "Default"
-                    },
-                    "password": this.password
-                  }
+          'auth': {
+            'identity': {
+              'methods': ['password'],
+              'password': {
+                'user': {
+                  'name': this.name,
+                  'domain': {
+                    'name': 'Default'
+                  },
+                  'password': this.password
                 }
               }
             }
-          }) 
-        .then(response => {
-          this.$store.commit("setToken", response.headers['x-subject-token']);
-          this.$store.commit("setOpenstackAddress", 'http://' + this.openstackAddress);
-          this.$store.commit("setUser", response.data.token.user);
-          this.$router.push({ name: "Home" });
+          }
         })
-        .catch(error => {
-          this.serverErrors = "Project address or user credentials are not valid!";
-          console.log(error.response);
-          this.submitStatus = false;
-        });
+          .then(response => {
+            this.$store.commit('setToken', response.headers['x-subject-token'])
+            this.$store.commit('setOpenstackAddress', 'http://' + this.openstackAddress)
+            this.$store.commit('setUser', response.data.token.user)
+            this.$router.push({ name: 'Home' })
+          })
+          .catch(error => {
+            this.serverErrors = 'Project address or user credentials are not valid!'
+            console.log(error.response)
+            this.submitStatus = false
+          })
       }
     },
-    validationStatus(validation) {
+    validationStatus (validation) {
       return {
-        "is-invalid": validation.$error || this.serverErrors,
-        "is-valid": validation.$dirty
-      };
+        'is-invalid': validation.$error || this.serverErrors,
+        'is-valid': validation.$dirty
+      }
     },
-    setServerState() {
-      this.serverErrors = false;
+    setServerState () {
+      this.serverErrors = false
     }
   }
-};
+}
 </script>
-
-

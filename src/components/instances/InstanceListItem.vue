@@ -41,7 +41,7 @@ export default {
     server: Object
   },
   mounted () {
-    console.log('[DEBUG] Child InstanceListItem created and mounted for server with id ' + this.server.id)
+    console.log('Child InstanceListItem created and mounted for server with id ' + this.server.id)
   }
 }
 </script>
