@@ -5,9 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: sessionStorage.getItem('token') || '',
-    openstackAddress: sessionStorage.getItem('openstackAddress') || '',
-    user: null
+    openstackAddress: sessionStorage.getItem("openstackAddress") || "",
+    tokenUnscoped: sessionStorage.getItem("tokenUnscoped") || "",
+    tokenScoped: sessionStorage.getItem("tokenScoped") || "",
+    idSelectedProject: sessionStorage.getItem("idSelectedProject") || "",
+    projects: null,
+    user: null,
   },
   mutations: {
     setUser: (state, user) => {
@@ -18,15 +21,22 @@ export default new Vuex.Store({
       state.user = null
       sessionStorage.removeItem('user')
     },
-    setToken: (state, token) => {
-      state.token = token
-      sessionStorage.setItem('token', token)
-      axios.defaults.headers.common['x-auth-token'] = token
+    setToken: (state, data) => {
+        if(data.type == 'scoped') {
+          state.tokenScoped = data.token;
+        }
+        else {
+          state.tokenUnscoped = data.token;
+        }
+        axios.defaults.headers.common['x-auth-token'] = data.token;
+        sessionStorage.setItem((data.type == 'scoped') ? 'tokenScoped' : 'tokenUnscoped', data.token);
     },
-    clearToken: state => {
-      state.token = ''
-      sessionStorage.removeItem('token')
-      axios.defaults.headers.common['x-auth-token'] = undefined
+    clearTokens: state => {
+        state.tokenScoped = "";
+        state.tokenUnscoped = "";
+        sessionStorage.removeItem("tokenScoped");
+        sessionStorage.removeItem("tokenUnscoped");
+        axios.defaults.headers.common['x-auth-token'] = undefined;
     },
     setOpenstackAddress: (state, openstackAddress) => {
       state.openstackAddress = openstackAddress
@@ -34,10 +44,18 @@ export default new Vuex.Store({
       axios.defaults.baseURL = openstackAddress
     },
     clearOpenstackAddress: state => {
-      state.openstackAddress = ''
-      sessionStorage.removeItem('openstackAddress')
-      axios.defaults.baseURL = undefined
-    }
+      state.openstackAddress = "";
+      sessionStorage.removeItem("openstackAddress");
+      axios.defaults.baseURL = undefined;
+    },
+    setProjects: (state, projects) => {
+      state.projects = projects;
+      sessionStorage.setItem("projects", JSON.stringify(projects));
+    },
+    setIdSelectedProject: (state, idSelectedProject) => {
+      state.idSelectedProject = idSelectedProject;
+      sessionStorage.setItem("idSelectedProject", idSelectedProject);
+    },
   },
   actions: {
   },

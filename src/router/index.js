@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../components/Home.vue'
-import LoginComponent from '../components/authentication/Login.vue';
 
 Vue.use(VueRouter)
 
@@ -9,12 +7,17 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../components/Home.vue')
   },
   {
-    path: '/login',
-    name: 'login',
-    component: LoginComponent
+    path: '/login-unscoped',
+    name: 'LoginUnscoped',
+    component: () => import('../components/authentication/LoginUnscoped.vue')
+  },
+  {
+    path: '/login-scoped',
+    name: 'LoginScoped',
+    component:  () => import('../components/authentication/LoginScoped.vue')
   },
   {  
     path: '/instances',

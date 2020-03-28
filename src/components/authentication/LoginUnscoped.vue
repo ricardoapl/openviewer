@@ -130,34 +130,8 @@ export default {
     login () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        this.submitStatus = true
-        axios.post('http://' + this.openstackAddress + '/identity/v3/auth/tokens', {
-          'auth': {
-            'identity': {
-              'methods': ['password'],
-              'password': {
-                'user': {
-                  'name': this.name,
-                  'domain': {
-                    'name': 'Default'
-                  },
-                  'password': this.password
-                }
-              }
-            }
-          }
-        })
-          .then(response => {
-            this.$store.commit('setToken', response.headers['x-subject-token'])
-            this.$store.commit('setOpenstackAddress', 'http://' + this.openstackAddress)
-            this.$store.commit('setUser', response.data.token.user)
-            this.$router.push({ name: 'Home' })
-          })
-          .catch(error => {
-            this.serverErrors = 'Project address or user credentials are not valid!'
-            console.log(error.response)
-            this.submitStatus = false
-          })
+        this.submitStatus = true;
+        this.getUnscopedToken();
       }
     },
     validationStatus (validation) {
@@ -166,8 +140,57 @@ export default {
         'is-valid': validation.$dirty
       }
     },
-    setServerState () {
-      this.serverErrors = false
+    setServerState() {
+      this.serverErrors = false;
+    },
+    getUnscopedToken() {
+      axios.post('http://' + this.openstackAddress + '/identity/v3/auth/tokens', {
+        "auth": {
+          "identity": {
+            "methods": ["password"],
+            "password": {
+              "user": {
+                "name": this.name,
+                "domain": {
+                  "name": "Default"
+                },
+                "password": this.password
+              }
+            }
+          }
+        }
+      }) 
+      .then(response => {
+        this.$store.commit('setToken', {'type': 'unscoped', 'token': response.headers['x-subject-token']});
+        this.$store.commit("setOpenstackAddress", 'http://' + this.openstackAddress);
+        this.$store.commit("setUser", response.data.token.user);
+        this.getProjects();
+      })
+      .catch(error => {
+        this.serverErrors = "Project address or user credentials are not valid!";
+        console.log(error.response);
+        this.submitStatus = false;
+      });
+    },
+    getProjects() {
+      axios.get('/identity/v3/auth/projects') 
+      .then(response => {
+          if(response.data.projects.length){
+            this.$store.commit("setProjects", response.data.projects);
+            this.$store.commit("setIdSelectedProject", response.data.projects[0].id);
+            this.$router.push({ name: "LoginScoped" });
+          }
+          else
+          {
+            this.serverErrors = "No projects associated to this user!";
+            this.submitStatus = false;
+          }
+      })
+      .catch(error => {
+        this.serverErrors = "There is some problems fetching user projects! Please try again.";
+        console.log(error.response);
+        this.submitStatus = false;
+      });
     }
   }
 }
