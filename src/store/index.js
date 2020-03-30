@@ -9,17 +9,14 @@ export default new Vuex.Store({
     tokenUnscoped: sessionStorage.getItem('tokenUnscoped') || '',
     tokenScoped: sessionStorage.getItem('tokenScoped') || '',
     idSelectedProject: sessionStorage.getItem('idSelectedProject') || '',
-    projects: null,
-    user: null
+    idLastProject: sessionStorage.getItem('idLastProject') || '',
+    projects: JSON.parse(sessionStorage.getItem('projects')) || '',
+    user: JSON.parse(sessionStorage.getItem('user')) || ''
   },
   mutations: {
     setUser: (state, user) => {
       state.user = user
       sessionStorage.setItem('user', JSON.stringify(user))
-    },
-    clearUser: state => {
-      state.user = null
-      sessionStorage.removeItem('user')
     },
     setToken: (state, data) => {
       if (data.type === 'scoped') {
@@ -30,22 +27,10 @@ export default new Vuex.Store({
       axios.defaults.headers.common['x-auth-token'] = data.token
       sessionStorage.setItem((data.type === 'scoped') ? 'tokenScoped' : 'tokenUnscoped', data.token)
     },
-    clearTokens: state => {
-      state.tokenScoped = ''
-      state.tokenUnscoped = ''
-      sessionStorage.removeItem('tokenScoped')
-      sessionStorage.removeItem('tokenUnscoped')
-      axios.defaults.headers.common['x-auth-token'] = undefined
-    },
     setOpenstackAddress: (state, openstackAddress) => {
       state.openstackAddress = openstackAddress
       sessionStorage.setItem('openstackAddress', openstackAddress)
       axios.defaults.baseURL = openstackAddress
-    },
-    clearOpenstackAddress: state => {
-      state.openstackAddress = ''
-      sessionStorage.removeItem('openstackAddress')
-      axios.defaults.baseURL = undefined
     },
     setProjects: (state, projects) => {
       state.projects = projects
@@ -54,6 +39,28 @@ export default new Vuex.Store({
     setIdSelectedProject: (state, idSelectedProject) => {
       state.idSelectedProject = idSelectedProject
       sessionStorage.setItem('idSelectedProject', idSelectedProject)
+    },
+    setLastProjectId: (state, idLastProject) => {
+      sessionStorage.setItem('idLastProject', idLastProject)
+      state.idLastProject = idLastProject
+    },
+    clearAll: state => {
+      state.openstackAddress = ''
+      sessionStorage.removeItem('openstackAddress')
+      state.tokenUnscoped = ''
+      sessionStorage.removeItem('tokenUnscoped')
+      state.tokenScoped = ''
+      sessionStorage.removeItem('tokenScoped')
+      state.idSelectedProject = ''
+      sessionStorage.removeItem('idSelectedProject')
+      state.idLastProject = ''
+      sessionStorage.removeItem('idLastProject')
+      state.user = null
+      sessionStorage.removeItem('user')
+      state.projects = null
+      sessionStorage.removeItem('projects')
+      axios.defaults.headers.common['x-auth-token'] = ''
+      axios.defaults.baseURL = ''
     }
   },
   actions: {

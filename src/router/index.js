@@ -7,27 +7,50 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../components/Home.vue')
+    component: () => import('../components/Home.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
-    path: '/login-unscoped',
+    path: '/Login-unscoped',
     name: 'LoginUnscoped',
-    component: () => import('../components/authentication/LoginUnscoped.vue')
+    component: () => import('../components/authentication/LoginUnscoped.vue'),
+    meta: {
+      requiresVisitor: true
+    }
   },
   {
     path: '/login-scoped',
     name: 'LoginScoped',
-    component: () => import('../components/authentication/LoginScoped.vue')
+    component: () => import('../components/authentication/LoginScoped.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: () => import('../components/authentication/Logout.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/instances',
     name: 'Instances',
-    component: () => import('../components/instances/InstanceView.vue')
+    component: () => import('../components/instances/InstanceList.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/images',
     name: 'Images',
-    component: () => import('../components/images/ImageList.vue')
+    component: () => import('../components/images/ImageList.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
