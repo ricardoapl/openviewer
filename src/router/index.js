@@ -17,12 +17,12 @@ const routes = [
   {
     path: '/login-scoped',
     name: 'LoginScoped',
-    component:  () => import('../components/authentication/LoginScoped.vue')
+    component: () => import('../components/authentication/LoginScoped.vue')
   },
-  {  
+  {
     path: '/instances',
     name: 'Instances',
-    component: () => import('../components/instances/InstanceList.vue')
+    component: () => import('../components/instances/InstanceView.vue')
   },
   {
     path: '/images',

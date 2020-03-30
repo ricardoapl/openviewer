@@ -25,7 +25,7 @@
               <li v-if="!$v.name.required">Field name is required</li>
               <li v-if="!$v.name.alphaSpaces">Field name only accept letters and spaces</li>
               <li v-if="!$v.name.minLength">Name must have at least {{ $v.name.$params.minLength.min }} characters.</li>
-              <li v-if="!$v.name.maxLength">Name only can have {{ $v.name.$params.maxLength.max }} characters.</li>  
+              <li v-if="!$v.name.maxLength">Name only can have {{ $v.name.$params.maxLength.max }} characters.</li>
               <li v-if="!$v.password.required">Field password is required</li>
               <li v-if="!$v.password.minLength">Password must have at least {{ $v.password.$params.minLength.min }} letters.</li>
           </ul>
@@ -130,8 +130,8 @@ export default {
     login () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        this.submitStatus = true;
-        this.getUnscopedToken();
+        this.submitStatus = true
+        this.getUnscopedToken()
       }
     },
     validationStatus (validation) {
@@ -140,57 +140,55 @@ export default {
         'is-valid': validation.$dirty
       }
     },
-    setServerState() {
-      this.serverErrors = false;
+    setServerState () {
+      this.serverErrors = false
     },
-    getUnscopedToken() {
+    getUnscopedToken () {
       axios.post('http://' + this.openstackAddress + '/identity/v3/auth/tokens', {
-        "auth": {
-          "identity": {
-            "methods": ["password"],
-            "password": {
-              "user": {
-                "name": this.name,
-                "domain": {
-                  "name": "Default"
+        auth: {
+          identity: {
+            methods: ['password'],
+            password: {
+              user: {
+                name: this.name,
+                domain: {
+                  name: 'Default'
                 },
-                "password": this.password
+                password: this.password
               }
             }
           }
         }
-      }) 
-      .then(response => {
-        this.$store.commit('setToken', {'type': 'unscoped', 'token': response.headers['x-subject-token']});
-        this.$store.commit("setOpenstackAddress", 'http://' + this.openstackAddress);
-        this.$store.commit("setUser", response.data.token.user);
-        this.getProjects();
       })
-      .catch(error => {
-        this.serverErrors = "Project address or user credentials are not valid!";
-        console.log(error.response);
-        this.submitStatus = false;
-      });
+        .then(response => {
+          this.$store.commit('setToken', { type: 'unscoped', token: response.headers['x-subject-token'] })
+          this.$store.commit('setOpenstackAddress', 'http://' + this.openstackAddress)
+          this.$store.commit('setUser', response.data.token.user)
+          this.getProjects()
+        })
+        .catch(error => {
+          this.serverErrors = 'Project address or user credentials are not valid!'
+          console.log(error.response)
+          this.submitStatus = false
+        })
     },
-    getProjects() {
-      axios.get('/identity/v3/auth/projects') 
-      .then(response => {
-          if(response.data.projects.length){
-            this.$store.commit("setProjects", response.data.projects);
-            this.$store.commit("setIdSelectedProject", response.data.projects[0].id);
-            this.$router.push({ name: "LoginScoped" });
+    getProjects () {
+      axios.get('/identity/v3/auth/projects')
+        .then(response => {
+          if (response.data.projects.length) {
+            this.$store.commit('setProjects', response.data.projects)
+            this.$store.commit('setIdSelectedProject', response.data.projects[0].id)
+            this.$router.push({ name: 'LoginScoped' })
+          } else {
+            this.serverErrors = 'No projects associated to this user!'
+            this.submitStatus = false
           }
-          else
-          {
-            this.serverErrors = "No projects associated to this user!";
-            this.submitStatus = false;
-          }
-      })
-      .catch(error => {
-        this.serverErrors = "There is some problems fetching user projects! Please try again.";
-        console.log(error.response);
-        this.submitStatus = false;
-      });
+        })
+        .catch(error => {
+          this.serverErrors = 'There is some problems fetching user projects! Please try again.'
+          console.log(error.response)
+          this.submitStatus = false
+        })
     }
   }
 }

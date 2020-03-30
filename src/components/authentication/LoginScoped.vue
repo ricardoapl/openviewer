@@ -1,5 +1,5 @@
 <template>
-    <div>    
+    <div>
         <div class="container text-center mt-5" v-if=loading>
             <p class="display-4 mb-4">- Loading -</p>
             <div class="spinner-grow text-success mt-4"  style="width: 8rem; height: 8rem;" role="status">
@@ -11,7 +11,7 @@
                         <em>- We are making progress! -</em>
                     </strong>
                 </span>
-                <br /> 
+                <br />
                 Wait a second until we made this things up to you!
             </p>
         </div>
@@ -27,7 +27,7 @@
                         <em>- I think there's a problem! -</em>
                     </strong>
                 </span>
-                <br /> 
+                <br />
                 It seems an error occurred while login or switching a project!
             </p>
             <button class="btn btn-warning" type="button" @click="goNextLocation"> Go back... </button>
@@ -38,33 +38,33 @@
 <script>
 export default {
   name: 'LoginScoped',
-  data() {
+  data () {
     return {
       loading: true,
-      error: false,
+      error: false
     }
   },
   methods: {
-    getScopedToken: function(){
+    getScopedToken: function () {
       axios.post('/identity/v3/auth/tokens', {
-        "auth": {
-          "identity": {
-            "methods": [
-              "token"
+        auth: {
+          identity: {
+            methods: [
+              'token'
             ],
-            "token": {
-              "id": this.$store.state.tokenUnscoped
+            token: {
+              id: this.$store.state.tokenUnscoped
             }
           },
-          "scope": {
-            "project": {
-              "id": this.$store.state.idSelectedProject
+          scope: {
+            project: {
+              id: this.$store.state.idSelectedProject
             }
           }
         }
-      }) 
+      })
         .then(response => {
-          this.$store.commit('setToken', {'type': 'scoped', 'token': response.headers['x-subject-token']})
+          this.$store.commit('setToken', { type: 'scoped', token: response.headers['x-subject-token'] })
           this.goNextLocation()
         })
         .catch(error => {
@@ -73,17 +73,16 @@ export default {
           this.error = true
         })
     },
-    goNextLocation(){
-      if(this.$store.state.tokenScoped == null || this.$store.state.tokenScoped == ""){
-        this.$router.push({ name: "LoginUnscoped" })
-      }
-      else{
-        this.$router.push({ name: "Home" })
+    goNextLocation () {
+      if (this.$store.state.tokenScoped == null || this.$store.state.tokenScoped === '') {
+        this.$router.push({ name: 'LoginUnscoped' })
+      } else {
+        this.$router.push({ name: 'Home' })
       }
     }
   },
-  mounted() {
+  mounted () {
     this.getScopedToken()
-  },
+  }
 }
 </script>
