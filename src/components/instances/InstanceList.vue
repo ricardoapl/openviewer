@@ -49,6 +49,11 @@ export default {
       servers: {}
     }
   },
+  mounted () {
+    console.log('InstanceList created and mounted')
+    this.getFlavors()
+    this.getServers()
+  },
   methods: {
     getFlavors: function () {
       axios.get('/compute/v2.1/flavors')
@@ -70,10 +75,6 @@ export default {
           console.log(error)
         })
     }
-  },
-  mounted () {
-    this.getFlavors()
-    this.getServers()
   }
 }
 </script>

@@ -1,4 +1,5 @@
 <template>
+  <!-- XXX Apply Bootstrap grid system -->
   <tr>
     <td>{{ server.name }}</td>
     <!-- TODO Fix instance image name -->
@@ -41,7 +42,7 @@ export default {
     server: Object
   },
   mounted () {
-    console.log('Child InstanceListItem created and mounted for server with id ' + this.server.id)
+    console.log('InstanceListItem created and mounted for server with id ' + this.server.id)
   }
 }
 </script>

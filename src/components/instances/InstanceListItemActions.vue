@@ -1,13 +1,14 @@
 <template>
+  <!-- XXX Apply Bootstrap grid system -->
   <div>
     <button
-      class="btn btn-warning"
+      class="btn btn-success"
       v-if="status == 'SHUTDOWN'"
       v-on:click="startServer()"
       >Start instance
     </button>
     <button
-      class="btn btn-success"
+      class="btn btn-warning"
       v-if="status == 'RUNNING'"
       v-on:click="stopServer()"
       >Stop instance
@@ -31,6 +32,9 @@ export default {
     status: String,
     server: Object
   },
+  mounted () {
+    console.log('InstanceListItemActions created and mounted for server with id ' + this.server.id)
+  },
   methods: {
     startServer: function () {
       // TODO As part of US13
@@ -48,9 +52,6 @@ export default {
       // TODO As part of US12
       console.log('deleteServer() called on InstanceListItemActions for server ' + this.server.id)
     }
-  },
-  mounted () {
-    console.log('Child InstanceListItemActions created and mounted for server with id ' + this.server.id)
   }
 }
 </script>
