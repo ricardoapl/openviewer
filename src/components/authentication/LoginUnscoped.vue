@@ -9,10 +9,10 @@
     <p class="mt-5 mb-5">
       <span class="text-secondary">
         <strong>
-          <em>- Do you want control some stacks? -</em>
+          <em>- Do you want to control some stacks? -</em>
         </strong>
       </span>
-      <br /> Login down bellow and let's get that started
+      <br /> Login down bellow and let's get started
     </p>
     <form class="w-25 m-auto" v-on:submit.prevent="login">
       <div class="alert alert-danger" role="alert" v-if="hasErrors">

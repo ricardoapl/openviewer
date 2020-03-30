@@ -13,7 +13,7 @@ const routes = [
     }
   },
   {
-    path: '/Login-unscoped',
+    path: '/login-unscoped',
     name: 'LoginUnscoped',
     component: () => import('../components/authentication/LoginUnscoped.vue'),
     meta: {
@@ -39,7 +39,7 @@ const routes = [
   {
     path: '/instances',
     name: 'Instances',
-    component: () => import('../components/instances/InstanceList.vue'),
+    component: () => import('../components/instances/InstanceView.vue'),
     meta: {
       requiresAuth: true
     }
