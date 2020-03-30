@@ -19,7 +19,7 @@
         <label for="name">Name</label>
         <input type="text" id="name" v-model="name"/>
         <label for="network">Network</label>
-        <select class="form-control" id="network" v-model="networkId">
+        <select class="form-control" id="network" v-model="networkRef">
           <option
             v-for="network in networks"
             v-bind:key="network.id"
@@ -51,7 +51,7 @@ export default {
       images: [],
       flavorRef: '',
       name: '',
-      networkId: '',
+      networkRef: '',
       imageRef: ''
     }
   },
@@ -101,7 +101,7 @@ export default {
           name: this.name,
           networks: [
             {
-              uuid: this.networkId
+              uuid: this.networkRef
             }
           ],
           imageRef: this.imageRef,
