@@ -24,35 +24,29 @@ export default {
   },
   computed: {
     statusStyleClass: function () {
-      switch(this.volume.status) {
-        case "available":
-          return 'badge-success';
-          break;
-        case "error":
-        case "error_deleting":
-          return 'badge-warning';
-          break;
-        case "creating":
-        case "deleting":
-          return 'badge-info';
-          break;
-        case "in-use":
-          return 'badge-primary';
-          break;
-        case "attaching":
-        case "detaching":
-          return 'badge-secondary';
-          break;
-        case "maintenance":
-           return 'badge-dark';
-          break;
+      switch (this.volume.status) {
+        case 'available':
+          return 'badge-success'
+        case 'error':
+        case 'error_deleting':
+          return 'badge-warning'
+        case 'creating':
+        case 'deleting':
+          return 'badge-info'
+        case 'in-use':
+          return 'badge-primary'
+        case 'attaching':
+        case 'detaching':
+          return 'badge-secondary'
+        case 'maintenance':
+          return 'badge-dark'
         default:
-          return 'badge-light';
+          return 'badge-light'
       }
     },
     attachStyleClass: function () {
       return this.volume.attachments.length > 0 ? 'badge-dark' : 'badge-light'
     }
-  },
+  }
 }
 </script>

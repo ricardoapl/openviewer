@@ -40,11 +40,11 @@ export default {
   },
   methods: {
     getVolumes: function () {
-      axios.get('/volume/v3/' + this.$store.state.idSelectedProject + '/volumes')
+      axios.get('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/volumes')
         .then(response => {
           if (response.data.volumes.length > 0) {
             $.each(response.data.volumes, (key, value) => {
-              this.getVolumeData(value.id);
+              this.getVolumeData(value.id)
             })
           }
         })
@@ -53,14 +53,14 @@ export default {
         })
     },
     getVolumeData: function (idVolume) {
-      axios.get('/volume/v3/' + this.$store.state.idSelectedProject + '/volumes/' + idVolume)
+      axios.get('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/volumes/' + idVolume)
         .then(response => {
-           this.volumes.push(response.data.volume);
+          this.volumes.push(response.data.volume)
         })
         .catch(error => {
           console.log('[VolumeList]  => ' + error)
         })
-    },
+    }
   }
 }
 </script>

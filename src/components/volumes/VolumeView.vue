@@ -8,10 +8,10 @@
       <button
       class="btn btn-outline-info mt-4"
       v-on:click="showVolumeForm = !showVolumeForm"
-      >- Create Volume - 
+      >- Create Volume -
     </button>
     </div>
-    
+
     <volume-form v-if="showVolumeForm"></volume-form>
     <volume-list></volume-list>
   </div>
