@@ -49,8 +49,16 @@ export default {
       console.log('editServer() called on InstanceListItemActions for server ' + this.server.id)
     },
     deleteServer: function () {
-      // TODO As part of US12
       console.log('deleteServer() called on InstanceListItemActions for server ' + this.server.id)
+      axios.delete('/compute/v2.1/servers/' + this.server.id)
+        .then(response => {
+          console.log(response)
+          // XXX Actions are async, and as such the InstanceList will update before the instance is removed
+          this.$store.dispatch('instances/getServers')
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
