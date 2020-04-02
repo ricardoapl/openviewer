@@ -85,7 +85,7 @@ export default {
         .then(response => {
           console.log(response)
           this.$store.dispatch('instances/getServers')
-          this.$emit('hide-form')
+          this.$emit('hide')
         })
         .catch(error => {
           console.log(error)

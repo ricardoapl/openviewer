@@ -8,7 +8,7 @@
     </button>
     <instance-form
       v-if="showInstanceForm"
-      v-on:hide-form="showInstanceForm = false">
+      v-on:hide="showInstanceForm = false">
     </instance-form>
     <instance-list></instance-list>
   </div>
