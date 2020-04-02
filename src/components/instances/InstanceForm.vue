@@ -46,54 +46,27 @@
 export default {
   data () {
     return {
-      flavors: {},
-      networks: [],
-      images: [],
       flavorRef: '',
       name: '',
       networkRef: '',
       imageRef: ''
     }
   },
+  computed: {
+    flavors () {
+      return this.$store.state.instances.flavors
+    },
+    networks () {
+      return this.$store.state.instances.networks
+    },
+    images () {
+      return this.$store.state.instances.images
+    }
+  },
   mounted () {
     console.log('InstanceForm created and mounted')
-    this.getFlavors()
-    this.getNetworks()
-    this.getImages()
   },
   methods: {
-    getFlavors: function () {
-      // XXX Duplicate from InstanceList.vue
-      axios.get('/compute/v2.1/flavors')
-        .then(response => {
-          this.flavors = response.data.flavors
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getNetworks: function () {
-      // XXX Might want to 'fix' this URL...
-      axios.get('http://127.0.0.1:9696/v2.0/networks')
-        .then(response => {
-          this.networks = response.data.networks
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getImages: function () {
-      axios.get('/image/v2/images')
-        .then(response => {
-          this.images = response.data.images
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
     submitForm: function () {
       const body = {
         server: {
@@ -111,8 +84,8 @@ export default {
       axios.post('compute/v2.1/servers', body)
         .then(response => {
           console.log(response)
-          // XXX Send refresh request to InstanceList.vue through Vuex
-          // XXX Hide form
+          this.$store.dispatch('instances/getServers')
+          this.$emit('hide-form')
         })
         .catch(error => {
           console.log(error)

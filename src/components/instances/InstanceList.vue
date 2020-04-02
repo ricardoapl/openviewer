@@ -19,8 +19,6 @@
           is="instance-list-item"
           v-for="server in servers"
           v-bind:key="server.id"
-          v-bind:status="status"
-          v-bind:flavors="flavors"
           v-bind:server="server">
         </tr>
       </tbody>
@@ -29,52 +27,27 @@
 </template>
 
 <script>
+// XXX Consider importing { mapActions } on a larger scope
+import { mapActions } from 'vuex'
 import InstanceListItem from './InstanceListItem'
 export default {
   components: {
     InstanceListItem
   },
-  data () {
-    return {
-      status: [
-        'NOSTATE',
-        'RUNNING',
-        '',
-        'PAUSED',
-        'SHUTDOWN',
-        'CRASHED',
-        'SUSPENDED'
-      ],
-      flavors: {},
-      servers: {}
+  computed: {
+    servers () {
+      return this.$store.state.instances.servers
     }
   },
   mounted () {
     console.log('InstanceList created and mounted')
-    this.getFlavors()
     this.getServers()
   },
   methods: {
-    getFlavors: function () {
-      axios.get('/compute/v2.1/flavors')
-        .then(response => {
-          this.flavors = response.data.flavors
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getServers: function () {
-      axios.get('/compute/v2.1/servers/detail')
-        .then(response => {
-          this.servers = response.data.servers
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    }
+    // XXX Consider removing action mapping in favor of this.$store...
+    ...mapActions({
+      getServers: 'instances/getServers'
+    })
   }
 }
 </script>
