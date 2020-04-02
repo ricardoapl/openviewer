@@ -12,7 +12,7 @@ window.axios = axios
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.state.tokenUnscoped === '') {
+    if (store.state.authentication.tokenUnscoped === '') {
       next({
         name: 'LoginUnscoped'
       })
@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else if (to.matched.some(record => record.meta.requiresVisitor)) {
-    if (store.state.tokenUnscoped !== '') {
+    if (store.state.authentication.tokenUnscoped !== '') {
       next({
         name: 'Home'
       })

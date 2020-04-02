@@ -6,14 +6,14 @@
 export default {
   created () {
     axios
-      .delete('/identity/v3/auth/tokens', { headers: { 'X-Subject-Token': this.$store.state.tokenScoped } })
+      .delete('/identity/v3/auth/tokens', { headers: { 'X-Subject-Token': this.$store.state.authentication.tokenScoped } })
       .then(response => {
-        this.$store.commit('clearAll')
+        this.$store.commit('authentication/clearAll')
         this.$router.go({ name: 'Home' })
       })
       .catch(error => {
         console.log('[Logout] => ' + error)
-        this.$store.commit('clearAll')
+        this.$store.commit('authentication/clearAll')
         this.$router.go({ name: 'Home' })
       })
   }

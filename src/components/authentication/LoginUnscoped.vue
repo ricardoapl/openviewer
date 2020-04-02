@@ -161,9 +161,9 @@ export default {
         }
       })
         .then(response => {
-          this.$store.commit('setToken', { type: 'unscoped', token: response.headers['x-subject-token'] })
-          this.$store.commit('setOpenstackAddress', 'http://' + this.openstackAddress)
-          this.$store.commit('setUser', response.data.token.user)
+          this.$store.commit('authentication/setToken', { type: 'unscoped', token: response.headers['x-subject-token'] })
+          this.$store.commit('authentication/setOpenstackAddress', 'http://' + this.openstackAddress)
+          this.$store.commit('authentication/setUser', response.data.token.user)
           this.getProjects()
         })
         .catch(error => {
@@ -176,8 +176,8 @@ export default {
       axios.get('/identity/v3/auth/projects')
         .then(response => {
           if (response.data.projects.length) {
-            this.$store.commit('setProjects', response.data.projects)
-            this.$store.commit('setIdSelectedProject', response.data.projects[0].id)
+            this.$store.commit('authentication/setProjects', response.data.projects)
+            this.$store.commit('authentication/setIdSelectedProject', response.data.projects[0].id)
             this.$router.push({ name: 'LoginScoped' })
           } else {
             this.serverErrors = 'No projects associated to this user!'

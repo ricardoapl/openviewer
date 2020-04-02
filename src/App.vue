@@ -114,28 +114,28 @@
 export default {
   computed: {
     loggedIn () {
-      return this.$store.state.tokenScoped !== ''
+      return this.$store.state.authentication.tokenScoped !== ''
     },
     currentUser () {
-      return this.$store.state.user != null
-        ? this.$store.state.user.name
+      return this.$store.state.authentication.user != null
+        ? this.$store.state.authentication.user.name
         : ''
     },
     currentProject () {
-      return this.$store.state.projects != null
-        ? this.$store.state.projects.find(o => o.id === this.$store.state.idSelectedProject).name
+      return this.$store.state.authentication.projects != null
+        ? this.$store.state.authentication.projects.find(o => o.id === this.$store.state.authentication.idSelectedProject).name
         : ''
     },
     projectList () {
-      return this.$store.state.projects != null
-        ? this.$store.state.projects.filter(o => { return o.id !== this.$store.state.idSelectedProject })
+      return this.$store.state.authentication.projects != null
+        ? this.$store.state.authentication.projects.filter(o => { return o.id !== this.$store.state.authentication.idSelectedProject })
         : ''
     }
   },
   methods: {
     changeProject (id) {
-      this.$store.commit('setLastProjectId', this.$store.state.idSelectedProject)
-      this.$store.commit('setIdSelectedProject', id)
+      this.$store.commit('authentication/setLastProjectId', this.$store.state.authentication.idSelectedProject)
+      this.$store.commit('authentication/setIdSelectedProject', id)
       this.$router.push({ name: 'LoginScoped' })
     }
   },

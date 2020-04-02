@@ -53,29 +53,29 @@ export default {
               'token'
             ],
             token: {
-              id: this.$store.state.tokenUnscoped
+              id: this.$store.state.authentication.tokenUnscoped
             }
           },
           scope: {
             project: {
-              id: this.$store.state.idSelectedProject
+              id: this.$store.state.authentication.idSelectedProject
             }
           }
         }
       })
         .then(response => {
-          this.$store.commit('setToken', { type: 'scoped', token: response.headers['x-subject-token'] })
+          this.$store.commit('authentication/setToken', { type: 'scoped', token: response.headers['x-subject-token'] })
           this.goNextLocation()
         })
         .catch(error => {
           console.log(error.response)
-          this.$store.commit('setIdSelectedProject', this.$store.state.idLastProject)
+          this.$store.commit('authentication/setIdSelectedProject', this.$store.state.authentication.idLastProject)
           this.loading = false
           this.error = true
         })
     },
     goNextLocation () {
-      if (this.$store.state.tokenScoped == null || this.$store.state.tokenScoped === '') {
+      if (this.$store.state.authentication.tokenScoped == null || this.$store.state.authentication.tokenScoped === '') {
         this.$router.push({ name: 'LoginUnscoped' })
       } else {
         this.$router.push({ name: 'Home' })
