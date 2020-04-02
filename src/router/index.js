@@ -51,6 +51,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/volumes',
+    name: 'Volumes',
+    component: () => import('../components/volumes/VolumeView.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
