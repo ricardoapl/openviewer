@@ -7,6 +7,7 @@
       <template v-for="image in images">
           {{ image.id == server.image.id ? image.name : '' }}
       </template>
+    </td>
     <td>
       <!-- XXX There must be an easier way to retrieve the network address -->
       <template v-for="network in server.addresses">
