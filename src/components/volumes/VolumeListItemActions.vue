@@ -16,7 +16,7 @@
     <button
       type="button"
       data-toggle="tooltip"
-      data-placement="top" 
+      data-placement="top"
       title="Delete Volume"
       class="btn btn-danger btn-sm"
       v-on:click="deleteVolume()"
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'VolumeListItemActions',
   props: {
@@ -36,14 +37,25 @@ export default {
   },
   mounted () {
     // XXX We may want to get rid of this jQuery voodoo in the future...
+    // eslint-disable-next-line no-undef
     $(function () { $('[data-toggle="tooltip"]').tooltip() })
   },
   methods: {
     editVolume: function () {
-      console.log('[editVolume()] => Called on InstanceListItemActions for volume ' + this.volume.id)
+      console.log('[editVolume()] => Called on VolumeListItemActions for volume ' + this.volume.id)
     },
     deleteVolume: function () {
-      console.log('[deleteVolume()] => Called on InstanceListItemActions for volume ' + this.volume.id)
+      console.log('[deleteVolume()] => Called on VolumeListItemActions for volume ' + this.volume.id)
+      // eslint-disable-next-line no-undef
+      axios.delete('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/volumes/' + this.volume.id)
+        .then(response => {
+          console.log(response)
+          // XXX Actions are async, and as such the InstanceList will update before the instance is removed
+          this.$store.dispatch('volumes/getVolumes')
+        })
+        .catch(error => {
+          console.log('[deleteVolume()] =>' + error.response.data.badRequest.message)
+        })
     }
   }
 }

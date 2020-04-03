@@ -25,43 +25,28 @@
 </template>
 
 <script>
+// XXX Consider importing { mapActions } on a larger scope
+import { mapActions } from 'vuex'
 import VolumeListItem from './VolumeListItem'
 export default {
   name: 'VolumeList',
   components: {
     VolumeListItem
   },
-  data () {
-    return {
-      volumes: []
+  computed: {
+    volumes () {
+      return this.$store.state.volumes.volumes
     }
   },
   mounted () {
+    console.log('[VolumeList] => InstanceList created and mounted')
     this.getVolumes()
   },
   methods: {
-    getVolumes: function () {
-      axios.get('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/volumes')
-        .then(response => {
-          if (response.data.volumes.length > 0) {
-            $.each(response.data.volumes, (key, value) => {
-              this.getVolumeData(value.id)
-            })
-          }
-        })
-        .catch(error => {
-          console.log('[VolumeList]  => ' + error)
-        })
-    },
-    getVolumeData: function (idVolume) {
-      axios.get('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/volumes/' + idVolume)
-        .then(response => {
-          this.volumes.push(response.data.volume)
-        })
-        .catch(error => {
-          console.log('[VolumeList]  => ' + error)
-        })
-    }
+    // XXX Consider removing action mapping in favor of this.$store...
+    ...mapActions({
+      getVolumes: 'volumes/getVolumes'
+    })
   }
 }
 </script>
