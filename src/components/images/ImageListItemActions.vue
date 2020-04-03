@@ -28,8 +28,15 @@ export default {
   },
   methods: {
     deleteImage: function () {
-      // TODO As part of US21
       console.log('deleteImage() called on ImageListItemActions for image ' + this.image.id)
+      axios.delete('/image/v2/images/' + this.image.id)
+        .then(response => {
+          console.log(response)
+          this.$store.dispatch('images/getImages')
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
