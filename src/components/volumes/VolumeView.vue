@@ -30,6 +30,6 @@ export default {
     return {
       showVolumeForm: false
     }
-  },
+  }
 }
 </script>
