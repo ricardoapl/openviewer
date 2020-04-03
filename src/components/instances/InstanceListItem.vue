@@ -1,5 +1,4 @@
 <template>
-  <!-- XXX Apply Bootstrap grid system -->
   <tr>
     <td>{{ server.name }}</td>
     <td>
