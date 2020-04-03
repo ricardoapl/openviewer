@@ -9,10 +9,10 @@
     <p class="mt-5 mb-5">
       <span class="text-secondary">
         <strong>
-          <em>- Do you want to control some stacks? -</em>
+          <em>Do you want to control some stacks?</em>
         </strong>
       </span>
-      <br /> Login down bellow and let's get started
+      <br />Login down bellow and let's get started
     </p>
     <form class="w-25 m-auto" v-on:submit.prevent="login">
       <div class="alert alert-danger" role="alert" v-if="hasErrors">
@@ -94,7 +94,7 @@
 import { required, minLength, maxLength, helpers } from 'vuelidate/lib/validators'
 const alphaSpaces = helpers.regex('alphaSpaces', /^[a-zA-ZÀ-ž\s]*$/)
 export default {
-  name: 'login',
+  name: 'LoginUnscoped',
   data () {
     return {
       openstackAddress: '127.0.0.1:8080',

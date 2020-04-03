@@ -3,7 +3,7 @@
     <button
       type="button"
       data-toggle="tooltip"
-      data-placement="top" 
+      data-placement="top"
       title="Edit Volume"
       class="btn btn-primary btn-sm mr-1"
       v-on:click="editVolume()"
@@ -30,10 +30,12 @@
 
 <script>
 export default {
+  name: 'VolumeListItemActions',
   props: {
     volume: Object
   },
   mounted () {
+    // XXX We may want to get rid of this jQuery voodoo in the future...
     $(function () { $('[data-toggle="tooltip"]').tooltip() })
   },
   methods: {

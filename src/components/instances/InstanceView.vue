@@ -1,11 +1,16 @@
 <template>
-  <!-- XXX Apply Bootstrap grid system -->
   <div>
-    <button
-      class="btn btn-info"
-      v-on:click="showInstanceForm = !showInstanceForm"
-      >Create instance
-    </button>
+    <div class="jumbotron jumbotron-fluid text-center">
+      <div class="container">
+        <h1 class="display-4">Instances</h1>
+        <p>In this page you can control all of your instances.<br>If your want to create a new instance click on the button down bellow.</p>
+      </div>
+      <button
+        class="btn btn-info"
+        v-on:click="showInstanceForm = !showInstanceForm"
+        >Create instance
+      </button>
+    </div>
     <instance-form
       v-if="showInstanceForm"
       v-on:hide="showInstanceForm = false">
@@ -20,6 +25,7 @@ import { mapActions } from 'vuex'
 import InstanceForm from './InstanceForm'
 import InstanceList from './InstanceList'
 export default {
+  name: 'InstanceView',
   components: {
     InstanceForm,
     InstanceList

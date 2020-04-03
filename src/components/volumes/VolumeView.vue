@@ -21,6 +21,7 @@
 import VolumeForm from './VolumeForm'
 import VolumeList from './VolumeList'
 export default {
+  name: 'VolumeView',
   components: {
     VolumeForm,
     VolumeList

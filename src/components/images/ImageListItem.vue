@@ -5,9 +5,9 @@
     <td>Image</td>
     <td>{{ image.status }}</td>
     <td>{{ image.visibility }}</td>
-    <td>{{ image.protected ? 'Yes' : 'No' }}</td>
+    <td>{{ image.protected ? "Yes" : "No" }}</td>
     <td>{{ image.disk_format }}</td>
-    <td>{{ (image.size / this.mebibyte).toFixed(2) }} MiB</td>
+    <td>{{ this.imageSizeInMiB }} MiB</td>
     <td>
       <image-list-item-actions
         v-bind:image="image">
@@ -19,16 +19,18 @@
 <script>
 import ImageListItemActions from './ImageListItemActions'
 export default {
+  name: 'ImageListItem',
   components: {
     ImageListItemActions
   },
-  data () {
-    return {
-      mebibyte: 1048576
-    }
-  },
   props: {
     image: Object
+  },
+  computed: {
+    imageSizeInMiB: function () {
+      const mebibyte = 1048576
+      return (this.image.size / mebibyte).toFixed(2)
+    }
   },
   mounted () {
     console.log('ImageListItem created and mounted for image with id ' + this.image.id)

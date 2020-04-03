@@ -23,6 +23,7 @@
 import ImageForm from './ImageForm'
 import ImageList from './ImageList'
 export default {
+  name: 'ImageView',
   components: {
     ImageForm,
     ImageList

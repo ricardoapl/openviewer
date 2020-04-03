@@ -31,6 +31,7 @@
 import { mapActions } from 'vuex'
 import ImageListItem from './ImageListItem'
 export default {
+  name: 'ImageList',
   components: {
     ImageListItem
   },

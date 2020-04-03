@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  name: 'Logout',
   created () {
     axios
       .delete('/identity/v3/auth/tokens', { headers: { 'X-Subject-Token': this.$store.state.authentication.tokenScoped } })

@@ -1,10 +1,10 @@
 <template>
   <tr>
     <td>{{ volume.name || volume.id }} </td>
-    <td>{{ volume.description || '-'}}</td>
-    <td>{{ volume.size || '-'}}<small class="text-secondary"> GiB</small></td>
-    <td><span class="badge badge-pill" v-bind:class="statusStyleClass">{{ volume.status || '-'}}</span></td>
-    <td><span class="badge badge-pill" v-bind:class="attachStyleClass">{{ volume.attachments.length > 0 ? "Yes" : "No" || '-'}}</span></td>
+    <td>{{ volume.description || '-' }}</td>
+    <td>{{ volume.size || '-' }}<small class="text-secondary"> GiB</small></td>
+    <td><span class="badge badge-pill" v-bind:class="statusStyleClass">{{ volume.status || '-' }}</span></td>
+    <td><span class="badge badge-pill" v-bind:class="attachStyleClass">{{ volume.attachments.length > 0 ? "Yes" : "No" || '-' }}</span></td>
     <td>
       <volume-list-item-actions
         v-bind:volume="volume">
@@ -16,6 +16,7 @@
 <script>
 import volumeListItemActions from './VolumeListItemActions'
 export default {
+  name: 'VolumeListItem',
   components: {
     volumeListItemActions
   },

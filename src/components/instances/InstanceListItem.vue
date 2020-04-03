@@ -26,6 +26,7 @@
     <td>{{ server.status }}</td>
     <td>{{ server['OS-EXT-AZ:availability_zone'] }}</td>
     <!-- XXX Update state reactively -->
+    <!-- XXX Refactor complex expressions into computed properties or methods -->
     <td>{{ status[server['OS-EXT-STS:power_state']] }}</td>
     <td>
       <instance-list-item-actions
@@ -39,8 +40,12 @@
 <script>
 import InstanceListItemActions from './InstanceListItemActions'
 export default {
+  name: 'InstanceListItem',
   components: {
     InstanceListItemActions
+  },
+  props: {
+    server: Object
   },
   data () {
     return {
@@ -54,9 +59,6 @@ export default {
         'SUSPENDED'
       ]
     }
-  },
-  props: {
-    server: Object
   },
   computed: {
     flavors () {

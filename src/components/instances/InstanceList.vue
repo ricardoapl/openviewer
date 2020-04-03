@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container table-responsive">
     <table class="table table-striped">
         <thead>
         <tr>
@@ -27,10 +27,10 @@
 </template>
 
 <script>
-// XXX Consider importing { mapActions } on a larger scope
 import { mapActions } from 'vuex'
 import InstanceListItem from './InstanceListItem'
 export default {
+  name: 'InstanceList',
   components: {
     InstanceListItem
   },

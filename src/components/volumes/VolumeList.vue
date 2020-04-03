@@ -27,6 +27,7 @@
 <script>
 import VolumeListItem from './VolumeListItem'
 export default {
+  name: 'VolumeList',
   components: {
     VolumeListItem
   },

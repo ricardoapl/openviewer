@@ -17,11 +17,13 @@
 
 <script>
 export default {
+  name: 'ImageListItemActions',
   props: {
     image: Object
   },
   mounted () {
     console.log('ImageListItemActions created and mounted for image with id ' + this.image.id)
+    // XXX We may want to get rid of this jQuery voodoo in the future...
     $(function () { $('[data-toggle="tooltip"]').tooltip() })
   },
   methods: {
