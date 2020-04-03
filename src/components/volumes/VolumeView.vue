@@ -6,9 +6,9 @@
         <p>In this page your can control all of your volumes. <br>If your want to create a new volume click on the button down bellow.</p>
       </div>
       <button
-      class="btn btn-outline-info mt-4"
-      v-on:click="showVolumeForm = !showVolumeForm"
-      >- Create Volume -
+        class="btn btn-outline-info mt-4"
+        v-on:click="showVolumeForm = !showVolumeForm"
+      >Create Volume
     </button>
     </div>
 
