@@ -47,7 +47,7 @@ const routes = [
   {
     path: '/images',
     name: 'Images',
-    component: () => import('../components/images/ImageList.vue'),
+    component: () => import('../components/images/ImageView.vue'),
     meta: {
       requiresAuth: true
     }

@@ -54,6 +54,7 @@ const actions = {
       })
   },
   getImages ({ commit }) {
+    // XXX Duplicate from ../images.js
     axios.get('/image/v2/images')
       .then(response => {
         console.log(response)
