@@ -11,13 +11,17 @@
       >Create Volume
     </button>
     </div>
-
-    <volume-form v-if="showVolumeForm"></volume-form>
+    <volume-form
+      v-if="showVolumeForm"
+      v-on:hide="showVolumeForm = false"
+    >
+    </volume-form>
     <volume-list></volume-list>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import VolumeForm from './VolumeForm'
 import VolumeList from './VolumeList'
 export default {
@@ -30,6 +34,18 @@ export default {
     return {
       showVolumeForm: false
     }
+  },
+  mounted () {
+    console.log('[VolumeView] => Created and mounted')
+    this.getTypes()
+    this.getImages()
+  },
+  methods: {
+    // XXX Consider removing action mapping in favor of this.$store...
+    ...mapActions({
+      getImages: 'instances/getImages',
+      getTypes: 'volumes/getTypes'
+    })
   }
 }
 </script>
