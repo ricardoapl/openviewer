@@ -9,6 +9,7 @@
     </td>
     <td>
       <!-- XXX There must be an easier way to retrieve the network address -->
+      <!-- XXX We may want to rename the following variables -->
       <template v-for="network in server.addresses">
         <template v-for="address in network">
           {{ address.addr }}

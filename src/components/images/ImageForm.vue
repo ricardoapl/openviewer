@@ -102,8 +102,9 @@ export default {
           'Content-Type': 'application/octet-stream'
         }
       }
+      const body = this.image
       const url = '/image/v2/images/' + imageId + '/file'
-      const promise = axios.put(url, this.image, config)
+      const promise = axios.put(url, body, config)
         .then(response => {
           console.log(response)
           // XXX Not sure if this belongs here...
