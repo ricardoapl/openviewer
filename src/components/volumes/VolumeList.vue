@@ -16,8 +16,7 @@
           is="volume-list-item"
           v-for="volume in volumes"
           v-bind:key="volume.id"
-          v-bind:volume="volume"
-          >
+          v-bind:volume="volume">
         </tr>
       </tbody>
     </table>

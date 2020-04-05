@@ -29,7 +29,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'VolumeListItemActions',
   props: {
@@ -42,10 +41,11 @@ export default {
   },
   methods: {
     editVolume: function () {
-      console.log('[editVolume()] => Called on VolumeListItemActions for volume ' + this.volume.id)
+      console.log('[EDIT-VOLUME] => ' + this.volume.id)
+      this.$store.commit('volumes/setvolumeToEdit', this.volume)
     },
     deleteVolume: function () {
-      console.log('[deleteVolume()] => Called on VolumeListItemActions for volume ' + this.volume.id)
+      console.log('[DELETE-VOLUME] => ' + this.volume.id)
       // eslint-disable-next-line no-undef
       axios.delete('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/volumes/' + this.volume.id)
         .then(response => {
@@ -54,7 +54,7 @@ export default {
           this.$store.dispatch('volumes/getVolumes')
         })
         .catch(error => {
-          console.log('[deleteVolume()] =>' + error.response.data.badRequest.message)
+          console.log('[DELETE-VOLUME] =>' + error.response.data.badRequest.message)
         })
     }
   }
