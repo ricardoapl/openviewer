@@ -50,7 +50,7 @@ export default {
       axios.delete('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/volumes/' + this.volume.id)
         .then(response => {
           console.log(response)
-          // XXX Actions are async, and as such the InstanceList will update before the instance is removed
+          // XXX Actions are async, and as such the VolumeList will update before the volume is removed
           this.$store.dispatch('volumes/getVolumes')
         })
         .catch(error => {
