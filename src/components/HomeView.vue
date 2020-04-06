@@ -3,7 +3,7 @@
     <div class="jumbotron jumbotron-fluid text-center">
       <div class="container">
         <h1 class="display-4">Dashboard</h1>
-        <p>Summary of all services running on your "bla ba lba" project</p>
+        <p>Summary of all services running on your <u><strong><em>{{currentProject}}</em></strong></u> project</p>
       </div>
     </div>
     <div class="container">
@@ -17,9 +17,9 @@
                 </svg>
                 <p class="mt-2 lead">Instances</p>
             </div>
-              <p class="display-1">10</p>
+              <p class="display-1 d-inline">{{animateInstance}}</p>
               <p class="card-text ">The number of instances running on this project.</p>
-              <a href="#" class="btn btn-primary">See Instances</a>
+              <button class="btn btn-primary" @click="$router.push('Instances')">See Instances</button>
             </div>
           </div>
         </div>
@@ -32,9 +32,9 @@
                 </svg>
                 <p class="mt-2 lead">Images</p>
             </div>
-              <p class="display-1">10</p>
-              <p class="card-text ">The number of Imagens upload on this project.</p>
-              <a href="#" class="btn btn-success">See Images</a>
+              <p class="display-1 d-inline">{{animateImages}}</p>
+              <p class="card-text ">The number of images uploaded on this project.</p>
+              <button class="btn btn-success" @click="$router.push('Images')">See Images</button>
             </div>
           </div>
         </div>
@@ -49,11 +49,10 @@
                 <p class="mt-2 lead">Volumes</p>
             </div>
               <div>
-                <span class="display-1 d-inline">10</span>
-                <span class="text-muted d-inline"> GB</span>
+                <span class="display-1">{{ animateVolumes }}</span>
               </div>
-              <p class="card-text ">The number of volumes used on this project.</p>
-              <a href="#" class="btn btn-warning">See Volumes</a>
+              <p class="card-text ">The number of volumes created on this project.</p>
+              <button class="btn btn-warning text-light" @click="$router.push('Volumes')">See Volumes</button>
             </div>
           </div>
         </div>
@@ -67,10 +66,81 @@
                   </svg>
                   <p class="mt-2 lead">Volumes Size</p>
               </div>
-                <p class="display-1">10</p>
+                <p class="display-1 d-inline">{{ animateVolumeSize }}</p>
+                <span class="text-muted d-inline"> GB</span>
                 <p class="card-text ">The total volumes size used in this project.</p>
-                <a href="#" class="btn btn-danger">See Volumes</a>
+                <button class="btn btn-danger" @click="$router.push('Volumes')">See Volumes</button>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-sm">
+          <div class="card text-center">
+            <div class="card-body">
+              <div class="mt-2">
+                <svg class="bi bi-bullseye text-info" width="3.5em" height="3.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd" d="M8 13A5 5 0 108 3a5 5 0 000 10zm0 1A6 6 0 108 2a6 6 0 000 12z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd" d="M8 11a3 3 0 100-6 3 3 0 000 6zm0 1a4 4 0 100-8 4 4 0 000 8z" clip-rule="evenodd"/>
+                  <path d="M9.5 8a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+                </svg>
+                <p class="mt-2 lead">vCPUs</p>
+              </div>
+                <p class="display-1 d-inline">{{ animateVcpu }}</p>
+                <p class="card-text ">The total vCPUs used in this project.</p>
+                <button class="btn btn-info" @click="$router.push('Instances')">See Instances</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card text-center">
+            <div class="card-body">
+              <div class="mt-2">
+                <svg class="bi bi-geo" width="3.5em" height="3.5em" viewBox="0 0 16 16" fill="#20c997" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11 4a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path d="M7.5 4h1v9a.5.5 0 01-1 0V4z"/>
+                  <path fill-rule="evenodd" d="M6.489 12.095a.5.5 0 01-.383.594c-.565.123-1.003.292-1.286.472-.302.192-.32.321-.32.339 0 .013.005.085.146.21.14.124.372.26.701.382.655.246 1.593.408 2.653.408s1.998-.162 2.653-.408c.329-.123.56-.258.701-.382.14-.125.146-.197.146-.21 0-.018-.018-.147-.32-.339-.283-.18-.721-.35-1.286-.472a.5.5 0 11.212-.977c.63.137 1.193.34 1.61.606.4.253.784.645.784 1.182 0 .402-.219.724-.483.958-.264.235-.618.423-1.013.57-.793.298-1.855.472-3.004.472s-2.21-.174-3.004-.471c-.395-.148-.749-.336-1.013-.571-.264-.234-.483-.556-.483-.958 0-.537.384-.929.783-1.182.418-.266.98-.47 1.611-.606a.5.5 0 01.595.383z" clip-rule="evenodd"/>
+                </svg>
+                <p class="mt-2 lead">Floating IPs</p>
+              </div>
+                <p class="display-1 d-inline">{{ animateFloatingIp }}</p>
+                <p class="card-text ">The total floating IPs used in this project.</p>
+                <button class="btn text-light" style="background-color:#20c997" @click="$router.push('Instances')">See Instances</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card text-center">
+            <div class="card-body">
+              <div class="mt-2">
+                <svg class="bi bi-grid-3x3-gap-fill" width="3.5em" height="3.5em" viewBox="0 0 16 16" fill="#fd7e14" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H2a1 1 0 01-1-1V2zm5 0a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H7a1 1 0 01-1-1V2zm5 0a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1V2zM1 7a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H2a1 1 0 01-1-1V7zm5 0a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H7a1 1 0 01-1-1V7zm5 0a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1V7zM1 12a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H2a1 1 0 01-1-1v-2zm5 0a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H7a1 1 0 01-1-1v-2zm5 0a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2z"/>
+                </svg>
+                <p class="mt-2 lead">RAM</p>
+              </div>
+                <p class="display-1 d-inline">{{ animateRam }}</p>
+                <span class="text-muted d-inline"> MB</span>
+                <p class="card-text ">The total RAM size used in this project.</p>
+                <button class="btn text-light" style="background-color:#fd7e14" @click="$router.push('Instances')">See Instances</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card text-center">
+            <div class="card-body">
+              <div class="mt-2">
+               <svg class="bi bi-camera" width="3.5em" height="3.5em" viewBox="0 0 16 16" fill="#e83e8c" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 5C7.343 5 5 6.343 5 8a4 4 0 014-4v1z"/>
+                  <path fill-rule="evenodd" d="M14.333 3h-2.015A5.97 5.97 0 009 2a5.972 5.972 0 00-3.318 1H1.667C.747 3 0 3.746 0 4.667v6.666C0 12.253.746 13 1.667 13h4.015c.95.632 2.091 1 3.318 1a5.973 5.973 0 003.318-1h2.015c.92 0 1.667-.746 1.667-1.667V4.667C16 3.747 15.254 3 14.333 3zM1.5 5a.5.5 0 100-1 .5.5 0 000 1zM9 13A5 5 0 109 3a5 5 0 000 10z" clip-rule="evenodd"/>
+                  <path d="M2 3a1 1 0 011-1h1a1 1 0 010 2H3a1 1 0 01-1-1z"/>
+                </svg>
+                <p class="mt-2 lead">Snapshots</p>
+              </div>
+                <p class="display-1 d-inline">{{ animateSnapshots }}</p>
+                <p class="card-text ">The total snapshots taken in this project.</p>
+                <button class="btn text-light" style="background-color:#e83e8c" @click="$router.push('Volumes')">See Volumes</button>
             </div>
           </div>
         </div>
@@ -78,3 +148,94 @@
     </div>
   </div>
 </template>
+
+<script>
+/* eslint-disable no-undef */
+import { mapActions } from 'vuex'
+export default {
+  name: 'HomeView',
+  data () {
+    return {
+      instances: 0,
+      tweenedInstances: 0,
+      tweenedImages: 0,
+      volumes: 0,
+      tweenedVolumes: 0,
+      volumesSize: 0,
+      tweenedVolumesSize: 0,
+      vcpus: 0,
+      tweenedVcpus: 0,
+      ram: 0,
+      tweenedRam: 0,
+      floatingIps: 0,
+      tweenedFloatingIps: 0,
+      snapshots: 0,
+      tweenedSnapshots: 0
+    }
+  },
+  mounted () {
+    this.getImages()
+    this.getVolumeLimits()
+    this.getComputeLimits()
+  },
+  computed: {
+    images: function () { return this.$store.state.images.totalImages },
+    animateInstance: function () { return this.tweenedInstances.toFixed(0) },
+    animateImages: function () { return this.tweenedImages.toFixed(0) },
+    animateVolumes: function () { return this.tweenedVolumes.toFixed(0) },
+    animateVolumeSize: function () { return this.tweenedVolumesSize.toFixed(0) },
+    animateVcpu: function () { return this.tweenedVcpus.toFixed(0) },
+    animateRam: function () { return this.tweenedRam.toFixed(0) },
+    animateFloatingIp: function () { return this.tweenedFloatingIps.toFixed(0) },
+    animateSnapshots: function () { return this.tweenedSnapshots.toFixed(0) },
+    // XXX This computed cunction is duplicated in App.vue. Consider put only one function globally in vuex getters...
+    currentProject: function () {
+      return this.$store.state.authentication.projects != null
+        ? this.$store.state.authentication.projects.find(o => o.id === this.$store.state.authentication.idSelectedProject).name
+        : ''
+    }
+  },
+  methods: {
+    // XXX Consider removing action mapping in favor of this.$store...
+    ...mapActions({
+      getImages: 'images/getImages'
+    }),
+    getVolumeLimits: function () {
+      axios.get('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/limits')
+        .then(response => {
+          console.log('[VOLUME LIMITS] =>', response)
+          this.volumes = response.data.limits.absolute.totalVolumesUsed
+          this.volumesSize = response.data.limits.absolute.totalGigabytesUsed
+          this.snapshots = response.data.limits.absolute.totalSnapshotsUsed
+        })
+        .catch(error => {
+          console.log('[VOLUME LIMITS] =>', error.response)
+        })
+    },
+    getComputeLimits: function () {
+      axios.get('/compute/v2.1/limits')
+        .then(response => {
+          console.log('[COMPUTE LIMITS] =>', response)
+          this.instances = response.data.limits.absolute.totalInstancesUsed
+          this.vcpus = response.data.limits.absolute.totalCoresUsed
+          this.ram = response.data.limits.absolute.totalRAMUsed
+          this.floatingIps = response.data.limits.absolute.totalFloatingIpsUsed
+          console.log(response.data.limits.absolute.totalSnapshotsUsed)
+        })
+        .catch(error => {
+          console.log('[COMPUTE LIMITS] =>', error.response)
+        })
+    }
+  },
+  watch: {
+    instances: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedInstances: newValue }) },
+    images: function (newValue, oldValue) { gsap.to(this.$data, { duration: 2, tweenedImages: newValue }) },
+    volumes: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedVolumes: newValue }) },
+    volumesSize: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedVolumesSize: newValue }) },
+    vcpus: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedVcpus: newValue }) },
+    ram: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedRam: newValue }) },
+    floatingIps: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedFloatingIps: newValue }) },
+    snapshots: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedSnapshots: newValue }) }
+  }
+}
+</script>

@@ -107,7 +107,6 @@ export default {
       if (this.volume.id) {
         this.editVolume()
         this.extendVolume()
-        this.$emit('hide')
       } else {
         this.createVolume()
       }
