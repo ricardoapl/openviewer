@@ -26,6 +26,11 @@
           <li class="nav-item">
             <router-link :to="{ name: 'Instances'}" class="nav-link">Instances</router-link>
           </li>
+          <!-- XXX All availability components could be gathered in a dropdown menu -->
+          <!-- XXX Segments are only accessible to 'admin' -->
+          <li class="nav-item">
+            <router-link :to="{ name: 'Segments'}" class="nav-link">Segments</router-link>
+          </li>
           <li class="nav-item">
             <router-link :to="{ name: 'Images'}" class="nav-link">Images</router-link>
           </li>
@@ -99,7 +104,7 @@
         <p class="list-unstyled mt-0">
           <small>
             Created by:
-             <a href="mailto:2171496@my.ipleiria.pt">João Godinho</a> /
+            <a href="mailto:2171496@my.ipleiria.pt">João Godinho</a> /
             <a href="mailto:2171499@my.ipleiria.pt">Ricardo Lopes</a>
           </small>
         </p>

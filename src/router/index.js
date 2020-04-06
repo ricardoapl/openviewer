@@ -59,6 +59,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/segments',
+    name: 'Segments',
+    component: () => import('../components/availability/segments/SegmentView.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

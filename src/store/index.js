@@ -4,6 +4,7 @@ import authentication from './modules/authentication'
 import images from './modules/images'
 import instances from './modules/instances'
 import volumes from './modules/volumes'
+import segments from './modules/availability/segments'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     authentication,
     images,
     instances,
-    volumes
+    volumes,
+    segments
   }
 })
