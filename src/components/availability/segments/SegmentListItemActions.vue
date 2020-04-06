@@ -22,14 +22,23 @@ export default {
     segment: Object
   },
   mounted () {
-    console.log('SegmentListItemActions created and mounted for segment with id ' + this.segment.id)
+    console.log('SegmentListItemActions created and mounted for segment with uuid ' + this.segment.uuid)
     // XXX We may want to get rid of this jQuery voodoo in the future...
     $(function () { $('[data-toggle="tooltip"]').tooltip() })
   },
   methods: {
     deleteSegment: function () {
-      // TODO Masakari - Delete segment
-      console.log('deleteSegment() called on SegmentListItemActions for segment with id ' + this.segment.id)
+      console.log('deleteSegment() called on SegmentListItemActions for segment with uuid ' + this.segment.uuid)
+      const url = '/instance-ha/v1/67862ce1fffa4afa80ad612f1e889c26/segments/' + this.segment.uuid
+      axios.delete(url)
+        .then(response => {
+          console.log(response)
+          const action = 'segments/getSegments'
+          this.$store.dispatch(action)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
