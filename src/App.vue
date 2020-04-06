@@ -31,6 +31,10 @@
           <li class="nav-item">
             <router-link :to="{ name: 'Segments'}" class="nav-link">Segments</router-link>
           </li>
+          <!-- XXX Notifications are only accessible to 'admin' -->
+          <li class="nav-item">
+            <router-link :to="{ name: 'Notifications'}" class="nav-link">Notifications</router-link>
+          </li>
           <li class="nav-item">
             <router-link :to="{ name: 'Images'}" class="nav-link">Images</router-link>
           </li>

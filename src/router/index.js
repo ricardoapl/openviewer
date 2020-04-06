@@ -61,9 +61,19 @@ const routes = [
     }
   },
   {
+    // XXX Only for "admin"
     path: '/segments',
     name: 'Segments',
     component: () => import('../components/availability/segments/SegmentView.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    // XXX Only for "admin"
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('../components/availability/notifications/NotificationView.vue'),
     meta: {
       requiresAuth: true
     }
