@@ -4,7 +4,7 @@
     <td>{{ segment.uuid }}</td>
     <td>{{ segment.recovery_method }}</td>
     <td>{{ segment.service_type }}</td>
-    <td>{{ segment.descripton }}</td>
+    <td>{{ segment.description }}</td>
     <td>
       <segment-list-item-actions
         v-bind:segment="segment">
