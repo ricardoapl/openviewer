@@ -61,7 +61,7 @@ export default {
       return this.$store.state.instances.networks
     },
     images () {
-      return this.$store.state.instances.images
+      return this.$store.state.images.images
     }
   },
   mounted () {
