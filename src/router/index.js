@@ -61,6 +61,14 @@ const routes = [
     }
   },
   {
+    path: '/floatingips',
+    name: 'FloatingIPs',
+    component: () => import('../components/networks/floatingips/FloatingIpView.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     // XXX Only for "admin"
     path: '/segments',
     name: 'Segments',

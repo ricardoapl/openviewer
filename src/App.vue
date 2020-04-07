@@ -26,6 +26,15 @@
           <li class="nav-item">
             <router-link :to="{ name: 'Instances'}" class="nav-link">Instances</router-link>
           </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'Images'}" class="nav-link">Images</router-link>
+          </li>
+           <li class="nav-item">
+            <router-link :to="{ name: 'Volumes'}" class="nav-link">Volumes</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'FloatingIPs'}" class="nav-link">Floating IPs</router-link>
+          </li>
           <!-- XXX All availability components could be gathered in a dropdown menu -->
           <!-- XXX Segments are only accessible to 'admin' -->
           <li class="nav-item">
@@ -34,12 +43,6 @@
           <!-- XXX Notifications are only accessible to 'admin' -->
           <li class="nav-item">
             <router-link :to="{ name: 'Notifications'}" class="nav-link">Notifications</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{ name: 'Images'}" class="nav-link">Images</router-link>
-          </li>
-           <li class="nav-item">
-            <router-link :to="{ name: 'Volumes'}" class="nav-link">Volumes</router-link>
           </li>
           <li class="nav-item dropdown">
             <a
