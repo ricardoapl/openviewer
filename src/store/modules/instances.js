@@ -1,7 +1,6 @@
 const state = {
   servers: {},
-  flavors: {},
-  networks: []
+  flavors: {}
 }
 
 const mutations = {
@@ -10,9 +9,6 @@ const mutations = {
   },
   setFlavors: (state, flavors) => {
     state.flavors = flavors
-  },
-  setNetworks: (state, networks) => {
-    state.networks = networks
   }
 }
 
@@ -32,18 +28,6 @@ const actions = {
       .then(response => {
         console.log(response)
         commit('setFlavors', response.data.flavors)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  },
-  getNetworks ({ commit }) {
-    // XXX Get URL by parsing this.$store.state.authentication.openstackAddress
-    const url = 'http://127.0.0.1:9696/v2.0/networks'
-    axios.get(url)
-      .then(response => {
-        console.log(response)
-        commit('setNetworks', response.data.networks)
       })
       .catch(error => {
         console.log(error)

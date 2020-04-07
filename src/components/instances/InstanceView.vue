@@ -45,7 +45,7 @@ export default {
     // XXX Consider removing action mapping in favor of this.$store...
     ...mapActions({
       getFlavors: 'instances/getFlavors',
-      getNetworks: 'instances/getNetworks',
+      getNetworks: 'networks/getNetworks',
       getImages: 'images/getImages'
     })
   }

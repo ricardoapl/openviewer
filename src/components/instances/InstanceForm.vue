@@ -58,7 +58,7 @@ export default {
       return this.$store.state.instances.flavors
     },
     networks () {
-      return this.$store.state.instances.networks
+      return this.$store.state.networks.networks
     },
     images () {
       return this.$store.state.images.images

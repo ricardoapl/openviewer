@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import authentication from './modules/authentication'
 import images from './modules/images'
 import instances from './modules/instances'
+import networks from './modules/networks'
 import volumes from './modules/volumes'
 import segments from './modules/availability/segments'
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     authentication,
     images,
     instances,
+    networks,
     volumes,
     segments
   }
