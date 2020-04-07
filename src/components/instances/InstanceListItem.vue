@@ -3,13 +3,13 @@
   <tr>
     <td>{{ server.name }}</td>
     <td>
-      <!-- XXX There must be an easier way to retrieve the image name -->
+      <!-- XXX This whole template "thingy" could be placed in a computed method -->
       <template v-for="image in images">
           {{ image.id == server.image.id ? image.name : '' }}
       </template>
     </td>
     <td>
-      <!-- XXX There must be an easier way to retrieve the network address -->
+      <!-- XXX This whole template "thingy" could be placed in a computed method -->
       <!-- XXX We may want to rename the following variables though -->
       <template v-for="network in server.addresses">
         <template v-for="address in network">
@@ -18,7 +18,7 @@
       </template>
     </td>
     <td>
-      <!-- XXX There must be an easier way to retrieve the flavor name -->
+      <!-- XXX This whole template "thingy" could be placed in a computed method -->
       <template v-for="flavor in flavors">
         {{ flavor.id == server.flavor.id ? flavor.name : '' }}
       </template>
