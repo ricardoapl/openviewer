@@ -1,8 +1,7 @@
 const state = {
   servers: {},
   flavors: {},
-  networks: [],
-  images: []
+  networks: []
 }
 
 const mutations = {
@@ -14,9 +13,6 @@ const mutations = {
   },
   setNetworks: (state, networks) => {
     state.networks = networks
-  },
-  setImages: (state, images) => {
-    state.images = images
   }
 }
 
@@ -48,17 +44,6 @@ const actions = {
       .then(response => {
         console.log(response)
         commit('setNetworks', response.data.networks)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  },
-  getImages ({ commit }) {
-    // XXX Duplicate from ../images.js
-    axios.get('/image/v2/images')
-      .then(response => {
-        console.log(response)
-        commit('setImages', response.data.images)
       })
       .catch(error => {
         console.log(error)

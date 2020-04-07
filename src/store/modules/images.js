@@ -1,11 +1,9 @@
 const state = {
-  // XXX Duplicate from ../instances.js
   images: [],
   totalImages: 0
 }
 
 const mutations = {
-  // XXX Duplicate from ../instances.js
   setImages: (state, images) => {
     state.images = images
   },
@@ -17,7 +15,6 @@ const mutations = {
 }
 
 const actions = {
-  // XXX Duplicate from ../instances.js
   getImages ({ commit }) {
     // eslint-disable-next-line no-undef
     axios.get('/image/v2/images')

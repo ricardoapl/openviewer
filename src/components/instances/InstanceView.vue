@@ -46,7 +46,7 @@ export default {
     ...mapActions({
       getFlavors: 'instances/getFlavors',
       getNetworks: 'instances/getNetworks',
-      getImages: 'instances/getImages'
+      getImages: 'images/getImages'
     })
   }
 }
