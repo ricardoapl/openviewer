@@ -16,6 +16,7 @@
               <label for="description">Description</label>
               <input type="text" class="form-control" id="description" v-model="description"/>
             </div>
+            <!-- XXX May want to use different variable names here -->
             <div class="form-group col-md-6">
               <label for="pool">Pool</label>
               <select class="custom-select" id="pool" v-model="poolNetwork">
@@ -60,6 +61,7 @@ export default {
   },
   methods: {
     // XXX Maybe this should be in computed section
+    // XXX Use more idiomatic JavaScript
     getPoolName (poolNetworkId) {
       let poolName = ''
       const len = this.networks.length
