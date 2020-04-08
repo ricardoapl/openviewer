@@ -18,7 +18,7 @@
           v-bind:floatingip="floatingip">
         </btn>
         <btn
-          is="floating-ip-list-item-button-delete"
+          is="floating-ip-list-item-button-release"
           v-bind:floatingip="floatingip">
         </btn>
       </div>
@@ -28,12 +28,12 @@
 
 <script>
 import FloatingIpListItemButtonAssociate from './FloatingIpListItemButtonAssociate'
-import FloatingIpListItemButtonDelete from './FloatingIpListItemButtonDelete'
+import FloatingIpListItemButtonRelease from './FloatingIpListItemButtonRelease'
 export default {
   name: 'FloatingIpListItem',
   components: {
     FloatingIpListItemButtonAssociate,
-    FloatingIpListItemButtonDelete
+    FloatingIpListItemButtonRelease
   },
   props: {
     floatingip: Object
