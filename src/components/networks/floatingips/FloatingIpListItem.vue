@@ -5,8 +5,8 @@
     <td>{{ floatingip.fixed_ip_address }}</td>
     <td>
       <!-- XXX This whole template "thingy" could be placed in a computed method -->
-      <template v-for="pool in floatingPools">
-        {{ pool.network_id == floatingip.floating_network_id ? pool.subnet_name : '' }}
+      <template v-for="network in networks">
+        {{ network.id === floatingip.floating_network_id ? network.name : '' }}
       </template>
     </td>
     <td>{{ floatingip.status }}</td>
@@ -39,8 +39,8 @@ export default {
     floatingip: Object
   },
   computed: {
-    floatingPools () {
-      return this.$store.state.networks.floatingPools
+    networks () {
+      return this.$store.state.networks.networks
     }
   },
   mounted () {
