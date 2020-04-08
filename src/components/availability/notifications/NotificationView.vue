@@ -6,16 +6,30 @@
         <p>In this page you can see all of your notifications.</p>
       </div>
     </div>
+    <notification-details-list
+      v-if="showDetails"
+      v-bind:details="details">
+    </notification-details-list>
     <notification-list></notification-list>
   </div>
 </template>
 
 <script>
 import NotificationList from './NotificationList'
+import NotificationDetailsList from './NotificationDetailsList'
 export default {
   name: 'NotificationView',
   components: {
-    NotificationList
+    NotificationList,
+    NotificationDetailsList
+  },
+  computed: {
+    details () {
+      return this.$store.state.notifications.details
+    },
+    showDetails () {
+      return this.details !== null
+    }
   },
   mounted () {
     console.log('NotificationView created and mounted')

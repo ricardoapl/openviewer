@@ -5,17 +5,26 @@
     <td>{{ notification.type }}</td>
     <td>{{ notification.status }}</td>
     <td>{{ notification.payload }}</td>
+    <td>
+      <notification-list-item-button-show-details
+        v-bind:notification="notification">
+      </notification-list-item-button-show-details>
+    </td>
   </tr>
 </template>
 
 <script>
+import NotificationListItemButtonShowDetails from './NotificationListItemButtonShowDetails'
 export default {
   name: 'NotificationListItem',
+  components: {
+    NotificationListItemButtonShowDetails
+  },
   props: {
     notification: Object
   },
   mounted () {
-    console.log('NotificationListItem created and mounted for notification with id ' + this.notification.id)
+    console.log('NotificationListItem created and mounted for notification with id ' + this.notification.notification_uuid)
   }
 }
 </script>

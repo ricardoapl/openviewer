@@ -5,6 +5,7 @@ import images from './modules/images'
 import instances from './modules/instances'
 import networks from './modules/networks'
 import volumes from './modules/volumes'
+import notifications from './modules/availability/notifications'
 import segments from './modules/availability/segments'
 
 Vue.use(Vuex)
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     instances,
     networks,
     volumes,
+    notifications,
     segments
   }
 })
