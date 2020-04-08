@@ -37,6 +37,7 @@ export default {
   },
   mounted () {
     console.log('InstanceView created and mounted')
+    this.getKeypairs()
     this.getFlavors()
     this.getNetworks()
     this.getImages()
@@ -44,6 +45,7 @@ export default {
   methods: {
     // XXX Consider removing action mapping in favor of this.$store...
     ...mapActions({
+      getKeypairs: 'instances/getKeypairs',
       getFlavors: 'instances/getFlavors',
       getNetworks: 'networks/getNetworks',
       getImages: 'images/getImages'

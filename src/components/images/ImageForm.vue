@@ -35,8 +35,7 @@
         </div>
         <div class="card-footer text-center">
           <button type="submit" class="btn btn-success mr-2">Save Image</button>
-          <!-- XXX Don't submit on Cancel -->
-          <button class="btn btn-secondary">Cancel</button>
+          <button type="button" class="btn btn-secondary" v-on:click="$emit('hide')">Cancel</button>
         </div>
       </form>
     </div>
