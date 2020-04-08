@@ -12,12 +12,12 @@
       >
         <div class="card-body">
           <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="description">Description</label>
               <input type="text" class="form-control" id="description" v-model="description"/>
             </div>
             <!-- XXX May want to use different variable names here -->
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="pool">Pool</label>
               <select class="custom-select" id="pool" v-model="poolNetwork">
                 <option
@@ -25,6 +25,18 @@
                   v-bind:key="pool.network_id"
                   v-bind:value="pool.network_id"
                   >{{ getPoolName(pool.network_id) }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="port">Port</label>
+              <!-- XXX Create computed property -->
+              <select class="custom-select" id="port" v-model="portId">
+                <option
+                  v-for="port in ports"
+                  v-bind:key="port.id"
+                  v-bind:value="port.id"
+                  >{{ port.fixed_ips[0].ip_address }}
                 </option>
               </select>
             </div>
@@ -45,7 +57,8 @@ export default {
   data () {
     return {
       description: '',
-      poolNetwork: ''
+      poolNetwork: '',
+      portId: ''
     }
   },
   computed: {
@@ -54,6 +67,9 @@ export default {
     },
     networks () {
       return this.$store.state.networks.networks
+    },
+    ports () {
+      return this.$store.state.networks.ports
     }
   },
   mounted () {
@@ -79,6 +95,7 @@ export default {
       const body = {
         floatingip: {
           floating_network_id: this.poolNetwork,
+          port_id: this.portId,
           description: this.description
         }
       }

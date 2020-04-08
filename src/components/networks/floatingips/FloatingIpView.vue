@@ -36,11 +36,13 @@ export default {
   },
   mounted () {
     console.log('FloatingIpView created and mounted')
+    this.getPorts()
     this.getNetworks()
     this.getFloatingPools()
   },
   methods: {
     ...mapActions({
+      getPorts: 'networks/getPorts',
       getNetworks: 'networks/getNetworks',
       getFloatingPools: 'networks/getFloatingPools'
     })

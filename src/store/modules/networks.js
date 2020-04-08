@@ -1,10 +1,14 @@
 const state = {
+  ports: [],
   networks: [],
   floatingIps: [],
   floatingPools: []
 }
 
 const mutations = {
+  setPorts: (state, ports) => {
+    state.ports = ports
+  },
   setNetworks: (state, networks) => {
     state.networks = networks
   },
@@ -17,6 +21,19 @@ const mutations = {
 }
 
 const actions = {
+  getPorts ({ commit }) {
+    // XXX Get URL by parsing this.$store.state.authentication.openstackAddress and placing it into networks state
+    const url = 'http://127.0.0.1:9696/v2.0/ports'
+    axios.get(url)
+      .then(response => {
+        console.log(response)
+        const mutation = 'setPorts'
+        commit(mutation, response.data.ports)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
   getNetworks ({ commit }) {
     // XXX Get URL by parsing this.$store.state.authentication.openstackAddress and placing it into networks state
     const url = 'http://127.0.0.1:9696/v2.0/networks'
