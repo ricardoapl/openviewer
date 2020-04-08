@@ -7,31 +7,31 @@
       </div>
       <form
         v-on:submit.prevent="submitForm()"
-        action="/image/v2/images"
+        action="http://127.0.0.1:9696/v2.0/floatingips"
         method="POST"
       >
         <div class="card-body">
           <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="name">Image Name</label>
-              <input type="text" class="form-control" id="name" v-model="name"/>
+            <div class="form-group col-md-6">
+              <label for="description">Description</label>
+              <input type="text" class="form-control" id="description" v-model="description"/>
             </div>
-            <div class="form-group col-md-4">
-              <label for="format">Format</label>
-              <select class="custom-select" id="format" v-model="formatRef">
+            <div class="form-group col-md-6">
+              <label for="pool">Pool</label>
+              <select class="custom-select" id="pool" v-model="poolNetwork">
                 <option
-                  v-for="format in formats"
-                  v-bind:key="format.id"
-                  v-bind:value="format.id"
-                  >{{ format.name }}
+                  v-for="pool in pools"
+                  v-bind:key="pool.network_id"
+                  v-bind:value="pool.network_id"
+                  >{{ getPoolName(pool.network_id) }}
                 </option>
               </select>
             </div>
           </div>
         </div>
         <div class="card-footer text-center">
-          <button type="submit" class="btn btn-success mr-2">Save Image</button>
-          <button type="button" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-success mr-2">Allocate IP</button>
+          <button type="button" class="btn btn-secondary" v-on:click="$emit('hide')">Cancel</button>
         </div>
       </form>
     </div>
@@ -43,49 +43,49 @@ export default {
   name: 'FloatingIpForm',
   data () {
     return {
-      name: '',
-      containerFormat: 'bare',
-      file: null,
-      formatRef: '',
-      // XXX The following array should be obtained from OpenStack, i.e., not hardcoded
-      formats: [
-        { id: 'ami', name: 'AMI - Amazon Machine Image' },
-        { id: 'ari', name: 'ARI - Amazon Ramdisk Image' },
-        { id: 'aki', name: 'AKI - Amazon Kernel Image' },
-        { id: 'vhd', name: 'Virtual Hard Disk' },
-        { id: 'vmdk', name: 'Virtual Machine Disk' },
-        { id: 'raw', name: 'Raw' },
-        { id: 'qcow2', name: 'QCOW2 - QEMU Emulator' },
-        { id: 'vdi', name: 'Virtual Disk Image' },
-        { id: 'iso', name: 'Optical Disk Image' }
-      ]
+      description: '',
+      poolNetwork: ''
+    }
+  },
+  computed: {
+    pools () {
+      return this.$store.state.networks.floatingPools
+    },
+    networks () {
+      return this.$store.state.networks.networks
     }
   },
   mounted () {
     console.log('FloatingIpForm created and mounted')
   },
   methods: {
-    createImage: function () {
-      const body = {
-        container_format: this.containerFormat,
-        disk_format: this.formatRef,
-        name: this.name
+    // XXX Maybe this should be in computed section
+    getPoolName (poolNetworkId) {
+      let poolName = ''
+      const len = this.networks.length
+      for (let idx = 0; idx < len; idx++) {
+        const network = this.networks[idx]
+        if (poolNetworkId === network.id) {
+          poolName = network.name
+          break
+        }
       }
-      const url = '/image/v2/images'
-      const promise = axios.post(url, body)
-        .then(response => {
-          console.log(response)
-          return response.data.id
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      return promise
+      return poolName
     },
     submitForm: function () {
-      this.createImage()
-        .then(imageId => {
-          this.uploadImage(imageId)
+      const url = 'http://127.0.0.1:9696/v2.0/floatingips'
+      const body = {
+        floatingip: {
+          floating_network_id: this.poolNetwork,
+          description: this.description
+        }
+      }
+      axios.post(url, body)
+        .then(response => {
+          console.log(response)
+          const action = 'networks/getFloatingIps'
+          this.$store.dispatch(action)
+          this.$emit('hide')
         })
         .catch(error => {
           console.log(error)
