@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td>{{ floatingip.floating_ip_address }}</td>
-    <td>{{ floatingip.description }}</td>
+    <td>{{ floatingip.description || '-' }}</td>
     <td>{{ floatingip.fixed_ip_address }}</td>
     <td>
       <!-- XXX This whole template "thingy" could be placed in a computed method -->
