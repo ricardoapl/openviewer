@@ -24,7 +24,7 @@ export default {
     segment: Object
   },
   mounted () {
-    console.log('SegmentListItem created and mounted for segment with id ' + this.segment.id)
+    console.log('SegmentListItem created and mounted for segment with id ' + this.segment.uuid)
   }
 }
 </script>

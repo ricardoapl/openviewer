@@ -15,7 +15,7 @@
         <tr
           is="segment-list-item"
           v-for="segment in segments"
-          v-bind:key="segment.id"
+          v-bind:key="segment.uuid"
           v-bind:segment="segment"
           >
         </tr>
