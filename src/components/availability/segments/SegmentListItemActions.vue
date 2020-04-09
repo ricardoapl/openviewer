@@ -29,7 +29,8 @@ export default {
   methods: {
     deleteSegment: function () {
       console.log('deleteSegment() called on SegmentListItemActions for segment with uuid ' + this.segment.uuid)
-      const url = '/instance-ha/v1/67862ce1fffa4afa80ad612f1e889c26/segments/' + this.segment.uuid
+      const projectId = this.$store.state.authentication.idSelectedProject
+      const url = '/instance-ha/v1/' + projectId + '/segments/' + this.segment.uuid
       axios.delete(url)
         .then(response => {
           console.log(response)

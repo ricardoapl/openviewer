@@ -64,11 +64,12 @@ export default {
     }
   },
   mounted () {
-    console.log('ImageForm created and mounted')
+    console.log('SegmentForm created and mounted')
   },
   methods: {
     submitForm: function () {
-      const url = '/instance-ha/v1/67862ce1fffa4afa80ad612f1e889c26/segments'
+      const projectId = this.$store.state.authentication.idSelectedProject
+      const url = '/instance-ha/v1/' + projectId + '/segments'
       const body = {
         segment: this.segment
       }

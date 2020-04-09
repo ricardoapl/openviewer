@@ -9,12 +9,14 @@ const mutations = {
 }
 
 const actions = {
-  getSegments ({ commit }) {
-    const url = '/instance-ha/v1/67862ce1fffa4afa80ad612f1e889c26/segments'
+  getSegments ({ commit, rootState }) {
+    const projectId = rootState.authentication.idSelectedProject
+    const url = '/instance-ha/v1/' + projectId + '/segments'
     axios.get(url)
       .then(response => {
         console.log(response)
-        commit('setSegments', response.data.segments)
+        const mutation = 'setSegments'
+        commit(mutation, response.data.segments)
       })
       .catch(error => {
         console.log(error)

@@ -8,6 +8,7 @@
           <th>Type</th>
           <th>Status</th>
           <th>Payload</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -41,7 +42,8 @@ export default {
   },
   methods: {
     getNotifications: function () {
-      const url = '/instance-ha/v1/67862ce1fffa4afa80ad612f1e889c26/notifications'
+      const projectId = this.$store.state.authentication.idSelectedProject
+      const url = '/instance-ha/v1/' + projectId + '/notifications'
       axios.get(url)
         .then(response => {
           console.log(response)
