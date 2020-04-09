@@ -6,6 +6,7 @@
         <p>In this page you can see all of your notifications.</p>
       </div>
     </div>
+    <!-- XXX Rename details to notification -->
     <notification-details-list
       v-if="showDetails"
       v-bind:details="details">
@@ -24,9 +25,11 @@ export default {
     NotificationDetailsList
   },
   computed: {
+    // XXX Rename details to notification
     details () {
       return this.$store.state.notifications.details
     },
+    // XXX Rename details to notification
     showDetails () {
       return this.details !== null
     }
