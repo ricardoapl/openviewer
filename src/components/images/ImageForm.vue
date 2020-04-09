@@ -119,6 +119,10 @@ export default {
         .then(imageId => {
           this.uploadImage(imageId)
         })
+        .then(() => {
+          // XXX Not sure if this belongs here...
+          this.$emit('hide')
+        })
         .catch(error => {
           // XXX We should probably delete the image if upload fails
           console.log(error)
