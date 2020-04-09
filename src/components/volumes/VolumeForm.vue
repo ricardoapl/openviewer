@@ -90,7 +90,7 @@ export default {
     this.volumeOrigin = (this.volume.volume_image_metadata && this.volume.volume_image_metadata.image_id) ? 'image' : 'empty'
   },
   computed: {
-    images () { return this.$store.state.instances.images },
+    images () { return this.$store.state.images.images },
     types () { return this.$store.state.volumes.types },
     title () { return this.volume.id ? 'Edit Volume' : 'Create new Volume' },
     styleHeaderClass () { return this.volume.id ? 'bg-primary' : 'bg-info' },

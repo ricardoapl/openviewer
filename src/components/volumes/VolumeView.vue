@@ -49,7 +49,7 @@ export default {
   methods: {
     // XXX Consider removing action mapping in favor of this.$store...
     ...mapActions({
-      getImages: 'instances/getImages',
+      getImages: 'images/getImages',
       getTypes: 'volumes/getTypes'
     }),
     newVolume: function () {
