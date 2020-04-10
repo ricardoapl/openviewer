@@ -7,6 +7,7 @@ import networks from './modules/networks'
 import volumes from './modules/volumes'
 import notifications from './modules/availability/notifications'
 import segments from './modules/availability/segments'
+import orchestrations from './modules/orchestrations'
 
 Vue.use(Vuex)
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     networks,
     volumes,
     notifications,
-    segments
+    segments,
+    orchestrations
   }
 })

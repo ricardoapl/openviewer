@@ -98,7 +98,7 @@ export default {
   data () {
     return {
       openstackAddress: '127.0.0.1:8080',
-      name: 'demo',
+      name: 'admin',
       password: 'devstack',
       serverErrors: '',
       submitStatus: false
