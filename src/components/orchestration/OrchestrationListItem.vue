@@ -27,7 +27,8 @@ export default {
       return this.stack.stack_status.split('_')[0]
     },
     statusState () {
-      return this.stack.stack_status.split('_')[1]
+      const status = this.stack.stack_status.split('_')[1]
+      return status === 'IN' ? 'IN PROGRESS' : status
     },
     statusStyleClass: function () {
       switch (this.statusState) {
@@ -43,14 +44,10 @@ export default {
     },
     actionStyleClass: function () {
       switch (this.actionState) {
-        case 'CREATED':
-          return 'badge-success'
         case 'DELETE':
           return 'badge-danger'
         case 'SUSPEND':
-          return 'badge-warning'
-        case 'RESUME':
-          return 'badge-info'
+          return 'badge-secondary'
         default:
           return 'badge-dark'
       }
