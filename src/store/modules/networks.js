@@ -2,7 +2,8 @@ const state = {
   ports: [],
   networks: [],
   floatingIps: [],
-  floatingPools: []
+  floatingPools: [],
+  securityGroups: []
 }
 
 const mutations = {
@@ -17,6 +18,9 @@ const mutations = {
   },
   setFloatingPools: (state, floatingPools) => {
     state.floatingPools = floatingPools
+  },
+  setSecurityGroups: (state, securityGroups) => {
+    state.securityGroups = securityGroups
   }
 }
 
@@ -68,6 +72,19 @@ const actions = {
         console.log(response)
         const mutation = 'setFloatingPools'
         commit(mutation, response.data.floatingip_pools)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
+  getSecurityGroups ({ commit }) {
+    // XXX Get URL by parsing this.$store.state.authentication.openstackAddress and placing it into networks state
+    const url = 'http://127.0.0.1:9696/v2.0/security-groups'
+    axios.get(url)
+      .then(response => {
+        console.log(response)
+        const mutation = 'setSecurityGroups'
+        commit(mutation, response.data.security_groups)
       })
       .catch(error => {
         console.log(error)
