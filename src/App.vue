@@ -44,6 +44,9 @@
           <li class="nav-item">
             <router-link :to="{ name: 'Notifications'}" class="nav-link">Notifications</router-link>
           </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'Orchestrations'}" class="nav-link">Orchestrations</router-link>
+          </li>
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"

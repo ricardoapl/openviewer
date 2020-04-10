@@ -85,6 +85,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/orchestrations',
+    name: 'Orchestrations',
+    component: () => import('../components/orchestration/OrchestrationView.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
