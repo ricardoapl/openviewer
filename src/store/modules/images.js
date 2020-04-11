@@ -8,14 +8,13 @@ const mutations = {
     state.images = images
   },
   setTotalImages: (state, totalImages) => {
-    // XXX This reset is for watched variables change records, used in animation dashboard...
-    state.totalImages = 0
     state.totalImages = totalImages
   }
 }
 
 const actions = {
   getImages ({ commit }) {
+    commit('setTotalImages', 0)
     // eslint-disable-next-line no-undef
     axios.get('/image/v2/images')
       .then(response => {

@@ -107,7 +107,7 @@
               </div>
                 <p class="display-1 d-inline">{{ animateFloatingIp }}</p>
                 <p class="card-text ">The total floating IPs used in this project.</p>
-                <button class="btn text-light" style="background-color:#20c997" @click="$router.push('Instances')">See Instances</button>
+                <button class="btn text-light" style="background-color:#20c997" @click="$router.push('FloatingIPs')">See Floating IPs</button>
             </div>
           </div>
         </div>
@@ -131,16 +131,15 @@
           <div class="card text-center">
             <div class="card-body">
               <div class="mt-2">
-               <svg class="bi bi-camera" width="3.5em" height="3.5em" viewBox="0 0 16 16" fill="#e83e8c" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 5C7.343 5 5 6.343 5 8a4 4 0 014-4v1z"/>
-                  <path fill-rule="evenodd" d="M14.333 3h-2.015A5.97 5.97 0 009 2a5.972 5.972 0 00-3.318 1H1.667C.747 3 0 3.746 0 4.667v6.666C0 12.253.746 13 1.667 13h4.015c.95.632 2.091 1 3.318 1a5.973 5.973 0 003.318-1h2.015c.92 0 1.667-.746 1.667-1.667V4.667C16 3.747 15.254 3 14.333 3zM1.5 5a.5.5 0 100-1 .5.5 0 000 1zM9 13A5 5 0 109 3a5 5 0 000 10z" clip-rule="evenodd"/>
-                  <path d="M2 3a1 1 0 011-1h1a1 1 0 010 2H3a1 1 0 01-1-1z"/>
-                </svg>
-                <p class="mt-2 lead">Snapshots</p>
+               <svg class="bi bi-layers-fill" width="3.5em" height="3.5em"  viewBox="0 0 16 16" fill="#e83e8c" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M7.765 1.559a.5.5 0 01.47 0l7.5 4a.5.5 0 010 .882l-7.5 4a.5.5 0 01-.47 0l-7.5-4a.5.5 0 010-.882l7.5-4z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd" d="M2.125 8.567l-1.86.992a.5.5 0 000 .882l7.5 4a.5.5 0 00.47 0l7.5-4a.5.5 0 000-.882l-1.86-.992-5.17 2.756a1.5 1.5 0 01-1.41 0l.418-.785-.419.785-5.169-2.756z" clip-rule="evenodd"/>
+              </svg>
+                <p class="mt-2 lead">Stacks</p>
               </div>
-                <p class="display-1 d-inline">{{ animateSnapshots }}</p>
-                <p class="card-text ">The total snapshots taken in this project.</p>
-                <button class="btn text-light" style="background-color:#e83e8c" @click="$router.push('Volumes')">See Volumes</button>
+                <p class="display-1 d-inline">{{ animateStacks }}</p>
+                <p class="card-text ">The total stacks created in this project.</p>
+                <button class="btn text-light" style="background-color:#e83e8c" @click="$router.push('Orchestrations')">See Stacks</button>
             </div>
           </div>
         </div>
@@ -167,19 +166,21 @@ export default {
       tweenedVcpus: 0,
       ram: 0,
       tweenedRam: 0,
-      floatingIps: 0,
       tweenedFloatingIps: 0,
-      snapshots: 0,
-      tweenedSnapshots: 0
+      tweenedstacks: 0
     }
   },
   mounted () {
     this.getImages()
+    this.getStacks()
     this.getVolumeLimits()
     this.getComputeLimits()
+    this.getFloatingIps()
   },
   computed: {
     images: function () { return this.$store.state.images.totalImages },
+    stacks: function () { return this.$store.state.orchestrations.totalStacks },
+    floatingIps: function () { return this.$store.state.networks.totalFloatingIps },
     animateInstance: function () { return this.tweenedInstances.toFixed(0) },
     animateImages: function () { return this.tweenedImages.toFixed(0) },
     animateVolumes: function () { return this.tweenedVolumes.toFixed(0) },
@@ -187,7 +188,7 @@ export default {
     animateVcpu: function () { return this.tweenedVcpus.toFixed(0) },
     animateRam: function () { return this.tweenedRam.toFixed(0) },
     animateFloatingIp: function () { return this.tweenedFloatingIps.toFixed(0) },
-    animateSnapshots: function () { return this.tweenedSnapshots.toFixed(0) },
+    animateStacks: function () { return this.tweenedstacks.toFixed(0) },
     // XXX This computed cunction is duplicated in App.vue. Consider put only one function globally in vuex getters...
     currentProject: function () {
       return this.$store.state.authentication.projects != null
@@ -198,7 +199,9 @@ export default {
   methods: {
     // XXX Consider removing action mapping in favor of this.$store...
     ...mapActions({
-      getImages: 'images/getImages'
+      getImages: 'images/getImages',
+      getStacks: 'orchestrations/getStacks',
+      getFloatingIps: 'networks/getFloatingIps'
     }),
     getVolumeLimits: function () {
       axios.get('/volume/v3/' + this.$store.state.authentication.idSelectedProject + '/limits')
@@ -209,7 +212,7 @@ export default {
           this.snapshots = response.data.limits.absolute.totalSnapshotsUsed
         })
         .catch(error => {
-          console.log('[VOLUME LIMITS] =>', error.response)
+          console.log('[VOLUME LIMITS] =>', error)
         })
     },
     getComputeLimits: function () {
@@ -219,11 +222,9 @@ export default {
           this.instances = response.data.limits.absolute.totalInstancesUsed
           this.vcpus = response.data.limits.absolute.totalCoresUsed
           this.ram = response.data.limits.absolute.totalRAMUsed
-          this.floatingIps = response.data.limits.absolute.totalFloatingIpsUsed
-          console.log(response.data.limits.absolute.totalSnapshotsUsed)
         })
         .catch(error => {
-          console.log('[COMPUTE LIMITS] =>', error.response)
+          console.log('[COMPUTE LIMITS] =>', error)
         })
     }
   },
@@ -235,7 +236,7 @@ export default {
     vcpus: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedVcpus: newValue }) },
     ram: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedRam: newValue }) },
     floatingIps: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedFloatingIps: newValue }) },
-    snapshots: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedSnapshots: newValue }) }
+    stacks: function (newValue) { gsap.to(this.$data, { duration: 2, tweenedstacks: newValue }) }
   }
 }
 </script>
