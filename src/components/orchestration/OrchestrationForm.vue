@@ -198,21 +198,24 @@ export default {
       if (this.keypairs != null) {
         this.keyname = this.keypairs[0].keypair.name
       }
-      if (this.images != null) {
-        this.imageRef = this.images.find(o => o.name.toLowerCase().match('ubuntu')).id
-      }
-      if (this.flavors != null) {
-        this.flavorRef = this.flavors.find(o => o.name.toLowerCase().match('ds2g')).id
-      }
-      if (this.networks != null) {
-        this.privateNetwork = this.networks.find(o => o.name.toLowerCase().match('private')).id
-        this.publicNetwork = this.networks.find(o => o.name.toLowerCase().match('public')).id
-      }
-      if (this.securiytGroups != null) {
-        this.securiytGroup = this.securiytGroups.find(o => o.name.toLowerCase().match('default')).id
-      }
+      this.imageRef = this.searchIDbyNameInArray(this.images, 'bionic')
+      this.flavorRef = this.searchIDbyNameInArray(this.flavors, 'ds2g')
+      this.privateNetwork = this.searchIDbyNameInArray(this.networks, 'private')
+      this.publicNetwork = this.searchIDbyNameInArray(this.networks, 'public')
+      this.securiytGroup = this.searchIDbyNameInArray(this.securiytGroups, 'default')
       const date = new Date()
       this.name = 'MyStack-' + Date.parse(date)
+    },
+    searchIDbyNameInArray (array, keyord) {
+      var returnVar = ''
+      if (array != null) {
+        array.forEach(element => {
+          if (element.name.toLowerCase().match(keyord)) {
+            returnVar = element.id
+          }
+        })
+      }
+      return returnVar
     }
   }
 }
