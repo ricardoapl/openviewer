@@ -10,6 +10,9 @@ Vue.config.productionTip = false
 
 window.axios = axios
 
+// TODO Remove after login is implemented
+axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
+
 // XXX Try to move this into router/index.js
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
