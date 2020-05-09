@@ -41,8 +41,25 @@
 
 <script>
 
+// COMPONENT 
+import namespacesList from './namespaces/namespacesList.vue'
+import nodesList from './nodes/nodesList.vue'
+import servicesList from './services/servicesList.vue'
+import podsList from './pods/podsList.vue'
+import rolesList from './roles/rolesList.vue'
+import deploymentsList from './deployments/deploymentsList.vue'
+
+
 export default {
   name: 'HomeView',
+  components: {
+    'namespaces-list': namespacesList,
+    'nodes-list': nodesList,
+    'services-list': servicesList,
+    'pods-list': podsList,
+    'roles-list': rolesList,
+    'deployments-list': deploymentsList,
+  },
   data () {
     return {
       selected: 0,
