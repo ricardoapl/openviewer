@@ -100,6 +100,16 @@ const routes = [
     name: 'KHome',
     component: () => import('../components/kubernetes/HomeView.vue'),
     meta: {
+      // TODO (ricardoapl) Set requiresAuth after login is implemented
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/kubernetes/deployments',
+    name: 'Deployments',
+    component: () => import('../components/kubernetes/deployments/DeploymentsView.vue'),
+    meta: {
+      // TODO (ricardoapl) Set requiresAuth after login is implemented
       requiresAuth: false
     }
   }

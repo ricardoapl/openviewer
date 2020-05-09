@@ -54,7 +54,7 @@ import nodesList from './nodes/nodesList.vue'
 import servicesList from './services/servicesList.vue'
 import podsList from './pods/podsList.vue'
 import rolesList from './roles/rolesList.vue'
-import deploymentsList from './deployments/deploymentsList.vue'
+import deploymentsList from './deployments/DeploymentsList.vue'
 
 
 export default {
