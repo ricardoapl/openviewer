@@ -1,7 +1,7 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="deployments" :fields="fields"></b-table>
+      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredDeployments" :fields="fields"></b-table>
     </div>
     <b-pagination
       v-model="currentPage"
@@ -18,6 +18,9 @@
 
 export default {
   name: 'DeploymentsList',
+  props:[
+    'namespace'
+  ],
   data () {
     return {
       perPage: 5,
@@ -47,11 +50,17 @@ export default {
     console.log("deployments list")
   },
   computed: {
-    deployments () {
-      return this.$store.state.deployments.deployments;
+    filteredDeployments () {
+      if(this.namespace=='*'){
+        return this.$store.state.deployments.deployments;
+      } else{
+        return this.$store.state.deployments.deployments.filter((obj)=>{
+          return obj.metadata.namespace == this.namespace;
+        })
+      }
     },
     rows() {
-      return this.deployments.length;
+      return this.filteredDeployments.length;
     }
   },
   methods: {

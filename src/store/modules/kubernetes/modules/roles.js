@@ -1,6 +1,7 @@
 const state = {
   roles: [],
-  totalroles: 0
+  totalroles: 0,
+  inNamespace:0
 }
 
 const mutations = {
@@ -16,7 +17,7 @@ const actions = {
   getRoles ({ commit }) {
     commit('setTotalRoles', 0)
     // eslint-disable-next-line no-undef
-    axios.get('/apis/rbac.authorization.k8s.io/v1/clusterroles')
+    axios.get('apis/rbac.authorization.k8s.io/v1/clusterroles')
       .then(response => {
         console.log('[Vuex/getRoles] =>', response)
         commit('setRoles', response.data.items)

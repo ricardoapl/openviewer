@@ -4,21 +4,27 @@
       <div class="container">
         <h1 class="display-4">Dashboard</h1>
         <div class="row mt-5">
-            <div v-for="(item,index) in dashboardSelection" :key="item.label" class="col-sm" :class="index==selected?'mt-2':'opacity'">
-                <div>
-                   <button @click="selected=index" :class="index==selected?'active':''" type="button" class="btn btn-dark btn-outline-light">{{item.label}}</button>
-                </div>
-            </div>
+          <div v-for="(item,index) in dashboardSelection" :key="item.label" class="col-sm" :class="index==selected?'mt-2':'opacity'">
+              <div>
+                <button @click="selected=index" :class="index==selected?'active':''" type="button" class="btn btn-dark btn-outline-light">{{item.label}}</button>
+              </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="container"> 
       <div class="row mt-5  text-center mb-4">
+        <div v-if="dashboardSelection[selected].label != 'Cluster Overview'" class="col-sm-3">
+        <select @change="getTotals(true)" v-model="selectedNamespace" class="custom-select mt-4">
+          <option value="*"> All Namespaces</option>
+          <option :value="namespace" v-for="namespace in namespacesNames" :key="namespace"> {{namespace}} Namespace</option>
+        </select>
+        </div>
         <div class="col-sm" v-for="(info) in dashboardSelection[selected].options" :key="info.dataId">
           <div style="border-radius: 50px;" class="card text-center mb-2">
             <div class="card-body">
              <div class="mt-2">
-                {{counters[info.dataId]}}
+                {{counters[info.dataId]||'0'}}
               </div>
               <div>
               </div>
@@ -29,10 +35,11 @@
           </p>
         </div>
       </div>
+      
       <div v-for="(info) in dashboardSelection[selected].options" :key="info.dataId" v-if="info.status" class="">
           <div class="card panel-collapse show mb-3" :id="info.dataId">
             <h3 class="card-header"> {{info.name}} </h3>
-            <component class="mt-3" :key="info.component" :is="info.component"></component>
+            <component :namespace="selectedNamespace" class="mt-3" :key="info.component" :is="info.component"></component>
           </div>
       </div>
     </div>
@@ -63,6 +70,7 @@ export default {
   data () {
     return {
       selected: 0,
+      selectedNamespace: '*',
       counters:{
         namespaces:null,
         nodes:null,
@@ -101,71 +109,71 @@ export default {
               dataId:"nodes",
               component:"nodes-list"
             },
-            {
-              name:"Persistent Volumes",
-              status:false,
-              dataId:"pvolumes",
-              component:""
-            },
+            // {
+            //   name:"Persistent Volumes",
+            //   status:false,
+            //   dataId:"pvolumes",
+            //   component:""
+            // },
             {
               name:"Roles",
               status:true,
               dataId:"roles",
               component:"roles-list"
             },
-            {
-              name:"Storage Classes",
-              status:false,
-              dataId:"sclasses",
-              component:""
-            },
+            // {
+            //   name:"Storage Classes",
+            //   status:false,
+            //   dataId:"sclasses",
+            //   component:""
+            // },
           ]
         },
         {
           label:"Workloads",
           options:[
-            {
-              name:"Cron Jobs",
-              status:false,
-              dataId:"cjobs",
-              component:""
-            },
+            // {
+            //   name:"Cron Jobs",
+            //   status:false,
+            //   dataId:"cjobs",
+            //   component:""
+            // },
             {
               name:"Deployments",
               status:true,
               dataId:"deployments",
               component:"deployments-list"
             },
-            {
-              name:"Jobs",
-              status:false,
-              dataId:"jobs",
-              component:""
-            },
+            // {
+            //   name:"Jobs",
+            //   status:false,
+            //   dataId:"jobs",
+            //   component:""
+            // },
             {
               name:"Pods",
               status:true,
               dataId:"pods",
               component:"pods-list"
             },
-            {
-              name:"Replica Sets",
-              status:false,
-              dataId:"rsets",
-              component:""
-            },
-            {
-              name:"Replication Controllers",
-              status:false,
-              dataId:"rcontrollers",
-              component:""
-            },
-            {
-              name:"Stateful Sets",
-              status:false,
-              dataId:"ssets",
-              component:""
-            },
+            // {
+            //   name:"Replica Sets",
+            //   status:false,
+            //   dataId:"rsets",
+            //   component:""
+            // },
+            // {
+            //   name:"Replication Controllers",
+            //   status:false,
+            //   dataId:"rcontrollers",
+            //   component:""
+            // },
+            // {
+            //   name:"Stateful Sets",
+            //   status:false,
+            //   dataId:"ssets",
+            //   component:""
+            // },
           ]
         },
         {
@@ -238,6 +246,9 @@ export default {
     this.getStatesAction();
   },
   computed: {
+    namespacesNames() {
+      return this.$store.state.namespaces.namespaces.map(value => value.metadata.name);
+    },
     changed () {
       var aux;
       for (const [key, value] of Object.entries(this.counters)) {
@@ -259,7 +270,15 @@ export default {
     getTotals(){
       for (const [key, value] of Object.entries(this.counters)) {
         if(this.$store.state[key]){
-          this.counters[key] = this.$store.state[key]['total'+key]
+          if(this.selectedNamespace!='*' && this.$store.state[key].inNamespace){
+            var getter = key+'/filtered'+key.charAt(0).toUpperCase() + key.slice(1)+'Namespace';
+            this.counters[key] = this.$store.getters[getter](this.selectedNamespace);
+            if(!this.counters[key]){
+              this.counters[key] = 0
+            }
+          } else{
+            this.counters[key] = this.$store.state[key]['total'+key]
+          }
           if(!this.counters[key]){
             this.counters[key] = 0
           }
@@ -271,7 +290,6 @@ export default {
   },
   watch: {
     changed(value) {
-      console.log("changed")
        this.getTotals();
     }
   }

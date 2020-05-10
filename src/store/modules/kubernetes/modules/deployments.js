@@ -1,6 +1,7 @@
 const state = {
   deployments: [],
-  totaldeployments: 0
+  totaldeployments: 0,
+  inNamespace:1,
 }
 
 const mutations = {
@@ -15,7 +16,7 @@ const mutations = {
 const actions = {
   getDeployments ({ commit }) {
     commit('setTotalDeployments', 0)
-    axios.get('http://127.0.0.1:8888/apis/apps/v1/deployments')
+    axios.get('apis/apps/v1/deployments')
       .then(response => {
         console.log('[Vuex/getDeployments] =>', response)
         commit('setDeployments', response.data.items)
@@ -28,7 +29,9 @@ const actions = {
 }
 
 const getters = {
-
+  filteredDeploymentsNamespace: (state) => (namespace) => {
+    return state.deployments.filter(obj => obj.metadata.namespace == namespace).length;
+  }
 }
 
 export default {

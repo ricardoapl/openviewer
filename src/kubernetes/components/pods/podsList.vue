@@ -1,7 +1,7 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="pods" :fields="fields"></b-table>
+      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredPods" :fields="fields"></b-table>
     </div>
     <b-pagination
       v-model="currentPage"
@@ -18,6 +18,9 @@
 
 export default {
   name: 'PodsList',
+  props:[
+    'namespace'
+  ],
   data () {
     return {
       perPage: 5,
@@ -47,12 +50,18 @@ export default {
     console.log("pods lists")
   },
   computed: {
-    pods () {
-      console.log("hd")
-      return this.$store.state.pods.pods;
+    filteredPods () {
+      if(this.namespace=='*'){
+        return this.$store.state.pods.pods;
+      } else{
+        return this.$store.state.pods.pods.filter((obj)=>{
+          console.log(obj.metadata.namespace +'--->'+this.namespace)
+          return obj.metadata.namespace == this.namespace;
+        })
+      }
     },
     rows() {
-      return this.pods.length;
+      return this.filteredPods.length;
     }
   },
   methods: {
