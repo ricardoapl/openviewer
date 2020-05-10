@@ -11,11 +11,11 @@ import orchestrations from './modules/orchestrations'
 
 // KUBERNETES
 
-import namespaces from './modules/kubernetes/modules/namespaces'
-import nodes from './modules/kubernetes/modules/nodes'
-import roles from './modules/kubernetes/modules/roles'
-import deployments from './modules/kubernetes/modules/deployments'
-import pods from './modules/kubernetes/modules/pods'
+import namespaces from './modules/kubernetes/namespaces'
+import nodes from './modules/kubernetes/nodes'
+import roles from './modules/kubernetes/roles'
+import deployments from './modules/kubernetes/deployments'
+import pods from './modules/kubernetes/pods'
 
 Vue.use(Vuex)
 

@@ -1,7 +1,7 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredImages" :fields="fields"></b-table>
+      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredPods" :fields="fields"></b-table>
     </div>
     <b-pagination
       v-model="currentPage"
@@ -17,7 +17,7 @@
 
 
 export default {
-  name: 'RolesList',
+  name: 'PodsList',
   props:[
     'namespace'
   ],
@@ -28,7 +28,11 @@ export default {
       fields:[
         {
           key:'metadata.name',
-          label:'Name'
+          label:'name'
+        },
+        {
+          key:'metadata.namespace',
+          label:'Namespace'
         },
         {
           key:'metadata.creationTimestamp',
@@ -43,21 +47,19 @@ export default {
     }
   },
   mounted () {
-    console.log("roles list")
   },
   computed: {
-    filteredImages () {
+    filteredPods () {
       if(this.namespace=='*'){
-        return this.$store.state.images.images;
+        return this.$store.state.pods.pods;
       } else{
-        return this.$store.state.images.images.filter((obj)=>{
-          console.log(obj.metadata.namespace +'--->'+this.namespace)
+        return this.$store.state.pods.pods.filter((obj)=>{
           return obj.metadata.namespace == this.namespace;
         })
       }
     },
     rows() {
-      return this.filteredImages.length;
+      return this.filteredPods.length;
     }
   },
   methods: {

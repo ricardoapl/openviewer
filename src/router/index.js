@@ -98,7 +98,7 @@ const routes = [
   {
     path: '/kubernetes',
     name: 'KHome',
-    component: () => import('../kubernetes/components/HomeView.vue'),
+    component: () => import('../components/kubernetes/HomeView.vue'),
     meta: {
       requiresAuth: false
     }

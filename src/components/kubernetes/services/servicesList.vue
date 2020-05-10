@@ -1,7 +1,7 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="roles" :fields="fields"></b-table>
+      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredImages" :fields="fields"></b-table>
     </div>
     <b-pagination
       v-model="currentPage"
@@ -18,6 +18,9 @@
 
 export default {
   name: 'RolesList',
+  props:[
+    'namespace'
+  ],
   data () {
     return {
       perPage: 5,
@@ -40,14 +43,19 @@ export default {
     }
   },
   mounted () {
-    console.log("roles list")
   },
   computed: {
-    roles () {
-      return this.$store.state.roles.roles;
+    filteredImages () {
+      if(this.namespace=='*'){
+        return this.$store.state.images.images;
+      } else{
+        return this.$store.state.images.images.filter((obj)=>{
+          return obj.metadata.namespace == this.namespace;
+        })
+      }
     },
     rows() {
-      return this.roles.length;
+      return this.filteredImages.length;
     }
   },
   methods: {

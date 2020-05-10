@@ -40,7 +40,6 @@ export default {
     }
   },
   mounted () {
-    console.log("namespaces list")
   },
   computed: {
     namespaces () {
