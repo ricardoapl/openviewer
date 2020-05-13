@@ -35,13 +35,7 @@
       </template>
       <!-- TODO (ricardoapl) US07.3 and US07.4 -->
       <template v-slot:cell(actions)="row">
-        <b-button
-          v-on:click="actions(row.item)"
-        >
-          <svg class="bi bi-three-dots-vertical" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M9.5 13a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm0-5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm0-5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" clip-rule="evenodd"/>
-          </svg>
-        </b-button>
+        <deployments-list-action-delete v-bind:deployment="row.item"></deployments-list-action-delete>
       </template>
     </b-table>
     <b-pagination
@@ -55,8 +49,12 @@
 </template>
 
 <script>
+import DeploymentsListActionDelete from './DeploymentsListActionDelete'
 export default {
   name: 'DeploymentsList',
+  components: {
+    DeploymentsListActionDelete
+  },
   props: [
     'namespace'
   ],
@@ -92,12 +90,6 @@ export default {
     },
     rows () {
       return this.filteredDeployments.length
-    }
-  },
-  methods: {
-    actions: function (deployment) {
-      // TODO (ricardoapl) US07.3 and US07.4
-      console.log('Call to actions() with deployment with uid ' + deployment.metadata.uid)
     }
   }
 }
