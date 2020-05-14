@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-button
+      class="mx-1"
       size="sm"
       variant="danger"
       data-placement="top"

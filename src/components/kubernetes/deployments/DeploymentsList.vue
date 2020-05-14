@@ -33,9 +33,12 @@
           </span>
         </template>
       </template>
-      <!-- TODO (ricardoapl) US07.3 and US07.4 -->
       <template v-slot:cell(actions)="row">
-        <deployments-list-action-delete :deployment="row.item" />
+        <!-- XXX (ricardoapl) How do we know these are buttons? -->
+        <b-button-group>
+          <deployments-list-action-delete :deployment="row.item" />
+          <deployments-list-action-edit :deployment="row.item" />
+        </b-button-group>
       </template>
     </b-table>
     <b-pagination
@@ -50,10 +53,12 @@
 
 <script>
 import DeploymentsListActionDelete from './DeploymentsListActionDelete'
+import DeploymentsListActionEdit from './DeploymentsListActionEdit'
 export default {
   name: 'DeploymentsList',
   components: {
-    DeploymentsListActionDelete
+    DeploymentsListActionDelete,
+    DeploymentsListActionEdit
   },
   props: [
     'namespace'
