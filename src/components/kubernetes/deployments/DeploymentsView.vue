@@ -2,22 +2,24 @@
   <div>
     <div class="jumbotron jumbotron-fluid text-center">
       <div class="container">
-        <h1 class="display-4">Deployments</h1>
+        <h1 class="display-4">
+          Deployments
+        </h1>
         <p>In this page you can manage all of your deployments.<br>If you want to create a new deployment click on the button down bellow.</p>
       </div>
       <button
         class="btn btn-outline-info mt-4"
-        v-on:click="showDeploymentForm = !showDeploymentForm"
+        @click="showDeploymentForm = !showDeploymentForm"
       >
         Create deployment
       </button>
     </div>
     <deployments-form
       v-if="showDeploymentForm"
-      v-on:hide="showDeploymentForm = false"
-    ></deployments-form>
+      @hide="showDeploymentForm = false"
+    />
     <!-- XXX (ricardoapl) Add namespace filter bar -->
-    <deployments-list v-bind:namespace="namespace"></deployments-list>
+    <deployments-list :namespace="namespace" />
   </div>
 </template>
 
