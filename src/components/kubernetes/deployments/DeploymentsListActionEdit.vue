@@ -43,17 +43,17 @@
       <template v-slot:modal-footer>
         <b-container class="text-center">
           <b-button
-            class="mr-1"
-            @click="cancel()"
-          >
-            Cancel
-          </b-button>
-          <b-button
-            class="ml-1"
+            class="mx-1"
             variant="success"
             @click="saveDeployment()"
           >
             Save
+          </b-button>
+          <b-button
+            class="mx-1"
+            @click="cancel()"
+          >
+            Cancel
           </b-button>
         </b-container>
       </template>
