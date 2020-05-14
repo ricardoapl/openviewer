@@ -5,16 +5,16 @@
       bordered
       striped
       hover
-      v-bind:current-page="currentPage"
-      v-bind:per-page="perPage"
-      v-bind:fields="fields"
-      v-bind:items="filteredDeployments"
+      :current-page="currentPage"
+      :per-page="perPage"
+      :fields="fields"
+      :items="filteredDeployments"
     >
       <template v-slot:cell(labels)="row">
         <template v-for="(key, value) in row.item.metadata.labels">
           <span
+            :key="key"
             class="badge badge-info"
-            v-bind:key="key"
           >
             {{ value + ': ' + key }}
           </span>
@@ -26,8 +26,8 @@
       <template v-slot:cell(images)="row">
         <template v-for="container in row.item.spec.template.spec.containers">
           <span
+            :key="container.image"
             class="badge badge-info"
-            v-bind:key="container.image"
           >
             {{ container.image }}
           </span>
@@ -35,16 +35,16 @@
       </template>
       <!-- TODO (ricardoapl) US07.3 and US07.4 -->
       <template v-slot:cell(actions)="row">
-        <deployments-list-action-delete v-bind:deployment="row.item"></deployments-list-action-delete>
+        <deployments-list-action-delete :deployment="row.item" />
       </template>
     </b-table>
     <b-pagination
+      v-model="currentPage"
       aria-controls="deployments-table"
       align="right"
-      v-model="currentPage"
-      v-bind:per-page="perPage"
-      v-bind:total-rows="rows"
-    ></b-pagination>
+      :per-page="perPage"
+      :total-rows="rows"
+    />
   </div>
 </template>
 
@@ -75,9 +75,6 @@ export default {
       ]
     }
   },
-  mounted () {
-    console.log('DeploymentsList created and mounted')
-  },
   computed: {
     filteredDeployments () {
       if (this.namespace === '*') {
@@ -91,6 +88,9 @@ export default {
     rows () {
       return this.filteredDeployments.length
     }
+  },
+  mounted () {
+    console.log('DeploymentsList created and mounted')
   }
 }
 </script>
