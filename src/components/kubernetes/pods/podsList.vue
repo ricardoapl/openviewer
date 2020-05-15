@@ -1,7 +1,20 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredPods" :fields="fields" selectable single @row-selected="onRowSelected"></b-table>
+      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredPods" :fields="fields" selectable :select-mode="'single'" @row-selected="onRowSelected">
+        <template v-slot:cell(nodeInfo)="row">
+        <span
+          class="badge badge-info"
+        >
+          {{ row.item.spec.nodeName }}
+        </span>
+        <p><span class="badge badge-secondary" v-for="(value,key) in row.item.spec.nodeSelector " :key="key">{{key}} : "{{value}}"</span></p>
+      </template>
+      <template v-slot:cell(podIPs)="row">
+        <p><span  v-for="(value) in row.item.status.podIPs " :key="value.ip">{{value.ip}}</span></p>
+      </template>
+      </b-table>
+      
     </div>
     <b-pagination
       v-model="currentPage"
@@ -36,15 +49,22 @@ export default {
           label:'Namespace'
         },
         {
-          key:'metadata.creationTimestamp',
-          label:'Created at'
+          key:'podIPs',
+          label:'Pod IPs'
         },
         {
-          key:'metadata.uid',
-          label:'UID'
+          key:'status.hostIP',
+          label:'Host IP'
+        },
+        {
+          key:'nodeInfo',
+          label:'Node Info'
+        },
+        {
+          key:'spec.containers.length',
+          label:'Number of Containers'
         },
       ],
-      
     }
   },
   mounted () {
@@ -65,8 +85,9 @@ export default {
   },
   methods: {
     onRowSelected(items) {
-        this.selectedPod = items[0];
-        this.$emit('newSelectedPod',this.selectedPod);
+      console.log(items)
+      this.selectedPod = items[0]
+      this.$emit('newSelectedPod',this.selectedPod);
     },
   },
   watch: {

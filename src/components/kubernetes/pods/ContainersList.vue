@@ -1,25 +1,43 @@
 <template>
-  <span>
-    <div class="container table-responsive">
-      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredPods" :fields="fields" selectable single @row-selected="onRowSelected"></b-table>
-    </div>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      aria-controls="my-table"
-       align="right"
-    ></b-pagination>
-  </span>
+    <span>
+        <span v-if="pod && pod.spec.containers.length>0">
+            <div  class="container table-responsive">
+            <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="pod.spec.containers" :fields="fields">
+                <template v-slot:cell(memory)="row">
+                        <span v-if="row.item.resources.limits">{{row.item.resources.limits.memory|| 'None'}}</span>
+                        <span v-else>None</span>
+                    </template>
+                    <template v-slot:cell(cpu)="row">
+                        <span v-if="row.item.resources.limits">{{row.item.resources.limits.cpu || 'None'}}</span>
+                        <span v-else>None</span>
+                    </template>
+            </b-table>
+            </div>
+            <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+                align="right"
+            ></b-pagination>
+        </span>
+        <span v-else>
+            <div  class="container table-responsive">
+            <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="[]" :fields="fields">
+            </b-table>
+            </div>
+        </span>
+    </span>
+  
 </template>
 
 <script>
 
 
 export default {
-  name: 'PodsList',
+  name: 'ContainersList',
   props:[
-    'namespace'
+    'pod',
   ],
   data () {
     return {
@@ -28,26 +46,27 @@ export default {
       selectedPod:{},
       fields:[
         {
-          key:'metadata.name',
-          label:'name'
+          key:'name',
+          label:'Name'
         },
         {
-          key:'metadata.namespace',
-          label:'Namespace'
+          key:'image',
+          label:'Image'
         },
         {
-          key:'metadata.creationTimestamp',
-          label:'Created at'
+          key:'memory',
+          label:'Memory Limit'
         },
         {
-          key:'metadata.uid',
-          label:'UID'
+          key:'cpu',
+          label:'CPU Limit'
         },
       ],
       
     }
   },
   mounted () {
+      console.log(this.pod.spec)
   },
   computed: {
     filteredPods () {
