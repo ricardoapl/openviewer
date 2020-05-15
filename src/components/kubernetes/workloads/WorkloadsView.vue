@@ -17,9 +17,26 @@
     <div class="mt-5">
       <deployments-form
         v-if="showDeploymentsForm"
-        :namespace="namespace"
+        :namespace="selectedNamespace"
         @hide="showDeploymentsForm = false"
       />
+      <div class="my-5">
+        <select
+          v-model="selectedNamespace"
+          class="custom-select"
+        >
+          <option value="*">
+            All Namespaces
+          </option>
+          <option
+            v-for="namespace in namespacesNames"
+            :key="namespace"
+            :value="namespace"
+          >
+            {{ namespace }} Namespace
+          </option>
+        </select>
+      </div>
       <b-tabs
         content-class="mt-3"
         justified
@@ -31,14 +48,14 @@
           <h3 class=" mb-3 ml-3">
             Deployments List
           </h3>
-          <deployments-list :namespace="namespace" />
+          <deployments-list :namespace="selectedNamespace" />
         </b-tab>
         <b-tab title="Pods">
           <h3 class=" mb-3 ml-3">
             Pods List
           </h3>
           <pods-list
-            :namespace="namespace"
+            :namespace="selectedNamespace"
             @newSelectedPod="newSelectedPod"
           />
           <!-- <containers-list v-if="pod" :pod="pod"></containers-list> -->
@@ -54,7 +71,6 @@ import DeploymentsList from '../deployments/DeploymentsList'
 import DeploymentsForm from '../deployments/DeploymentsForm'
 import podsList from '../pods/PodsList'
 import containersList from '../pods/ContainersList'
-
 export default {
   name: 'WorkloadsView',
   components: {
@@ -65,21 +81,26 @@ export default {
   data () {
     return {
       showDeploymentsForm: false,
-      namespace: '*',
+      selectedNamespace: '*',
       pod: null
     }
   },
   computed: {
+    namespacesNames () {
+      return this.$store.state.namespaces.namespaces.map(namespace => namespace.metadata.name)
+    }
   },
   watch: {
   },
   mounted () {
     console.log('WorkloadsView created and mounted')
     this.getDeployments()
+    this.getNamespaces()
   },
   methods: {
     ...mapActions({
-      getDeployments: 'deployments/getDeployments'
+      getDeployments: 'deployments/getDeployments',
+      getNamespaces: 'namespaces/getNamespaces'
     }),
     newSelectedPod (incomingPod) {
       this.pod = incomingPod
