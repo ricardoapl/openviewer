@@ -52,11 +52,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-.opacity{
-  opacity: 0.8;
-}
-
-</style>
