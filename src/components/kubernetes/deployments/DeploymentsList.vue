@@ -36,6 +36,7 @@
       </template>
       <template v-slot:cell(actions)="row">
         <!-- XXX (ricardoapl) How do we know these are buttons? -->
+        <!-- TODO (ricardoapl) Only render at DeploymentsView -->
         <b-button-group>
           <deployments-list-action-delete :deployment="row.item" />
           <deployments-list-action-edit :deployment="row.item" />
