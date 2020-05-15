@@ -130,17 +130,7 @@ const routes = [
       // TODO (ricardoapl) Set requiresAuth after login is implemented
       requiresAuth: false
     }
-  },
-  {
-    path: '/kubernetes/deployments',
-    name: 'Deployments',
-    component: () => import('../components/kubernetes/deployments/DeploymentsView.vue'),
-    meta: {
-      // TODO (ricardoapl) Set requiresAuth after login is implemented
-      requiresAuth: false
-    }
-  },
-  
+  }
 ]
 
 const router = new VueRouter({
