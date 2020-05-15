@@ -14,11 +14,12 @@
         Create deployment
       </button>
     </div>
+    <!-- TODO (ricardoapl) Set :namespace=namespace -->
     <deployments-form
       v-if="showDeploymentForm"
       @hide="showDeploymentForm = false"
     />
-    <!-- XXX (ricardoapl) Add namespace filter bar -->
+    <!-- TODO (ricardoapl) Add namespace filter bar -->
     <deployments-list :namespace="namespace" />
   </div>
 </template>
@@ -35,7 +36,7 @@ export default {
   },
   data () {
     return {
-      // XXX (ricardoapl) Add namespace filter bar
+      // TODO (ricardoapl) Add namespace filter bar
       namespace: '*',
       showDeploymentForm: false
     }
