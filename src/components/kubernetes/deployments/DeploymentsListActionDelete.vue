@@ -57,9 +57,12 @@
 <script>
 export default {
   name: 'DeploymentsListActionDelete',
-  props: [
-    'deployment'
-  ],
+  props: {
+    deployment: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       showModal: false

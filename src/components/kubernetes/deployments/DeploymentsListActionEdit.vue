@@ -65,9 +65,12 @@
 <script>
 export default {
   name: 'DeploymentsListActionEdit',
-  props: [
-    'deployment'
-  ],
+  props: {
+    deployment: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       showModal: false,
