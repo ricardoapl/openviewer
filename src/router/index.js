@@ -105,6 +105,33 @@ const routes = [
     }
   },
   {
+    path: '/kubernetes/administration',
+    name: 'Administration',
+    component: () => import('../components/kubernetes/administration/AdministrationView.vue'),
+    meta: {
+      // TODO (ricardoapl) Set requiresAuth after login is implemented
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/kubernetes/workloads',
+    name: 'Workloads',
+    component: () => import('../components/kubernetes/workloads/WorkloadsView.vue'),
+    meta: {
+      // TODO (ricardoapl) Set requiresAuth after login is implemented
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/kubernetes/services',
+    name: 'Services',
+    component: () => import('../components/kubernetes/services/ServicesView.vue'),
+    meta: {
+      // TODO (ricardoapl) Set requiresAuth after login is implemented
+      requiresAuth: false
+    }
+  },
+  {
     path: '/kubernetes/deployments',
     name: 'Deployments',
     component: () => import('../components/kubernetes/deployments/DeploymentsView.vue'),
@@ -112,7 +139,8 @@ const routes = [
       // TODO (ricardoapl) Set requiresAuth after login is implemented
       requiresAuth: false
     }
-  }
+  },
+  
 ]
 
 const router = new VueRouter({

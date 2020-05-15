@@ -149,6 +149,15 @@
           <li class="nav-item">
             <router-link :to="{ name: 'KHome'}" class="nav-link">Home</router-link>
           </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'Administration'}" class="nav-link">Administration</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'Workloads'}" class="nav-link">Workloads</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'Services'}" class="nav-link">Services</router-link>
+          </li>
         </ul>
       </div>
     </nav>

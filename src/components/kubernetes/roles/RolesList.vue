@@ -1,7 +1,7 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="namespaces" :fields="fields"></b-table>
+      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="roles" :fields="fields"></b-table>
     </div>
     <b-pagination
       v-model="currentPage"
@@ -17,7 +17,7 @@
 
 
 export default {
-  name: 'NamespacesList',
+  name: 'RolesList',
   data () {
     return {
       perPage: 5,
@@ -25,7 +25,7 @@ export default {
       fields:[
         {
           key:'metadata.name',
-          label:'name'
+          label:'Name'
         },
         {
           key:'metadata.creationTimestamp',
@@ -42,11 +42,11 @@ export default {
   mounted () {
   },
   computed: {
-    namespaces () {
-      return this.$store.state.namespaces.namespaces;
+    roles () {
+      return this.$store.state.roles.roles;
     },
     rows() {
-      return this.namespaces.length;
+      return this.roles.length;
     }
   },
   methods: {
