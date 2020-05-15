@@ -3,6 +3,7 @@
     <b-table
       id="deployments-table"
       bordered
+      show-empty
       striped
       hover
       :current-page="currentPage"

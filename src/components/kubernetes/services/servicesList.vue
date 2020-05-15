@@ -1,7 +1,51 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredImages" :fields="fields"></b-table>
+      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredServices" :fields="fields">
+        <template v-slot:cell(labels)="row">
+        <template v-for="(key, value) in row.item.metadata.labels">
+          <span
+            :key="key"
+            class="badge badge-info"
+          >
+            {{ value + ': ' + key }}
+          </span>
+        </template>
+      </template>
+      <template v-slot:cell(ports)="row">
+        <template v-for="port in row.item.spec.ports">
+          <span
+            :key="port.name"
+            class="badge badge-primary"
+          >
+            <span v-if="port.port">{{ 'Port: ' + port.port }}</span>
+            <span v-if="port.targetPort">{{ ' Target Port: ' + port.targetPort }}</span>
+            <span v-if="port.protocol">{{ ' Protocol: ' + port.protocol }}</span>
+          </span>
+        </template>
+      </template>
+      <template v-slot:cell(selector)="row">
+        <span v-if="row.item.spec.selector">
+          <template v-for="(key, value) in row.item.spec.selector">
+            <span
+              :key="key"
+              class="badge badge-secondary"
+            >
+              {{ value + ': ' + key }}
+            </span>
+          </template>
+        </span>
+        <template v-else>
+          No Selector
+        </template>
+      </template>
+      <template v-slot:cell(actions)="row">
+        <b-button-group>
+          <services-list-action-delete :service="row.item" />
+          <services-list-action-edit :service="row.item" />
+        </b-button-group>
+      </template>
+      </b-table>
     </div>
     <b-pagination
       v-model="currentPage"
@@ -15,11 +59,17 @@
 
 <script>
 
+import ServicesListActionDelete from './ServicesListActionDelete.vue'
+import ServicesListActionEdit from './ServicesListActionEdit.vue'
 
 export default {
-  name: 'RolesList',
+  name: 'ServicesList',
+  components:{
+    ServicesListActionDelete,
+    ServicesListActionEdit
+  },
   props:[
-    'namespace'
+    'namespace','typeService'
   ],
   data () {
     return {
@@ -31,12 +81,28 @@ export default {
           label:'Name'
         },
         {
-          key:'metadata.creationTimestamp',
-          label:'Created at'
+          key:'metadata.namespace',
+          label:'Namespace'
+        },
+        { 
+          key: 'labels', 
+          label: 'Labels' 
         },
         {
-          key:'metadata.uid',
-          label:'UID'
+          key:'spec.clusterIP',
+          label:'clusterIP'
+        },
+        {
+          key:'ports',
+          label:'Ports'
+        },
+        {
+          key:'selector',
+          label:'Selector'
+        },
+        {
+          key:'actions',
+          label:'Actions'
         },
       ],
       
@@ -45,17 +111,17 @@ export default {
   mounted () {
   },
   computed: {
-    filteredImages () {
-      if(this.namespace=='*'){
-        return this.$store.state.images.images;
+    filteredServices () {
+      if(this.namespace=='*'||this.namespace == undefined){
+        return this.$store.state[this.typeService][this.typeService];
       } else{
-        return this.$store.state.images.images.filter((obj)=>{
+        return this.$store.state[this.typeService][this.typeService].filter((obj)=>{
           return obj.metadata.namespace == this.namespace;
         })
       }
     },
     rows() {
-      return this.filteredImages.length;
+      return this.filteredServices.length;
     }
   },
   methods: {

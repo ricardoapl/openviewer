@@ -39,7 +39,7 @@
       <div v-for="(info) in dashboardSelection[selected].options" :key="info.dataId" v-if="info.status" class="">
           <div class="card panel-collapse show mb-3" :id="info.dataId">
             <h3 class="card-header"> {{info.name}} </h3>
-            <component :namespace="selectedNamespace" class="mt-3" :key="info.component" :is="info.component"></component>
+            <component :namespace="selectedNamespace" :typeService="info.dataId" class="mt-3" :key="info.dataId" :is="info.component"></component>
           </div>
       </div>
     </div>
@@ -49,11 +49,11 @@
 <script>
 
 // COMPONENT 
-import namespacesList from './namespaces/namespacesList.vue'
-import nodesList from './nodes/nodesList.vue'
-import servicesList from './services/servicesList.vue'
-import podsList from './pods/podsList.vue'
-import rolesList from './roles/rolesList.vue'
+import namespacesList from './namespaces/NamespacesList.vue'
+import nodesList from './nodes/NodesList.vue'
+import servicesList from './services/ServicesList.vue'
+import podsList from './pods/PodsList.vue'
+import rolesList from './roles/RolesList.vue'
 import deploymentsList from './deployments/DeploymentsList.vue'
 
 
@@ -92,6 +92,9 @@ export default {
         cmaps:null,
         pvolumeclaims:null,
         secrets:null,
+        clusterips:null,
+        nodeports:null,
+        loadbalancers:null
       },
       dashboardSelection:[
         {
@@ -180,22 +183,22 @@ export default {
           "label":"Services",
           options:[
             {
-              name:"Get",
-              status:false,
-              dataId:"get",
-              component:""
+              name:"ClusterIP",
+              status:true,
+              dataId:"clusterips",
+              component:"services-list"
             },
             {
-              name:"Tipos de",
-              status:false,
-              dataId:"types",
-              component:""
+              name:"NodePort",
+              status:true,
+              dataId:"nodeports",
+              component:"services-list"
             },
             {
-              name:"Serviço",
-              status:false,
-              dataId:"services",
-              component:""
+              name:"LoadBalancer",
+              status:true,
+              dataId:"loadbalancers",
+              component:"services-list"
             },
           ]
         },
@@ -253,7 +256,7 @@ export default {
       var aux;
       for (const [key, value] of Object.entries(this.counters)) {
         if(this.$store.state[key]){
-          aux = aux + this.$store.state[key][key];
+          aux = aux + this.$store.state[key]['total'+key];
         }
       }
       return aux;

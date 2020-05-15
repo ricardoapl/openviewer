@@ -1,7 +1,7 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredPods" :fields="fields"></b-table>
+      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredPods" :fields="fields"></b-table>
     </div>
     <b-pagination
       v-model="currentPage"

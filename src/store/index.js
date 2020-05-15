@@ -16,6 +16,9 @@ import nodes from './modules/kubernetes/nodes'
 import roles from './modules/kubernetes/roles'
 import deployments from './modules/kubernetes/deployments'
 import pods from './modules/kubernetes/pods'
+import clusterips from './modules/kubernetes/services/clusterips'
+import nodeports from './modules/kubernetes/services/nodeports'
+import loadbalancers from './modules/kubernetes/services/loadbalancers'
 
 Vue.use(Vuex)
 
@@ -34,5 +37,8 @@ export default new Vuex.Store({
     roles,
     pods,
     deployments,
+    clusterips,
+    nodeports,
+    loadbalancers,
   }
 })
