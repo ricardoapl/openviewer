@@ -15,22 +15,38 @@
             Create service
         </button>
     </div>
-
-    <services-form @hide="showServicesForm = !showServicesForm" v-show="showServicesForm"></services-form>
-
+    <services-form :namespacesNames="namespacesNames" @hide="showServicesForm = !showServicesForm" v-show="showServicesForm"></services-form>
+     <div class="my-5">
+         Filter by Namespace
+        <select
+          v-model="selectedNamespace"
+          class="custom-select"
+        >
+          <option value="*">
+            All Namespaces
+          </option>
+          <option
+            v-for="namespace in namespacesNames"
+            :key="namespace"
+            :value="namespace"
+          >
+            {{ namespace }} Namespace
+          </option>
+        </select>
+      </div>
     <div class="mt-5">
         <b-tabs content-class="mt-3" justified >
             <b-tab title="ClusterIP" active>
                 <h3 class=" mb-3 ml-3"> ClusterIP Service List </h3>
-                <services-list :typeService="'clusterips'"></services-list>
+                <services-list :namespace="selectedNamespace" :typeService="'clusterips'"></services-list>
             </b-tab>
             <b-tab title="NodePort">
                 <h3 class=" mb-3 ml-3"> NodePort Service List </h3>
-                <services-list :typeService="'nodeports'"></services-list>
+                <services-list :namespace="selectedNamespace" :typeService="'nodeports'"></services-list>
             </b-tab>
             <b-tab title="LoadBalancer">
                 <h3 class=" mb-3 ml-3"> LoadBalancer Service List </h3>
-                <services-list :typeService="'loadbalancers'"></services-list>
+                <services-list :namespace="selectedNamespace" :typeService="'loadbalancers'"></services-list>
             </b-tab>
         </b-tabs>
     </div>
@@ -50,13 +66,16 @@ export default {
     },
     data () {
         return {
-            showServicesForm:false
+            showServicesForm:false,
+            selectedNamespace:null,
         }
     },
     mounted () {
     },
     computed: {
-        
+        namespacesNames () {
+            return this.$store.state.namespaces.namespaces.map(namespace => namespace.metadata.name)
+        }
     },
     methods: {
     },

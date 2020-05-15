@@ -54,7 +54,7 @@
           <h3 class=" mb-3 ml-3"> Pods List </h3>
           <pods-list @newSelectedPod="newSelectedPod" :namespace="selectedNamespace"></pods-list>
           <div class="mt-3" v-if="pod">
-            <b-modal style="min-width:70%" hide-backdrop :key="pod.metadata.uid" content-class="shadow" v-model="modalShow" id="modal-1" :title="'Containers of Pod '+pod.metadata.name">
+            <b-modal header-text-variant="info"  ok-only size="xl" hide-backdrop :key="pod.metadata.uid" content-class="shadow" v-model="modalShow" id="modal-1" :title="'Containers of Pod '+pod.metadata.name">
                 <containers-list  :key="pod.metadata.uid" :pod="pod"></containers-list>
             </b-modal>
             <!-- <h3 class=" mb-5 ml-3">Pod <span class="text-info">  {{pod.metadata.name}} </span>'s Containers </h3> -->

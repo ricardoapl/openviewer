@@ -31,6 +31,14 @@
             </b-form-group>
             <b-form-group
               class="col"
+              id="namespace-input-group"
+              label="Namespace"
+              label-for="namespace"
+            >
+              <b-form-select required placeholder="Namespace" v-model="newService.namespace" :options="namespacesNames"></b-form-select>
+            </b-form-group>
+            <b-form-group
+              class="col"
               id="type-input-group"
               label="Type"
               label-for="type"
@@ -174,12 +182,9 @@ spec:
 <script>
 export default {
   name: 'ServicesForm',
-  props: {
-    namespace: {
-      type: String,
-      default: 'default'
-    }
-  },
+  props:[
+    'namespacesNames'
+  ],
   data () {
     return {
       jsonYMLCreate:false,
@@ -241,7 +246,8 @@ export default {
         kind: 'Service',
         apiVersion: 'v1',
         metadata: {
-          name: this.newService.name
+          name: this.newService.name,
+          namespace: this.newService.namespace
         },
         spec: {
           type: this.newService.type,
