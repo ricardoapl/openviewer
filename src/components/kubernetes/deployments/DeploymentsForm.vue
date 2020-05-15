@@ -204,6 +204,7 @@ export default {
       return body
     },
     submitForm: function () {
+      // XXX (ricardoapl) Delete existing services with same name
       this.createDeployment()
         .then(() => {
           this.createService()
