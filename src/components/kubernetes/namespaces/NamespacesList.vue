@@ -1,7 +1,7 @@
 <template>
   <span>
     <div class="container table-responsive">
-      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredPods" :fields="fields" selectable single @row-selected="onRowSelected"></b-table>
+      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="namespaces" :fields="fields"></b-table>
     </div>
     <b-pagination
       v-model="currentPage"
@@ -17,23 +17,15 @@
 
 
 export default {
-  name: 'PodsList',
-  props:[
-    'namespace'
-  ],
+  name: 'NamespacesList',
   data () {
     return {
       perPage: 5,
       currentPage: 1,
-      selectedPod:{},
       fields:[
         {
           key:'metadata.name',
           label:'name'
-        },
-        {
-          key:'metadata.namespace',
-          label:'Namespace'
         },
         {
           key:'metadata.creationTimestamp',
@@ -50,24 +42,14 @@ export default {
   mounted () {
   },
   computed: {
-    filteredPods () {
-      if(this.namespace=='*'){
-        return this.$store.state.pods.pods;
-      } else{
-        return this.$store.state.pods.pods.filter((obj)=>{
-          return obj.metadata.namespace == this.namespace;
-        })
-      }
+    namespaces () {
+      return this.$store.state.namespaces.namespaces;
     },
     rows() {
-      return this.filteredPods.length;
-    },
+      return this.namespaces.length;
+    }
   },
   methods: {
-    onRowSelected(items) {
-        this.selectedPod = items[0];
-        this.$emit('newSelectedPod',this.selectedPod);
-    },
   },
   watch: {
   }

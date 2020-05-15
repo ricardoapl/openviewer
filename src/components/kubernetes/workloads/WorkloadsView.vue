@@ -12,7 +12,8 @@
             </b-tab>
             <b-tab title="Pods">
                 <h3 class=" mb-3 ml-3"> Pods List </h3>
-                <pods-list :namespace="namespace"></pods-list>
+                <pods-list @newSelectedPod="newSelectedPod" :namespace="namespace"></pods-list>
+                <!-- <containers-list v-if="pod" :pod="pod"></containers-list> -->
             </b-tab>
         </b-tabs>
     </div>
@@ -22,6 +23,7 @@
 <script>
 
 import podsList from '../pods/PodsList'
+import containersList from '../pods/ContainersList'
 
 export default {
     name: 'ServicesView',
@@ -30,7 +32,8 @@ export default {
     },
     data () {
         return {
-          namespace: '*'
+          namespace: '*',
+          pod:null
         }
     },
     mounted () {
@@ -39,6 +42,9 @@ export default {
         
     },
     methods: {
+      newSelectedPod(incomingPod){
+        this.pod = incomingPod;
+      }
     },
     watch: {
     }
