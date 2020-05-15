@@ -30,41 +30,44 @@
       size="xl"
       centered
       hide-header
+      hide-footer
       hide-backdrop
     >
       <b-container>
-        <!-- XXX (ricardoapl) Add remaining form -->
-        <b-form-textarea
-          id="textarea"
-          v-model="deploymentString"
-          rows="20"
-          no-resize
-        />
+        <b-tabs
+          content-class="mt-3"
+          justified
+        >
+          <b-tab
+            title="Basic Settings"
+            active
+          >
+            <deployments-list-action-edit-basic
+              :deployment="deployment"
+              @hide="showModal = false"
+            />
+          </b-tab>
+          <b-tab title="Advanced Settings">
+            <deployments-list-action-edit-advanced
+              :deployment="deployment"
+              @hide="showModal = false"
+            />
+          </b-tab>
+        </b-tabs>
       </b-container>
-      <template v-slot:modal-footer>
-        <b-container class="text-center">
-          <b-button
-            class="mx-1"
-            variant="success"
-            @click="saveDeployment()"
-          >
-            Save
-          </b-button>
-          <b-button
-            class="mx-1"
-            @click="cancel()"
-          >
-            Cancel
-          </b-button>
-        </b-container>
-      </template>
     </b-modal>
   </div>
 </template>
 
 <script>
+import DeploymentsListActionEditBasic from './DeploymentsListActionEditBasic'
+import DeploymentsListActionEditAdvanced from './DeploymentsListActionEditAdvanced'
 export default {
   name: 'DeploymentsListActionEdit',
+  components: {
+    DeploymentsListActionEditBasic,
+    DeploymentsListActionEditAdvanced
+  },
   props: {
     deployment: {
       type: Object,
@@ -73,59 +76,13 @@ export default {
   },
   data () {
     return {
-      showModal: false,
-      deploymentString: this.objectToString(this.deployment)
-    }
-  },
-  watch: {
-    deployment: function (newDeployment, oldDeployment) {
-      // This is required because:
-      // - prop change doesn't trigger data section update by itself
-      // - v-model doesn't work with computed section (e.g. deploymentString)
-      this.deploymentString = this.objectToString(newDeployment)
+      showModal: false
     }
   },
   mounted () {
     console.log('DeploymentsListActionEdit created and mounted for deployment with name ' + this.deployment.metadata.name)
     // XXX (ricardoapl) We may want to use v-b-tooltip instead of jQuery
     $(function () { $('[data-toggle="tooltip"]').tooltip() })
-  },
-  methods: {
-    objectToString: function (object) {
-      const indentation = 2
-      const replacer = null
-      const string = JSON.stringify(object, replacer, indentation)
-      return string
-    },
-    cancel: function () {
-      this.deploymentString = this.objectToString(this.deployment)
-      this.showModal = false
-    },
-    saveDeployment: function () {
-      const namespace = this.deployment.metadata.namespace
-      const deployment = this.deployment.metadata.name
-      const url = `/apis/apps/v1/namespaces/${namespace}/deployments/${deployment}`
-      const body = this.buildBody(this.deploymentString)
-      axios.put(url, body)
-        .then(response => {
-          console.log(response)
-          const action = 'deployments/getDeployments'
-          this.$store.dispatch(action)
-          this.showModal = false
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    buildBody: function (deploymentString) {
-      const body = {
-        kind: 'Deployment',
-        apiVersion: 'apps/v1'
-      }
-      const deploymentObject = JSON.parse(deploymentString)
-      Object.assign(body, deploymentObject)
-      return body
-    }
   }
 }
 </script>
