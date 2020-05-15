@@ -14,7 +14,6 @@
         <p><span  v-for="(value) in row.item.status.podIPs " :key="value.ip">{{value.ip}}</span></p>
       </template>
       </b-table>
-      
     </div>
     <b-pagination
       v-model="currentPage"
