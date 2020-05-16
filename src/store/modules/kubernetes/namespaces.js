@@ -1,7 +1,7 @@
 const state = {
   namespaces: [],
   totalnamespaces: 0,
-  inNamespace:0,
+  inNamespace: 0
 }
 
 const mutations = {
@@ -16,7 +16,7 @@ const mutations = {
 const actions = {
   getNamespaces ({ commit }) {
     commit('setTotalNamespaces', 0)
-    axios.get('api/v1/namespaces')
+    kaxios.get('api/v1/namespaces')
       .then(response => {
         console.log('[Vuex/getNamespaces] =>', response)
         commit('setNamespaces', response.data.items)

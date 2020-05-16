@@ -83,6 +83,43 @@ export default {
     console.log('DeploymentsListActionEdit created and mounted for deployment with name ' + this.deployment.metadata.name)
     // XXX (ricardoapl) We may want to use v-b-tooltip instead of jQuery
     $(function () { $('[data-toggle="tooltip"]').tooltip() })
+  },
+  methods: {
+    objectToString: function (object) {
+      const indentation = 2
+      const replacer = null
+      const string = JSON.stringify(object, replacer, indentation)
+      return string
+    },
+    cancel: function () {
+      this.deploymentString = this.objectToString(this.deployment)
+      this.showModal = false
+    },
+    saveDeployment: function () {
+      const namespace = this.deployment.metadata.namespace
+      const deployment = this.deployment.metadata.name
+      const url = `/apis/apps/v1/namespaces/${namespace}/deployments/${deployment}`
+      const body = this.buildBody(this.deploymentString)
+      kaxios.put(url, body)
+        .then(response => {
+          console.log(response)
+          const action = 'deployments/getDeployments'
+          this.$store.dispatch(action)
+          this.showModal = false
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    buildBody: function (deploymentString) {
+      const body = {
+        kind: 'Deployment',
+        apiVersion: 'apps/v1'
+      }
+      const deploymentObject = JSON.parse(deploymentString)
+      Object.assign(body, deploymentObject)
+      return body
+    }
   }
 }
 </script>

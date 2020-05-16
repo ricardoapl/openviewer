@@ -1,15 +1,26 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
+    name: 'LandingPage',
+    component: () => import('../components/landing/LandingView'),
+    meta: {
+      requiresAuth: false,
+      isKubernetes: false
+    }
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: () => import('../components/HomeView.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -17,7 +28,8 @@ const routes = [
     name: 'LoginUnscoped',
     component: () => import('../components/authentication/LoginUnscoped.vue'),
     meta: {
-      requiresVisitor: true
+      requiresVisitor: true,
+      isKubernetes: false
     }
   },
   {
@@ -25,7 +37,8 @@ const routes = [
     name: 'LoginScoped',
     component: () => import('../components/authentication/LoginScoped.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -33,7 +46,8 @@ const routes = [
     name: 'Logout',
     component: () => import('../components/authentication/Logout.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -41,7 +55,8 @@ const routes = [
     name: 'Instances',
     component: () => import('../components/instances/InstanceView.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -49,7 +64,8 @@ const routes = [
     name: 'Images',
     component: () => import('../components/images/ImageView.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -57,7 +73,8 @@ const routes = [
     name: 'Volumes',
     component: () => import('../components/volumes/VolumeView.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -65,7 +82,8 @@ const routes = [
     name: 'FloatingIPs',
     component: () => import('../components/networks/floatingips/FloatingIpView.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -74,7 +92,8 @@ const routes = [
     name: 'Segments',
     component: () => import('../components/availability/segments/SegmentView.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -83,7 +102,8 @@ const routes = [
     name: 'Notifications',
     component: () => import('../components/availability/notifications/NotificationView.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   {
@@ -91,17 +111,27 @@ const routes = [
     name: 'Orchestrations',
     component: () => import('../components/orchestration/OrchestrationView.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      isKubernetes: false
     }
   },
   // KUBERNETES
+  {
+    path: '/kubernetes/login',
+    name: 'LoginKubernetes',
+    component: () => import('../components/kubernetes/authentication/Login.vue'),
+    meta: {
+      requiresVisitor: true,
+      isKubernetes: true
+    }
+  },
   {
     path: '/kubernetes',
     name: 'KHome',
     component: () => import('../components/kubernetes/HomeView.vue'),
     meta: {
-      // TODO (ricardoapl) Set requiresAuth after login is implemented
-      requiresAuth: false
+      requiresAuth: true,
+      isKubernetes: true
     }
   },
   {
@@ -109,8 +139,8 @@ const routes = [
     name: 'Administration',
     component: () => import('../components/kubernetes/administration/AdministrationView.vue'),
     meta: {
-      // TODO (ricardoapl) Set requiresAuth after login is implemented
-      requiresAuth: false
+      requiresAuth: true,
+      isKubernetes: true
     }
   },
   {
@@ -118,8 +148,8 @@ const routes = [
     name: 'Workloads',
     component: () => import('../components/kubernetes/workloads/WorkloadsView.vue'),
     meta: {
-      // TODO (ricardoapl) Set requiresAuth after login is implemented
-      requiresAuth: false
+      requiresAuth: true,
+      isKubernetes: true
     }
   },
   {
@@ -127,14 +157,56 @@ const routes = [
     name: 'Services',
     component: () => import('../components/kubernetes/services/ServicesView.vue'),
     meta: {
-      // TODO (ricardoapl) Set requiresAuth after login is implemented
-      requiresAuth: false
+      requiresAuth: true,
+      isKubernetes: true
     }
   }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => (record.meta.requiresAuth && record.meta.isKubernetes))) {
+    console.log('Auth && Kubernetes')
+    if (store.state.k8sauthentication.token === '') {
+      next({
+        name: 'LoginKubernetes'
+      })
+    } else {
+      next()
+    }
+  } else if (to.matched.some(record => (record.meta.requiresAuth && !record.meta.isKubernetes))) {
+    console.log('Auth && OpenViewer')
+    if (store.state.authentication.tokenUnscoped === '') {
+      next({
+        name: 'LoginUnscoped'
+      })
+    } else {
+      next()
+    }
+  } else if (to.matched.some(record => (record.meta.requiresVisitor && record.meta.isKubernetes))) {
+    console.log('Visitor && kubernetes')
+    if (store.state.k8sauthentication.token !== '') {
+      next({
+        name: 'LandingPage'
+      })
+    } else {
+      next()
+    }
+  } else if (to.matched.some(record => (record.meta.requiresVisitor && !record.meta.isKubernetes))) {
+    console.log('Visitor && OpenViewer')
+    if (store.state.authentication.tokenUnscoped !== '') {
+      next({
+        name: 'LandingPage'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
