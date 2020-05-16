@@ -1,5 +1,4 @@
 <template>
-  <!-- XXX (ricardoapl) Add form feedback (i.e. validation) -->
   <div class="container mb-4">
     <div class="card border-info">
       <div class="card-header bg-info text-light text-center">
@@ -24,6 +23,7 @@
               required
             />
           </b-form-group>
+          <!-- XXX (ricardoapl) What about deployments with multiple containers (and images)? -->
           <b-form-group
             id="image-input-group"
             label="Image"
@@ -49,6 +49,7 @@
               max="10"
             />
           </b-form-group>
+          <!-- XXX (ricardoapl) What about deployments with multiple ports? -->
           <b-form-group id="service-input-group">
             <b-form-row>
               <b-col role="group">
@@ -73,6 +74,7 @@
               </b-col>
             </b-form-row>
           </b-form-group>
+          <!-- XXX (ricardoapl) What about labels? -->
         </div>
         <div class="card-footer text-center">
           <button
