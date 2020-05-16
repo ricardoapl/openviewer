@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import DeploymentsListActionDelete from './DeploymentsListActionDelete'
 import DeploymentsListActionEdit from './DeploymentsListActionEdit'
 export default {
@@ -75,7 +76,7 @@ export default {
         { key: 'labels', label: 'Labels' },
         { key: 'pods', label: 'Pods' },
         // XXX (ricardoapl) Might want to format timestamp
-        { key: 'metadata.creationTimestamp', label: 'Created' },
+        { key: 'metadata.creationTimestamp', label: 'Created', formatter: 'created' },
         { key: 'images', label: 'Images' },
         { key: 'actions', label: 'Actions' }
       ]
@@ -97,6 +98,11 @@ export default {
   },
   mounted () {
     console.log('DeploymentsList created and mounted')
+  },
+  methods: {
+    created: function (timestamp) {
+      return moment(timestamp).fromNow()
+    }
   }
 }
 </script>

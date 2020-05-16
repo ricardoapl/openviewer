@@ -20,7 +20,7 @@
 </template>
 
 <script>
-
+import moment from 'moment'
 export default {
   name: 'RolesList',
   data () {
@@ -34,7 +34,8 @@ export default {
         },
         {
           key: 'metadata.creationTimestamp',
-          label: 'Created at'
+          label: 'Created',
+          formatter: 'created'
         },
         {
           key: 'metadata.uid',
@@ -52,19 +53,16 @@ export default {
       return this.roles.length
     }
   },
-  watch: {
-  },
-  mounted () {
-  },
   methods: {
+    created: function (timestamp) {
+      return moment(timestamp).fromNow()
+    }
   }
 }
 </script>
 
 <style scoped>
-
-.opacity{
+.opacity {
   opacity: 0.8;
 }
-
 </style>
