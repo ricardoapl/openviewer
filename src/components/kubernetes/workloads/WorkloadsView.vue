@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div class="jumbotron jumbotron-fluid text-center">
       <div class="container">
         <h1 class="display-4">
@@ -14,7 +14,7 @@
         Create deployment
       </button>
     </div>
-    <div class="mt-5">
+    <div class="container mt-5">
       <deployments-form
         v-if="showDeploymentsForm"
         :namespace="selectedNamespace"
