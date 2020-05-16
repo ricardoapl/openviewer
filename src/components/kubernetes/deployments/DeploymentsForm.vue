@@ -122,7 +122,7 @@ export default {
       const namespace = this.namespace
       const url = `/apis/apps/v1/namespaces/${namespace}/deployments`
       const body = this.getDeploymentBody()
-      const promise = axios.post(url, body)
+      const promise = kaxios.post(url, body)
         .then(response => {
           console.log(response)
           const delay = 2500
@@ -176,7 +176,7 @@ export default {
       const namespace = this.namespace
       const url = `/api/v1/namespaces/${namespace}/services`
       const body = this.getServiceBody()
-      const promise = axios.post(url, body)
+      const promise = kaxios.post(url, body)
         .then(response => {
           console.log(response)
         })

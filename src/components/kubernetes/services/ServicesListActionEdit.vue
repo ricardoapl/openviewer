@@ -208,6 +208,10 @@
           </svg>
         </b-button>
       </b-container>
+      <<<<<<< HEAD
+      =======
+
+      >>>>>>> US01 Implemented & TL1 Integration & Project context selection
       <template v-slot:modal-footer>
         <b-container class="text-center">
           <b-button
@@ -284,7 +288,7 @@ export default {
         }
       }
       console.log(body)
-      axios.patch(url, body)
+      kaxios.patch(url, body)
         .then(response => {
           console.log(response)
           this.$store.dispatch(type + '/get' + type.charAt(0).toUpperCase() + type.slice(1))

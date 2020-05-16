@@ -10,7 +10,7 @@ import segments from './modules/availability/segments'
 import orchestrations from './modules/orchestrations'
 
 // KUBERNETES
-
+import k8sauthentication from './modules/kubernetes/k8sauthentication'
 import namespaces from './modules/kubernetes/namespaces'
 import nodes from './modules/kubernetes/nodes'
 import roles from './modules/kubernetes/roles'
@@ -32,6 +32,7 @@ export default new Vuex.Store({
     notifications,
     segments,
     orchestrations,
+    k8sauthentication,
     namespaces,
     nodes,
     roles,
@@ -39,6 +40,6 @@ export default new Vuex.Store({
     deployments,
     clusterips,
     nodeports,
-    loadbalancers,
+    loadbalancers
   }
 })

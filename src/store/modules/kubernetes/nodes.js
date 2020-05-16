@@ -1,7 +1,7 @@
 const state = {
   nodes: [],
   totalnodes: 0,
-  inNamespace:0
+  inNamespace: 0
 }
 
 const mutations = {
@@ -16,7 +16,7 @@ const mutations = {
 const actions = {
   getNodes ({ commit }) {
     commit('setTotalNodes', 0)
-    axios.get('api/v1/nodes')
+    kaxios.get('api/v1/nodes')
       .then(response => {
         console.log('[Vuex/getNodes] =>', response)
         commit('setNodes', response.data.items)
