@@ -1,17 +1,12 @@
 <template>
-  <div class="container mb-4">
-    <div class="card border-info">
-      <div class="card-header bg-info text-light text-center">
-        <p class="h5">
-          <strong>Create new deployment</strong>
-        </p>
-      </div>
+  <div class="container">
+    <div>
       <form
-        action="/apis/apps/v1/namespaces/{namespace}/deployments"
-        method="POST"
-        @submit.prevent="submitForm()"
+        action="/apis/apps/v1/namespaces/{namespace}/deployments/{deployment}"
+        method="PUT"
+        @submit.prevent="saveDeployment()"
       >
-        <div class="card-body">
+        <div>
           <b-form-group
             id="name-input-group"
             label="Name"
@@ -20,7 +15,6 @@
             <b-form-input
               id="name"
               v-model="name"
-              required
             />
           </b-form-group>
           <!-- XXX (ricardoapl) What about deployments with multiple containers (and images)? -->
@@ -57,6 +51,7 @@
                 <b-form-input
                   id="service-port"
                   v-model="servicePort"
+                  disabled
                   type="number"
                   min="1024"
                   max="65535"
@@ -76,7 +71,7 @@
           </b-form-group>
           <!-- XXX (ricardoapl) What about labels? -->
         </div>
-        <div class="card-footer text-center">
+        <div class="text-center">
           <button
             type="submit"
             class="btn btn-success mr-2"
@@ -98,122 +93,58 @@
 
 <script>
 export default {
-  name: 'DeploymentsForm',
+  name: 'DeploymentsListActionEditBasic',
   props: {
-    namespace: {
-      type: String,
-      default: 'default'
+    deployment: {
+      type: Object,
+      required: true
     }
   },
   data () {
     return {
-      name: 'nginx',
-      image: 'nginx:1.14.2',
-      replicas: 3,
-      servicePort: 5555,
-      containerPort: 80
+      name: this.deployment.metadata.name,
+      image: this.deployment.spec.template.spec.containers[0].image,
+      replicas: this.deployment.spec.replicas,
+      // XXX (ricardoapl) Not used at the moment...
+      servicePort: null,
+      containerPort: this.deployment.spec.template.spec.containers[0].ports[0].containerPort
     }
   },
   mounted () {
-    console.log('DeploymentsForm created and mounted')
+    console.log('DeploymentsListActionEditBasic created and mounted for deployment with name ' + this.deployment.metadata.name)
+    // XXX (ricardoapl) We may want to use v-b-tooltip instead of jQuery
+    $(function () { $('[data-toggle="tooltip"]').tooltip() })
   },
   methods: {
-    createDeployment: function () {
-      const namespace = this.namespace
-      const url = `/apis/apps/v1/namespaces/${namespace}/deployments`
+    saveDeployment: function () {
+      const namespace = this.deployment.metadata.namespace
+      const deployment = this.deployment.metadata.name
+      const url = `/apis/apps/v1/namespaces/${namespace}/deployments/${deployment}`
       const body = this.getDeploymentBody()
-      const promise = axios.post(url, body)
+      axios.put(url, body)
         .then(response => {
           console.log(response)
+          const delay = 2500
           const action = 'deployments/getDeployments'
-          this.$store.dispatch(action)
+          setTimeout(this.$store.dispatch, delay, action)
+          this.$emit('hide')
         })
         .catch(error => {
           console.log(error)
         })
-      return promise
     },
     getDeploymentBody: function () {
       const body = {
         kind: 'Deployment',
-        apiVersion: 'apps/v1',
-        metadata: {
-          name: this.name
-        },
-        spec: {
-          replicas: parseInt(this.replicas),
-          selector: {
-            matchLabels: {
-              app: this.name
-            }
-          },
-          template: {
-            metadata: {
-              labels: {
-                app: this.name
-              }
-            },
-            spec: {
-              containers: [
-                {
-                  name: this.name,
-                  image: this.image,
-                  ports: [
-                    {
-                      containerPort: parseInt(this.containerPort)
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
+        apiVersion: 'apps/v1'
       }
+      Object.assign(body, this.deployment)
+      // XXX (ricardoapl) Ewwwww! Code smell!
+      body.metadata.name = this.name
+      body.spec.template.spec.containers[0].image = this.image
+      body.spec.replicas = parseInt(this.replicas)
+      body.spec.template.spec.containers[0].ports[0].containerPort = parseInt(this.containerPort)
       return body
-    },
-    createService: function () {
-      const namespace = this.namespace
-      const url = `/api/v1/namespaces/${namespace}/services`
-      const body = this.getServiceBody()
-      const promise = axios.post(url, body)
-        .then(response => {
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      return promise
-    },
-    getServiceBody: function () {
-      const body = {
-        kind: 'Service',
-        apiVersion: 'v1',
-        metadata: {
-          name: this.name
-        },
-        spec: {
-          selector: {
-            app: this.name
-          },
-          ports: [
-            {
-              port: parseInt(this.servicePort),
-              targetPort: parseInt(this.containerPort)
-            }
-          ]
-        }
-      }
-      return body
-    },
-    submitForm: function () {
-      // XXX (ricardoapl) Delete existing services with same name
-      this.createDeployment()
-        .then(() => {
-          this.createService()
-        })
-        .then(() => {
-          this.$emit('hide')
-        })
     }
   }
 }
