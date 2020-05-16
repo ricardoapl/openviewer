@@ -1,20 +1,27 @@
 <template>
-  <span>
-    <div class="container table-responsive">
-      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="namespaces" :fields="fields"></b-table>
-    </div>
+  <div class="container table-responsive">
+    <b-table
+      show-empty
+      bordered
+      :per-page="perPage"
+      :current-page="currentPage"
+      striped
+      hover
+      :items="namespaces"
+      :fields="fields"
+    />
+
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
       aria-controls="my-table"
-       align="right"
-    ></b-pagination>
-  </span>
+      align="right"
+    />
+  </div>
 </template>
 
 <script>
-
 
 export default {
   name: 'NamespacesList',
@@ -22,36 +29,36 @@ export default {
     return {
       perPage: 5,
       currentPage: 1,
-      fields:[
+      fields: [
         {
-          key:'metadata.name',
-          label:'name'
+          key: 'metadata.name',
+          label: 'Name'
         },
         {
-          key:'metadata.creationTimestamp',
-          label:'Created at'
+          key: 'metadata.creationTimestamp',
+          label: 'Created at'
         },
         {
-          key:'metadata.uid',
-          label:'UID'
-        },
-      ],
-      
+          key: 'metadata.uid',
+          label: 'UID'
+        }
+      ]
+
     }
-  },
-  mounted () {
   },
   computed: {
     namespaces () {
-      return this.$store.state.namespaces.namespaces;
+      return this.$store.state.namespaces.namespaces
     },
-    rows() {
-      return this.namespaces.length;
+    rows () {
+      return this.namespaces.length
     }
   },
-  methods: {
-  },
   watch: {
+  },
+  mounted () {
+  },
+  methods: {
   }
 }
 </script>

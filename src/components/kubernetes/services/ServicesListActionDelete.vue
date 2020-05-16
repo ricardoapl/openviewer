@@ -36,17 +36,17 @@
       <template v-slot:modal-footer>
         <b-container class="text-center">
           <b-button
-            class="mr-1"
-            @click="cancel()"
-          >
-            Cancel
-          </b-button>
-          <b-button
-            class="ml-1"
+            class="mx-1"
             variant="danger"
             @click="deleteService()"
           >
             Delete
+          </b-button>
+          <b-button
+            class="mx-1"
+            @click="cancel()"
+          >
+            Cancel
           </b-button>
         </b-container>
       </template>
@@ -77,11 +77,11 @@ export default {
     deleteService: function () {
       const namespace = this.service.metadata.namespace
       const service = this.service.metadata.name
-      const type = this.service.spec.type;
+      const type = this.service.spec.type
       const url = `/api/v1/namespaces/${namespace}/services/${service}`
       axios.delete(url)
         .then(response => {
-          this.$store.dispatch(type+'/get'+type.charAt(0).toUpperCase() + type.slice(1))
+          this.$store.dispatch(type + '/get' + type.charAt(0).toUpperCase() + type.slice(1))
           this.showModal = false
         })
         .catch(error => {

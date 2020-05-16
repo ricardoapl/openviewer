@@ -8,7 +8,7 @@
         <p>In this page you can manage all of your Workloads.<br>If you want to create a new deployment click on the button down bellow.</p>
       </div>
       <button
-        class="btn btn-outline-info mt-4"
+        class="btn btn-outline-info mt-4 col-3 mr-2"
         @click="showDeploymentsForm = !showDeploymentsForm"
       >
         Create deployment
@@ -51,11 +51,32 @@
           <deployments-list :namespace="selectedNamespace" />
         </b-tab>
         <b-tab title="Pods & Containers">
-          <h3 class=" mb-3 ml-3"> Pods List </h3>
-          <pods-list @newSelectedPod="newSelectedPod" :namespace="selectedNamespace"></pods-list>
-          <div class="mt-3" v-if="pod">
-            <b-modal header-text-variant="info"  ok-only size="xl" hide-backdrop :key="pod.metadata.uid" content-class="shadow" v-model="modalShow" id="modal-1" :title="'Containers of Pod '+pod.metadata.name">
-                <containers-list  :key="pod.metadata.uid" :pod="pod"></containers-list>
+          <h3 class=" mb-3 ml-3">
+            Pods List
+          </h3>
+          <pods-list
+            :namespace="selectedNamespace"
+            @newSelectedPod="newSelectedPod"
+          />
+          <div
+            v-if="pod"
+            class="mt-3"
+          >
+            <b-modal
+              id="modal-1"
+              :key="pod.metadata.uid"
+              v-model="modalShow"
+              header-text-variant="info"
+              ok-only
+              size="xl"
+              hide-backdrop
+              content-class="shadow"
+              :title="'Containers of Pod '+pod.metadata.name"
+            >
+              <containers-list
+                :key="pod.metadata.uid"
+                :pod="pod"
+              />
             </b-modal>
             <!-- <h3 class=" mb-5 ml-3">Pod <span class="text-info">  {{pod.metadata.name}} </span>'s Containers </h3> -->
             <!-- <containers-list  :key="pod.metadata.uid" :pod="pod"></containers-list> -->
@@ -78,14 +99,14 @@ export default {
     DeploymentsList,
     DeploymentsForm,
     'pods-list': podsList,
-    'containers-list': containersList,
+    'containers-list': containersList
   },
   data () {
     return {
       showDeploymentsForm: false,
       selectedNamespace: '*',
       pod: null,
-      modalShow:false
+      modalShow: false
     }
   },
   computed: {
@@ -97,17 +118,19 @@ export default {
   },
   mounted () {
     console.log('WorkloadsView created and mounted')
-    this.getDeployments()
     this.getNamespaces()
+    this.getDeployments()
+    this.getPods()
   },
   methods: {
     ...mapActions({
+      getNamespaces: 'namespaces/getNamespaces',
       getDeployments: 'deployments/getDeployments',
-      getNamespaces: 'namespaces/getNamespaces'
+      getPods: 'pods/getPods'
     }),
-    newSelectedPod(incomingPod){
-      if(incomingPod){
-        this.pod = incomingPod;
+    newSelectedPod (incomingPod) {
+      if (incomingPod) {
+        this.pod = incomingPod
         this.modalShow = true
       }
     }

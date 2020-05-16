@@ -32,13 +32,22 @@
       hide-backdrop
     >
       <div class="">
-          <div class="container">
-            <h5 > <span class="text-warning">Update</span> ports for Service {{service.metadata.name}} </h5>
-          </div>
+        <div class="container">
+          <h5> <span class="text-warning">Update</span> ports for Service {{ service.metadata.name }} </h5>
         </div>
-      <b-container v-if="newService && newService.spec" style="margin-top:20px">
-        <div v-for="(port,index) in newService.spec.ports" :key="port.name">
-          <span class="mx-auto row mb-2" :class="{'opacity': oldPortsToRemove.findIndex((i) => i == index)!=-1}">
+      </div>
+      <b-container
+        v-if="newService && newService.spec"
+        style="margin-top:20px"
+      >
+        <div
+          v-for="(port,index) in newService.spec.ports"
+          :key="port.name"
+        >
+          <span
+            class="mx-auto row mb-2"
+            :class="{'opacity': oldPortsToRemove.findIndex((i) => i == index)!=-1}"
+          >
             <b-button
               v-show="oldPortsToRemove.findIndex((i) => i == index)==-1"
               class="mx-1"
@@ -83,71 +92,105 @@
                 />
               </svg>
             </b-button>
-            <div class="mr-1 col-2">              
-              <b-form-input class="form-control-sm" v-model="port.name" placeholder="Enter port name"></b-form-input>
+            <div class="mr-1 col-2">
+              <b-form-input
+                v-model="port.name"
+                class="form-control-sm"
+                placeholder="Enter port name"
+              />
             </div>
             <div class="mr-1 col-2">
-              <b-form-input class="form-control-sm"  v-model="port.protocol" placeholder="Enter port protocol"></b-form-input>
+              <b-form-input
+                v-model="port.protocol"
+                class="form-control-sm"
+                placeholder="Enter port protocol"
+              />
             </div>
             <div class="mr-1 col-2">
-              <b-form-input class="form-control-sm" v-model="port.port" placeholder="Enter port number"></b-form-input>
+              <b-form-input
+                v-model="port.port"
+                class="form-control-sm"
+                placeholder="Enter port number"
+              />
             </div>
             <div class="mr-1 col-2">
-              <b-form-input class="form-control-sm" v-model="port.targetPort" placeholder="Enter targetPort number"></b-form-input>
+              <b-form-input
+                v-model="port.targetPort"
+                class="form-control-sm"
+                placeholder="Enter targetPort number"
+              />
             </div>
           </span>
         </div>
-        </b-container>
-        <hr>
-        <div class="">
-          <div class="container">
-            <h5 > <span class="text-success">Add</span> new ports for Service {{service.metadata.name}} </h5>
-          </div>
+      </b-container>
+      <hr>
+      <div class="">
+        <div class="container">
+          <h5> <span class="text-success">Add</span> new ports for Service {{ service.metadata.name }} </h5>
         </div>
-        <b-container style="margin-top:20px">
-          <div  v-for="(newPort,index) in newPorts" :key="newPort.name">
-            <span class=" mx-auto row mb-2">
-              <b-button
-                class="mx-1"
-                size="sm"
-                variant="danger"
-                @click="removePort(index)"
+      </div>
+      <b-container style="margin-top:20px">
+        <div
+          v-for="(newPort,index) in newPorts"
+          :key="newPort.name"
+        >
+          <span class=" mx-auto row mb-2">
+            <b-button
+              class="mx-1"
+              size="sm"
+              variant="danger"
+              @click="removePort(index)"
+            >
+              <svg
+                class="bi bi-trash-fill"
+                width="1em"
+                height="1em"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="bi bi-trash-fill"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M2.5 1a1 1 0 00-1 1v1a1 1 0 001 1H3v9a2 2 0 002 2h6a2 2 0 002-2V4h.5a1 1 0 001-1V2a1 1 0 00-1-1H10a1 1 0 00-1-1H7a1 1 0 00-1 1H2.5zm3 4a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7a.5.5 0 01.5-.5zM8 5a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7A.5.5 0 018 5zm3 .5a.5.5 0 00-1 0v7a.5.5 0 001 0v-7z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </b-button>
-              <div class="mr-1 col-2">              
-                <b-form-input class="form-control-sm" v-model="newPort.name" placeholder="Enter port name"></b-form-input>
-              </div>
-              <div class="mr-1 col-2">
-                <b-form-input class="form-control-sm"  v-model="newPort.protocol" placeholder="Enter port protocol"></b-form-input>
-              </div>
-              <div class="mr-1 col-2">
-                <b-form-input class="form-control-sm" v-model="newPort.port" placeholder="Enter port number"></b-form-input>
-              </div>
-              <div class="mr-1 col-2">
-                <b-form-input class="form-control-sm" v-model="newPort.targetPort" placeholder="Enter targetPort number"></b-form-input>
-              </div>
-            </span>
-          </div>
+                <path
+                  fill-rule="evenodd"
+                  d="M2.5 1a1 1 0 00-1 1v1a1 1 0 001 1H3v9a2 2 0 002 2h6a2 2 0 002-2V4h.5a1 1 0 001-1V2a1 1 0 00-1-1H10a1 1 0 00-1-1H7a1 1 0 00-1 1H2.5zm3 4a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7a.5.5 0 01.5-.5zM8 5a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7A.5.5 0 018 5zm3 .5a.5.5 0 00-1 0v7a.5.5 0 001 0v-7z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </b-button>
+            <div class="mr-1 col-2">
+              <b-form-input
+                v-model="newPort.name"
+                class="form-control-sm"
+                placeholder="Enter port name"
+              />
+            </div>
+            <div class="mr-1 col-2">
+              <b-form-input
+                v-model="newPort.protocol"
+                class="form-control-sm"
+                placeholder="Enter port protocol"
+              />
+            </div>
+            <div class="mr-1 col-2">
+              <b-form-input
+                v-model="newPort.port"
+                class="form-control-sm"
+                placeholder="Enter port number"
+              />
+            </div>
+            <div class="mr-1 col-2">
+              <b-form-input
+                v-model="newPort.targetPort"
+                class="form-control-sm"
+                placeholder="Enter targetPort number"
+              />
+            </div>
+          </span>
+        </div>
         <b-button
           class="mx-1"
           size="sm"
           variant="success"
           @click="addPort()"
-          
         >
           <svg
             class="bi bi-plus-square-fill"
@@ -164,32 +207,29 @@
             />
           </svg>
         </b-button>
-       </b-container>
-      
+      </b-container>
       <template v-slot:modal-footer>
         <b-container class="text-center">
           <b-button
-            class="mr-1"
-            @click="cancel()"
-          >
-            Cancel
-          </b-button>
-          <b-button
-            class="ml-1"
+            class="mx-1"
             variant="success"
             @click="saveService()"
           >
             Save
           </b-button>
+          <b-button
+            class="mx-1"
+            @click="cancel()"
+          >
+            Cancel
+          </b-button>
         </b-container>
       </template>
     </b-modal>
-
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'ServiceListActionEdit',
   props: [
@@ -198,9 +238,9 @@ export default {
   data () {
     return {
       showModal: false,
-      newPorts:[],
-      oldPortsToRemove:[],
-      newService:{}
+      newPorts: [],
+      oldPortsToRemove: [],
+      newService: {}
     }
   },
   mounted () {
@@ -212,51 +252,48 @@ export default {
     cancel: function () {
       this.showModal = false
     },
-    removeOldPort(index){
-      this.oldPortsToRemove.push(index);
+    removeOldPort (index) {
+      this.oldPortsToRemove.push(index)
     },
-    reAddOldPort(index){
-      this.oldPortsToRemove.splice(this.oldPortsToRemove.findIndex((i) => i == index));
+    reAddOldPort (index) {
+      this.oldPortsToRemove.splice(this.oldPortsToRemove.findIndex((i) => i == index))
     },
-    addPort: function(){
-      var portObject = {};
-      portObject.name = "newport"+this.newPorts.length;
-      this.newPorts.push(portObject);
+    addPort: function () {
+      var portObject = {}
+      portObject.name = 'newport' + this.newPorts.length
+      this.newPorts.push(portObject)
     },
-    removePort(index){
+    removePort (index) {
       if (index > -1) {
-        this.newPorts.splice(index, 1);
+        this.newPorts.splice(index, 1)
       }
     },
     saveService: function () {
-
       this.oldPortsToRemove.forEach(index => {
-        this.newService.spec.ports.splice(index);
-      });
-      this.newPorts.forEach(port=>{
-        this.newService.spec.ports.push(port);
-      });
-
+        this.newService.spec.ports.splice(index)
+      })
+      this.newPorts.forEach(port => {
+        this.newService.spec.ports.push(port)
+      })
       const namespace = this.service.metadata.namespace
       const service = this.service.metadata.name
       const url = `/api/v1/namespaces/${namespace}/service/${service}`
-      
       const body = {
-        "spec": {
-          "ports":this.newService.spec.ports
+        spec: {
+          ports: this.newService.spec.ports
         }
-      };
-      console.log(body);
+      }
+      console.log(body)
       axios.patch(url, body)
         .then(response => {
           console.log(response)
-          this.$store.dispatch(type+'/get'+type.charAt(0).toUpperCase() + type.slice(1))
+          this.$store.dispatch(type + '/get' + type.charAt(0).toUpperCase() + type.slice(1))
           this.showModal = false
         })
         .catch(error => {
           console.log(error)
         })
-    },
+    }
   }
 }
 </script>

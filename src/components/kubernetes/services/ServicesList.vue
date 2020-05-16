@@ -1,8 +1,16 @@
 <template>
-  <span>
-    <div class="container table-responsive">
-      <b-table show-empty bordered :per-page="perPage" :current-page="currentPage" striped hover :items="filteredServices" :fields="fields">
-        <template v-slot:cell(labels)="row">
+  <div class="container table-responsive">
+    <b-table
+      show-empty
+      bordered
+      :per-page="perPage"
+      :current-page="currentPage"
+      striped
+      hover
+      :items="filteredServices"
+      :fields="fields"
+    >
+      <template v-slot:cell(labels)="row">
         <template v-for="(key, value) in row.item.metadata.labels">
           <span
             :key="key"
@@ -45,88 +53,87 @@
           <services-list-action-edit :service="row.item" />
         </b-button-group>
       </template>
-      </b-table>
-    </div>
+    </b-table>
+
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
       aria-controls="my-table"
-       align="right"
-    ></b-pagination>
-  </span>
+      align="right"
+    />
+  </div>
 </template>
 
 <script>
-
 import ServicesListActionDelete from './ServicesListActionDelete.vue'
 import ServicesListActionEdit from './ServicesListActionEdit.vue'
-
 export default {
   name: 'ServicesList',
-  components:{
+  components: {
     ServicesListActionDelete,
     ServicesListActionEdit
   },
-  props:[
-    'namespace','typeService'
+  props: [
+    'namespace',
+    'typeService'
   ],
   data () {
     return {
       perPage: 5,
       currentPage: 1,
-      fields:[
+      fields: [
         {
-          key:'metadata.name',
-          label:'Name'
-        },
-        {
-          key:'metadata.namespace',
-          label:'Namespace'
-        },
-        { 
-          key: 'labels', 
-          label: 'Labels' 
+          key: 'metadata.name',
+          label: 'Name'
         },
         {
-          key:'spec.clusterIP',
-          label:'clusterIP'
+          key: 'metadata.namespace',
+          label: 'Namespace'
         },
         {
-          key:'ports',
-          label:'Ports'
+          key: 'labels',
+          label: 'Labels'
         },
         {
-          key:'selector',
-          label:'Selector'
+          key: 'spec.clusterIP',
+          label: 'clusterIP'
         },
         {
-          key:'actions',
-          label:'Actions'
+          key: 'ports',
+          label: 'Ports'
         },
-      ],
-      
+        {
+          key: 'selector',
+          label: 'Selector'
+        },
+        {
+          key: 'actions',
+          label: 'Actions'
+        }
+      ]
+
     }
-  },
-  mounted () {
   },
   computed: {
     filteredServices () {
-      if(this.namespace=='*'||this.namespace == undefined){
-        return this.$store.state[this.typeService][this.typeService];
-      } else{
-        return this.$store.state[this.typeService][this.typeService].filter((obj)=>{
-          return obj.metadata.namespace == this.namespace;
+      if (this.namespace == '*' || this.namespace == undefined) {
+        return this.$store.state[this.typeService][this.typeService]
+      } else {
+        return this.$store.state[this.typeService][this.typeService].filter((obj) => {
+          return obj.metadata.namespace == this.namespace
         })
       }
     },
-    rows() {
-      return this.filteredServices.length;
+    rows () {
+      return this.filteredServices.length
     }
   },
-  methods: {
-  },
   watch: {
+  },
+  mounted () {
+  },
+  methods: {
   }
 }
 </script>

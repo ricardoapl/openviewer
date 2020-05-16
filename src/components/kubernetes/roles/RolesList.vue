@@ -1,20 +1,25 @@
 <template>
-  <span>
-    <div class="container table-responsive">
-      <b-table bordered :per-page="perPage" :current-page="currentPage" striped hover :items="roles" :fields="fields"></b-table>
-    </div>
+  <div class="container table-responsive">
+    <b-table
+      bordered
+      :per-page="perPage"
+      :current-page="currentPage"
+      striped
+      hover
+      :items="roles"
+      :fields="fields"
+    />
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
       aria-controls="my-table"
-       align="right"
-    ></b-pagination>
-  </span>
+      align="right"
+    />
+  </div>
 </template>
 
 <script>
-
 
 export default {
   name: 'RolesList',
@@ -22,36 +27,36 @@ export default {
     return {
       perPage: 5,
       currentPage: 1,
-      fields:[
+      fields: [
         {
-          key:'metadata.name',
-          label:'Name'
+          key: 'metadata.name',
+          label: 'Name'
         },
         {
-          key:'metadata.creationTimestamp',
-          label:'Created at'
+          key: 'metadata.creationTimestamp',
+          label: 'Created at'
         },
         {
-          key:'metadata.uid',
-          label:'UID'
-        },
-      ],
-      
+          key: 'metadata.uid',
+          label: 'UID'
+        }
+      ]
+
     }
-  },
-  mounted () {
   },
   computed: {
     roles () {
-      return this.$store.state.roles.roles;
+      return this.$store.state.roles.roles
     },
-    rows() {
-      return this.roles.length;
+    rows () {
+      return this.roles.length
     }
   },
-  methods: {
-  },
   watch: {
+  },
+  mounted () {
+  },
+  methods: {
   }
 }
 </script>
