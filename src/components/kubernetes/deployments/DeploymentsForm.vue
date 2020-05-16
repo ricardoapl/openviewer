@@ -125,8 +125,9 @@ export default {
       const promise = axios.post(url, body)
         .then(response => {
           console.log(response)
+          const delay = 2500
           const action = 'deployments/getDeployments'
-          this.$store.dispatch(action)
+          setTimeout(this.$store.dispatch, delay, action)
         })
         .catch(error => {
           console.log(error)
