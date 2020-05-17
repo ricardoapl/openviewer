@@ -208,10 +208,6 @@
           </svg>
         </b-button>
       </b-container>
-      <<<<<<< HEAD
-      =======
-
-      >>>>>>> US01 Implemented & TL1 Integration & Project context selection
       <template v-slot:modal-footer>
         <b-container class="text-center">
           <b-button
@@ -303,9 +299,7 @@ export default {
 </script>
 
 <style  scoped>
-
-.opacity{
-  opacity:0.5
+.opacity {
+  opacity: 0.5;
 }
-
 </style>
