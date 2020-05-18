@@ -52,7 +52,7 @@
     </p>
     <form
       class="w-25 m-auto"
-      @submit.prevent="login"
+      @submit.prevent="submit"
     >
       <div
         v-if="hasErrors"
@@ -66,39 +66,20 @@
         <small>
           <ul class="text-left mb-0">
             <li v-if="serverErrors">{{ serverErrors }}</li>
-            <li v-if="!$v.kubernetesAddress.required">Field Kubernetes address is required</li>
-            <li v-if="!$v.name.required">Field name is required</li>
-            <li v-if="!$v.name.alphaSpaces">Field name only accept letters and spaces</li>
-            <li v-if="!$v.name.minLength">Name must have at least {{ $v.name.$params.minLength.min }} characters.</li>
-            <li v-if="!$v.name.maxLength">Name only can have {{ $v.name.$params.maxLength.max }} characters.</li>
-            <li v-if="!$v.password.required">Field password is required</li>
-            <li v-if="!$v.password.minLength">Password must have at least {{ $v.password.$params.minLength.min }} letters.</li>
+            <li v-if="!$v.address.required">Field 'Kubernetes Address' is required</li>
+            <li v-if="!$v.token.required">Field 'Bearer Token' is required</li>
           </ul>
         </small>
       </div>
       <div class="form-group mb-1">
         <input
-          id="kubernetesAddress"
-          v-model="$v.kubernetesAddress.$model"
+          id="address"
+          v-model="$v.address.$model"
           type="text"
-          name="kubernetesAddress"
+          name="address"
           class="form-control"
           placeholder="Kubernetes Address"
-          :class="validationStatus($v.kubernetesAddress)"
-          :disabled="submitStatus"
-          required
-          @input="setServerState"
-        >
-      </div>
-      <div class="form-group mb-1">
-        <input
-          id="name"
-          v-model="$v.name.$model"
-          type="text"
-          name="name"
-          class="form-control"
-          placeholder="Name"
-          :class="validationStatus($v.name)"
+          :class="validationStatus($v.address)"
           :disabled="submitStatus"
           required
           @input="setServerState"
@@ -106,13 +87,13 @@
       </div>
       <div class="form-group mt-1">
         <input
-          id="password"
-          v-model="$v.password.$model"
-          type="password"
-          name="password"
+          id="token"
+          v-model="$v.token.$model"
+          type="text"
+          name="token"
           class="form-control"
-          placeholder="Password"
-          :class="validationStatus($v.password)"
+          placeholder="Bearer Token"
+          :class="validationStatus($v.token)"
           :disabled="submitStatus"
           required
           @input="setServerState"
@@ -144,63 +125,76 @@
 </template>
 
 <script>
-import { required, minLength, maxLength, helpers } from 'vuelidate/lib/validators'
-const alphaSpaces = helpers.regex('alphaSpaces', /^[a-zA-ZÀ-ž\s]*$/)
+import { required } from 'vuelidate/lib/validators'
 export default {
-  name: 'LoginUnscoped',
+  name: 'Login',
   data () {
     return {
-      // TODO (cat5e) Adapt to chosen auth mechanism
-      kubernetesAddress: '127.0.0.1:8080',
-      name: 'admin',
-      password: 'devstack',
+      address: 'https://127.0.0.1:6443',
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMTcxNDk5QG15LmlwbGVpcmlhLnB0In0.EX4hn3uozlJVQ7w1HCmOu5nV8Ep4eyz4IvFKyAfnLbY',
       serverErrors: '',
       submitStatus: false
     }
   },
   validations: {
-    kubernetesAddress: {
-      required
-    },
-    name: {
-      required,
-      alphaSpaces,
-      minLength: minLength(3),
-      maxLength: maxLength(255)
-    },
-    password: {
-      required,
-      minLength: minLength(3)
-    }
+    address: { required },
+    token: { required }
   },
   computed: {
     hasErrors () {
       return (
-        this.$v.kubernetesAddress.$error || this.$v.name.$error || this.$v.password.$error || this.serverErrors
+        this.$v.address.$error || this.$v.token.$error || this.serverErrors
       )
     }
   },
   methods: {
-    login () {
+    probeApi: function () {
+      const url = this.address
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + this.token
+        }
+      }
+      const promise = kaxios.get(url, config)
+        .then(response => {
+          console.log(response)
+          return response.status
+        })
+        .catch(error => {
+          console.log(error)
+          return error.response.status
+        })
+      return promise
+    },
+    submit: function () {
       this.$v.$touch()
-      if (!this.$v.$invalid) {
-        this.submitStatus = true
-        this.setToken()
+      if (this.$v.$invalid) {
+        // XXX (ricardoapl) Form is invalid, tell user
+      } else {
+        this.probeApi()
+          .then(status => {
+            if (status === 200) {
+              this.submitStatus = true
+              this.setToken()
+            } else {
+              // XXX (ricardoapl) Choose a user-friendly message...
+              this.serverErrors = `Server replied with HTTP ${status}.`
+            }
+          })
       }
     },
-    validationStatus (validation) {
+    validationStatus: function (validation) {
       return {
         'is-invalid': validation.$error || this.serverErrors,
         'is-valid': validation.$dirty
       }
     },
-    setServerState () {
+    setServerState: function () {
       this.serverErrors = false
     },
-    setToken () {
-      // TODO (cat5e) Adapt to chosen auth authentication
-      this.$store.commit('k8sauthentication/setToken', 'Kubernetes Token | Kubernetes Token | Kubernetes Token')
-      this.$store.commit('k8sauthentication/setKubernetesAddress', process.env.VUE_APP_BASE_URL)
+    setToken: function () {
+      this.$store.commit('k8sauthentication/setToken', this.token)
+      this.$store.commit('k8sauthentication/setKubernetesAddress', this.address)
       this.$router.push({ name: 'KHome' })
     }
   }

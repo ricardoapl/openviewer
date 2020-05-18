@@ -4,10 +4,10 @@ const state = {
 }
 
 const mutations = {
-  setToken: (state, data) => {
-    state.token = data
-    sessionStorage.setItem('tokenKubernetes', data)
-    kaxios.defaults.headers.common.Authorization = 'Bearer ' + data.token
+  setToken: (state, token) => {
+    state.token = token
+    sessionStorage.setItem('tokenKubernetes', token)
+    kaxios.defaults.headers.common.Authorization = 'Bearer ' + token
   },
   setKubernetesAddress: (state, kubernetesAddress) => {
     state.kubernetesAddress = kubernetesAddress
