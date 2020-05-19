@@ -284,7 +284,7 @@ export default {
         }
       }
       console.log(body)
-      this.$kuberentes.patch(url, body)
+      this.$kubernetes.patch(url, body)
         .then(response => {
           console.log(response)
           this.$store.dispatch(type + '/get' + type.charAt(0).toUpperCase() + type.slice(1))

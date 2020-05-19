@@ -7,7 +7,14 @@
           <strong>Create new service</strong>
         </p>
       </div>
-      <b-form-checkbox class="ml-3 mt-3" v-model="jsonYMLCreate" switch size="lg">Use JSON / YML</b-form-checkbox>
+      <b-form-checkbox
+        v-model="jsonYMLCreate"
+        class="ml-3 mt-3"
+        switch
+        size="lg"
+      >
+        Use JSON / YML
+      </b-form-checkbox>
       <form
         v-if="!jsonYMLCreate"
         action="/api/v1/namespaces/{namespace}/service"
@@ -17,8 +24,8 @@
         <div class="card-body">
           <div class="row">
             <b-form-group
-              class="col"
               id="name-input-group"
+              class="col"
               label="Name"
               label-for="name"
             >
@@ -30,42 +37,52 @@
               />
             </b-form-group>
             <b-form-group
-              class="col"
               id="namespace-input-group"
+              class="col"
               label="Namespace"
               label-for="namespace"
             >
-              <b-form-select required placeholder="Namespace" v-model="newService.namespace" :options="namespacesNames"></b-form-select>
+              <b-form-select
+                v-model="newService.namespace"
+                required
+                placeholder="Namespace"
+                :options="namespacesNames"
+              />
             </b-form-group>
             <b-form-group
-              class="col"
               id="type-input-group"
+              class="col"
               label="Type"
               label-for="type"
             >
-              <b-form-select required placeholder="Service type" v-model="newService.type" :options="serviceTypes"></b-form-select>
+              <b-form-select
+                v-model="newService.type"
+                required
+                placeholder="Service type"
+                :options="serviceTypes"
+              />
             </b-form-group>
             <b-form-group
-              class="col"
               id="selector-input-group"
+              class="col"
               label="Selector"
               label-for="selector"
             >
-            <span class="row">
-               <b-form-input
-                id="selector1"
-                placeholder="app"
-                v-model="newService.selector1"
-                class="col-3 mr-2 ml-3"
-              />
-              :
-              <b-form-input
-                id="selector2"
-                placeholder="nginx"
-                v-model="newService.selector2"
-                class="col-3 ml-2"
-              />
-            </span>
+              <span class="row">
+                <b-form-input
+                  id="selector1"
+                  v-model="newService.selector1"
+                  placeholder="app"
+                  class="col-3 mr-2 ml-3"
+                />
+                :
+                <b-form-input
+                  id="selector2"
+                  v-model="newService.selector2"
+                  placeholder="nginx"
+                  class="col-3 ml-2"
+                />
+              </span>
             </b-form-group>
           </div>
 
@@ -75,7 +92,10 @@
             label="Ports"
             label-for="name"
           >
-            <div  v-for="(newPort,index) in newPorts" :key="newPort.name">
+            <div
+              v-for="(newPort,index) in newPorts"
+              :key="newPort.name"
+            >
               <span class=" mx-auto row mb-2">
                 <b-button
                   class="mx-1"
@@ -98,46 +118,73 @@
                     />
                   </svg>
                 </b-button>
-                <div class="mr-1 col-2">              
-                  <b-form-input class="form-control-sm" v-model="newPort.name" placeholder="Enter port name"></b-form-input>
+                <div class="mr-1 col-2">
+                  <b-form-input
+                    v-model="newPort.name"
+                    class="form-control-sm"
+                    placeholder="Enter port name"
+                  />
                 </div>
                 <div class="mr-1 col-2">
-                  <b-form-input class="form-control-sm"  v-model="newPort.protocol" placeholder="Enter port protocol"></b-form-input>
+                  <b-form-input
+                    v-model="newPort.protocol"
+                    class="form-control-sm"
+                    placeholder="Enter port protocol"
+                  />
                 </div>
                 <div class="mr-1 col-2">
-                  <b-form-input type="number" class="form-control-sm" v-model="newPort.port" placeholder="Enter port number"></b-form-input>
+                  <b-form-input
+                    v-model="newPort.port"
+                    type="number"
+                    class="form-control-sm"
+                    placeholder="Enter port number"
+                  />
                 </div>
                 <div class="mr-1 col-2">
-                  <b-form-input type="number" class="form-control-sm" v-model="newPort.targetPort" placeholder="Enter targetPort number"></b-form-input>
+                  <b-form-input
+                    v-model="newPort.targetPort"
+                    type="number"
+                    class="form-control-sm"
+                    placeholder="Enter targetPort number"
+                  />
                 </div>
-                <div v-if="newService.type == 'NodePort'" class="mr-1 col-3">
-                  <b-form-input type="number" min="30000" max="32767" class="form-control-sm " v-model="newPort.nodePor" placeholder="NodePort (leave for random)"></b-form-input>
+                <div
+                  v-if="newService.type == 'NodePort'"
+                  class="mr-1 col-3"
+                >
+                  <b-form-input
+                    v-model="newPort.nodePor"
+                    type="number"
+                    min="30000"
+                    max="32767"
+                    class="form-control-sm "
+                    placeholder="NodePort (leave for random)"
+                  />
                 </div>
               </span>
             </div>
-          <b-button
-            class="mx-1"
-            size="sm"
-            variant="success"
-            @click="addPort()"
-            
-          >
-            <svg
-              class="bi bi-plus-square-fill"
-              width="1em"
-              height="1em"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
+            <b-button
+              class="mx-1"
+              size="sm"
+              variant="success"
+              @click="addPort()"
             >
-              <path
-                fill-rule="evenodd"
-                d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm6.5 4a.5.5 0 00-1 0v3.5H4a.5.5 0 000 1h3.5V12a.5.5 0 001 0V8.5H12a.5.5 0 000-1H8.5V4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </b-button>
-        </b-form-group>
+              <svg
+                class="bi bi-plus-square-fill"
+                width="1em"
+                height="1em"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm6.5 4a.5.5 0 00-1 0v3.5H4a.5.5 0 000 1h3.5V12a.5.5 0 001 0V8.5H12a.5.5 0 000-1H8.5V4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </b-button>
+          </b-form-group>
         </div>
         <div class="card-footer text-center">
           <button
@@ -158,8 +205,8 @@
       <div v-else>
         <b-form-textarea
           id="textarea"
-          placeholder=
-"kind: Service
+          v-model="jsonYMLServiceBody"
+          placeholder="kind: Service
 apiVersion: v1
 metadata:
   name: service-example
@@ -172,8 +219,7 @@ spec:
       app: nginx
   type: LoadBalancer"
           rows="12"
-          v-model="jsonYMLServiceBody"
-        ></b-form-textarea>
+        />
       </div>
     </div>
   </div>
@@ -182,40 +228,41 @@ spec:
 <script>
 export default {
   name: 'ServicesForm',
-  props:[
+  props: [
     'namespacesNames'
   ],
   data () {
     return {
-      jsonYMLCreate:false,
-      newService:{},
-      jsonYMLServiceBody:"",
-      newPorts:[{
-        name:'newport0',
-        protocol:'http',
-        port:'80',
-        targetPort:'80',
+      jsonYMLCreate: false,
+      newService: {},
+      jsonYMLServiceBody: '',
+      newPorts: [{
+        name: 'newport0',
+        protocol: 'http',
+        port: '80',
+        targetPort: '80'
       }],
-      serviceTypes:['ClusterIP','NodePort','LoadBalancer']
+      serviceTypes: ['ClusterIP', 'NodePort', 'LoadBalancer']
     }
   },
   mounted () {
     console.log('DeploymentsForm created and mounted')
   },
   methods: {
-    addPort: function(){
-      var portObject = {};
-      portObject.name = "newport"+this.newPorts.length;
-      this.newPorts.push(portObject);
+    addPort: function () {
+      var portObject = {}
+      portObject.name = 'newport' + this.newPorts.length
+      this.newPorts.push(portObject)
     },
-    removePort(index){
+    removePort (index) {
       if (index > -1) {
-        this.newPorts.splice(index, 1);
+        this.newPorts.splice(index, 1)
       }
     },
     createServiceJsonYML: function (body) {
+      const namespace = this.namespace
       const url = `/api/v1/namespaces/${namespace}/services`
-      axios.post(url, body)
+      this.$kubernetes.post(url, body)
         .then(response => {
           console.log(response)
           this.$store.dispatch('clusterips/getClusterips')
@@ -225,16 +272,16 @@ export default {
         .catch(error => {
           console.log(error)
         })
-      this.$emit('hide');
+      this.$emit('hide')
     },
     createService: function () {
       const namespace = this.namespace
       const url = `/api/v1/namespaces/${namespace}/services`
       const body = this.getServiceBody()
-      const promise = axios.post(url, body)
+      const promise = this.$kubernetes.post(url, body)
         .then(response => {
           console.log(response)
-          this.$store.dispatch(this.newService.type+'/get'+this.newService.type.charAt(0).toUpperCase() + this.newService.type.slice(1))
+          this.$store.dispatch(this.newService.type + '/get' + this.newService.type.charAt(0).toUpperCase() + this.newService.type.slice(1))
         })
         .catch(error => {
           console.log(error)
@@ -255,13 +302,13 @@ export default {
           ports: []
         }
       }
-      body.spec.selector[this.newService.selector1] = this.newService.selector2;
-      body.spec.ports = this.newPorts;
-      return body;
+      body.spec.selector[this.newService.selector1] = this.newService.selector2
+      body.spec.ports = this.newPorts
+      return body
     },
     submitForm: function () {
-      if(this.jsonYMLCreate){
-        this.createServiceJsonYML(this.jsonYMLServiceBody);
+      if (this.jsonYMLCreate) {
+        this.createServiceJsonYML(this.jsonYMLServiceBody)
       }
       this.createService()
         .then(() => {

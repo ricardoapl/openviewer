@@ -121,7 +121,7 @@ export default {
       const deployment = this.deployment.metadata.name
       const url = `/apis/apps/v1/namespaces/${namespace}/deployments/${deployment}`
       const body = this.getDeploymentBody()
-      axios.put(url, body)
+      this.$kubernetes.put(url, body)
         .then(response => {
           console.log(response)
           const delay = 2500

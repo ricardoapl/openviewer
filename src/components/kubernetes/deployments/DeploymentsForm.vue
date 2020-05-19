@@ -122,7 +122,7 @@ export default {
       const namespace = this.namespace
       const url = `/apis/apps/v1/namespaces/${namespace}/deployments`
       const body = this.getDeploymentBody()
-      const promise = this.$kuberentes.post(url, body)
+      const promise = this.$kubernetes.post(url, body)
         .then(response => {
           console.log(response)
           const delay = 2500
@@ -176,7 +176,7 @@ export default {
       const namespace = this.namespace
       const url = `/api/v1/namespaces/${namespace}/services`
       const body = this.getServiceBody()
-      const promise = this.$kuberenetes.post(url, body)
+      const promise = this.$kubernetes.post(url, body)
         .then(response => {
           console.log(response)
         })
