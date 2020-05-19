@@ -586,8 +586,8 @@
           <small>
             Created by:
             <a href="mailto:2171496@my.ipleiria.pt">João Godinho</a> /
-            <a href="mailto:2171499@my.ipleiria.pt">Ricardo Lopes</a> /
-            <a href="mailto:2171051@my.ipleiria.pt">Patrícia Rodrigues</a>
+            <a href="mailto:2171051@my.ipleiria.pt">Patrícia Rodrigues</a> /
+            <a href="mailto:2171499@my.ipleiria.pt">Ricardo Lopes</a>
           </small>
         </p>
         <small class="d-block text-muted">© 2019-2020</small>
