@@ -81,7 +81,7 @@ export default {
       const namespace = this.deployment.metadata.namespace
       const deployment = this.deployment.metadata.name
       const url = `/apis/apps/v1/namespaces/${namespace}/deployments/${deployment}`
-      kaxios.delete(url)
+      this.$kuberentes.delete(url)
         .then(response => {
           console.log(response)
           const action = 'deployments/getDeployments'

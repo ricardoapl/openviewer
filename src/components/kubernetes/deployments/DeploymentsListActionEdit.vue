@@ -100,7 +100,7 @@ export default {
       const deployment = this.deployment.metadata.name
       const url = `/apis/apps/v1/namespaces/${namespace}/deployments/${deployment}`
       const body = this.buildBody(this.deploymentString)
-      kaxios.put(url, body)
+      this.$kuberentes.put(url, body)
         .then(response => {
           console.log(response)
           const action = 'deployments/getDeployments'

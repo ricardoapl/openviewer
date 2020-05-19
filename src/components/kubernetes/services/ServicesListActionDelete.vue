@@ -79,7 +79,7 @@ export default {
       const service = this.service.metadata.name
       const type = this.service.spec.type
       const url = `/api/v1/namespaces/${namespace}/services/${service}`
-      kaxios.delete(url)
+      this.$kuberentes.delete(url)
         .then(response => {
           this.$store.dispatch(type + '/get' + type.charAt(0).toUpperCase() + type.slice(1))
           this.showModal = false

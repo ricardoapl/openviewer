@@ -155,7 +155,7 @@ export default {
           Authorization: 'Bearer ' + this.token
         }
       }
-      const promise = kaxios.get(url, config)
+      const promise = this.$kubernetes.get(url, config)
         .then(response => {
           console.log(response)
           return response.status
