@@ -4,6 +4,7 @@ import store from '../store'
 
 Vue.use(VueRouter)
 
+// XXX (ricardoapl) Split routes into modules (openstack and kuberentes)
 const routes = [
   {
     path: '/',
@@ -169,7 +170,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => (record.meta.requiresAuth && record.meta.isKubernetes))) {
-    console.log('Auth && Kubernetes')
     if (store.state.k8sauthentication.token === '') {
       next({
         name: 'LoginKubernetes'
@@ -178,7 +178,6 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else if (to.matched.some(record => (record.meta.requiresAuth && !record.meta.isKubernetes))) {
-    console.log('Auth && OpenViewer')
     if (store.state.authentication.tokenUnscoped === '') {
       next({
         name: 'LoginUnscoped'
@@ -187,7 +186,6 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else if (to.matched.some(record => (record.meta.requiresVisitor && record.meta.isKubernetes))) {
-    console.log('Visitor && kubernetes')
     if (store.state.k8sauthentication.token !== '') {
       next({
         name: 'LandingPage'
@@ -196,7 +194,6 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else if (to.matched.some(record => (record.meta.requiresVisitor && !record.meta.isKubernetes))) {
-    console.log('Visitor && OpenViewer')
     if (store.state.authentication.tokenUnscoped !== '') {
       next({
         name: 'LandingPage'
