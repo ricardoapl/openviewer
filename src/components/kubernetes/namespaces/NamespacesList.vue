@@ -9,8 +9,13 @@
       hover
       :items="namespaces"
       :fields="fields"
-    />
-
+    >
+      <template v-slot:cell(actions)="row">
+        <b-button-group>
+          <namespaces-list-action-delete :namespace="row.item" />
+        </b-button-group>
+      </template>
+    </b-table>
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
@@ -23,26 +28,21 @@
 
 <script>
 import moment from 'moment'
+import namespacesListActionDelete from './NamespacesListActionDelete'
 export default {
   name: 'NamespacesList',
+  components: {
+    namespacesListActionDelete
+  },
   data () {
     return {
       perPage: 5,
       currentPage: 1,
       fields: [
-        {
-          key: 'metadata.name',
-          label: 'Name'
-        },
-        {
-          key: 'metadata.creationTimestamp',
-          label: 'Created',
-          formatter: 'created'
-        },
-        {
-          key: 'metadata.uid',
-          label: 'UID'
-        }
+        { key: 'metadata.name', label: 'Name' },
+        { key: 'metadata.creationTimestamp', label: 'Created', formatter: 'created' },
+        { key: 'metadata.uid', label: 'UID' },
+        { key: 'actions', label: 'Actions' }
       ]
 
     }
@@ -54,6 +54,9 @@ export default {
     rows () {
       return this.namespaces.length
     }
+  },
+  mounted () {
+    console.log('NamespacesList created and mounted')
   },
   methods: {
     created: function (timestamp) {

@@ -24,7 +24,11 @@
         <div class="col" />
       </div>
     </div>
-    <div class="container">
+    <div class="container mt-5">
+      <namespaces-form
+        v-if="showNamespacesForm"
+        @hide="showNamespacesForm = false"
+      />
       <b-tabs
         content-class="mt-3"
         justified
@@ -52,10 +56,12 @@
 <script>
 import { mapActions } from 'vuex'
 import namespacesList from '../namespaces/NamespacesList.vue'
+import namespacesForm from '../namespaces/NamespacesForm.vue'
 import rolesList from '../roles/RolesList.vue'
 export default {
   name: 'AdministrationView',
   components: {
+    namespacesForm,
     'namespaces-list': namespacesList,
     'roles-list': rolesList
   },
