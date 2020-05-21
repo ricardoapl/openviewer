@@ -18,17 +18,69 @@
               required
             />
           </b-form-group>
-          <!-- XXX (ricardoapl) What about deployments with multiple containers (and images)? -->
+          <!-- XXX (ricardoapl) To what does label-for point to? -->
           <b-form-group
-            id="image-input-group"
-            label="Image"
-            label-for="image"
+            id="images-input-group"
+            label="Images"
+            label-for="images"
           >
-            <b-form-input
-              id="image"
-              v-model="image"
-              required
-            />
+            <div
+              v-for="(container, index) in containers"
+              :key="container.name"
+            >
+              <span class="mx-auto row mb-2">
+                <b-button
+                  class="mx-1"
+                  size="sm"
+                  variant="danger"
+                  @click="removeContainer(index)"
+                >
+                  <svg
+                    class="bi bi-trash-fill"
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M2.5 1a1 1 0 00-1 1v1a1 1 0 001 1H3v9a2 2 0 002 2h6a2 2 0 002-2V4h.5a1 1 0 001-1V2a1 1 0 00-1-1H10a1 1 0 00-1-1H7a1 1 0 00-1 1H2.5zm3 4a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7a.5.5 0 01.5-.5zM8 5a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7A.5.5 0 018 5zm3 .5a.5.5 0 00-1 0v7a.5.5 0 001 0v-7z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </b-button>
+                <div class="mr-1 col-2">
+                  <b-form-input
+                    v-model="container.image"
+                    class="form-control-sm"
+                    placeholder="Enter image name"
+                    required
+                  />
+                </div>
+              </span>
+            </div>
+            <b-button
+              class="mx-1"
+              size="sm"
+              variant="success"
+              @click="addContainer()"
+            >
+              <svg
+                class="bi bi-plus-square-fill"
+                width="1em"
+                height="1em"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm6.5 4a.5.5 0 00-1 0v3.5H4a.5.5 0 000 1h3.5V12a.5.5 0 001 0V8.5H12a.5.5 0 000-1H8.5V4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </b-button>
           </b-form-group>
           <b-form-group
             id="replicas-input-group"
@@ -103,8 +155,17 @@ export default {
   data () {
     return {
       name: 'nginx',
-      image: 'nginx:1.14.2',
+      containers: [{
+        name: 'image0',
+        image: 'nginx:1.14.2',
+        ports: [
+          {
+            containerPort: 80
+          }
+        ]
+      }],
       replicas: 3,
+      // XXX (ricardoapl) Service parameters...
       servicePort: 5555,
       containerPort: 80
     }
@@ -113,6 +174,23 @@ export default {
     console.log('DeploymentsFormBasic created and mounted')
   },
   methods: {
+    addContainer: function () {
+      const container = {
+        name: `image${this.containers.length}`,
+        image: `image:1.${this.containers.length}`,
+        ports: [
+          {
+            containerPort: 80
+          }
+        ]
+      }
+      this.containers.push(container)
+    },
+    removeContainer: function (index) {
+      if (index > -1) {
+        this.containers.splice(index, 1)
+      }
+    },
     createDeployment: function () {
       const namespace = this.namespace
       const url = `/apis/apps/v1/namespaces/${namespace}/deployments`
@@ -150,21 +228,14 @@ export default {
               }
             },
             spec: {
-              containers: [
-                {
-                  name: this.name,
-                  image: this.image,
-                  ports: [
-                    {
-                      containerPort: parseInt(this.containerPort)
-                    }
-                  ]
-                }
-              ]
+              containers: []
             }
           }
         }
       }
+      this.containers.forEach(function (container) {
+        body.spec.template.spec.containers.push(container)
+      })
       return body
     },
     createService: function () {
