@@ -127,6 +127,15 @@ const routes = [
     }
   },
   {
+    path: '/kubernetes/logout',
+    name: 'LogoutKubernetes',
+    component: () => import('../components/kubernetes/authentication/Logout.vue'),
+    meta: {
+      requiresAuth: true,
+      isKubernetes: true
+    }
+  },
+  {
     path: '/kubernetes',
     name: 'KHome',
     component: () => import('../components/kubernetes/HomeView.vue'),
