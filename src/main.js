@@ -16,6 +16,11 @@ Vue.prototype.$kubernetes = KubernetesClient
 window.axios = OpenStackClient
 window.kaxios = KubernetesClient
 
+
+Vue.prototype.$prometheus = 'http://127.0.0.1:9090'
+Vue.prototype.$grafana = 'http://127.0.0.1:3000'
+
+
 new Vue({
   store,
   router,

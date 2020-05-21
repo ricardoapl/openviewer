@@ -145,6 +145,15 @@ const routes = [
     }
   },
   {
+    path: '/kubernetes/monitoring',
+    name: 'Monitoring',
+    component: () => import('../components/kubernetes/monitoring/MonitoringView.vue'),
+    meta: {
+      requiresAuth: true,
+      isKubernetes: true
+    }
+  },
+  {
     path: '/kubernetes/workloads',
     name: 'Workloads',
     component: () => import('../components/kubernetes/workloads/WorkloadsView.vue'),

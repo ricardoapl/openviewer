@@ -402,6 +402,14 @@
           </li>
           <li class="nav-item">
             <router-link
+              :to="{ name: 'Monitoring'}"
+              class="nav-link"
+            >
+              Monitoring
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
               :to="{ name: 'Workloads'}"
               class="nav-link"
             >
