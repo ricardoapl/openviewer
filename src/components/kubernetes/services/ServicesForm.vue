@@ -85,7 +85,6 @@
               </span>
             </b-form-group>
           </div>
-
           <!-- PORTS -->
           <b-form-group
             id="name-input-group"
@@ -260,7 +259,7 @@ export default {
       }
     },
     createServiceJsonYML: function (body) {
-      const namespace = this.namespace
+      const namespace = this.newService.namespace
       const url = `/api/v1/namespaces/${namespace}/services`
       this.$kubernetes.post(url, body)
         .then(response => {
@@ -272,16 +271,20 @@ export default {
         .catch(error => {
           console.log(error)
         })
+      // XXX (ricardoapl) Is this really the right place for $emit()?
       this.$emit('hide')
     },
     createService: function () {
-      const namespace = this.namespace
+      const namespace = this.newService.namespace
       const url = `/api/v1/namespaces/${namespace}/services`
       const body = this.getServiceBody()
       const promise = this.$kubernetes.post(url, body)
         .then(response => {
           console.log(response)
-          this.$store.dispatch(this.newService.type + '/get' + this.newService.type.charAt(0).toUpperCase() + this.newService.type.slice(1))
+          // XXX (ricardoapl) This is some serious voodoo!
+          const type = this.newService.type
+          const action = `${type.toLowerCase()}s/get${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}s`
+          this.$store.dispatch(action)
         })
         .catch(error => {
           console.log(error)
@@ -303,6 +306,11 @@ export default {
         }
       }
       body.spec.selector[this.newService.selector1] = this.newService.selector2
+      // XXX (ricardoapl) HTML returns text, so we ought to do some parsing (somewhere)
+      this.newPorts.forEach(function (port) {
+        port.port = parseInt(port.port)
+        port.targetPort = parseInt(port.targetPort)
+      })
       body.spec.ports = this.newPorts
       return body
     },

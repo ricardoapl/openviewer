@@ -268,6 +268,20 @@ export default {
         this.newPorts.splice(index, 1)
       }
     },
+    getServiceBody: function () {
+      const body = {
+        spec: {
+          ports: []
+        }
+      }
+      this.newService.spec.ports.forEach(function (port) {
+        // XXX (ricardoapl) HTML returns text, so we ought to do some parsing (somewhere)
+        port.port = parseInt(port.port)
+        port.targetPort = parseInt(port.targetPort)
+        body.spec.ports.push(port)
+      })
+      return body
+    },
     saveService: function () {
       this.oldPortsToRemove.forEach(index => {
         this.newService.spec.ports.splice(index)
@@ -277,17 +291,20 @@ export default {
       })
       const namespace = this.service.metadata.namespace
       const service = this.service.metadata.name
-      const url = `/api/v1/namespaces/${namespace}/service/${service}`
-      const body = {
-        spec: {
-          ports: this.newService.spec.ports
-        }
+      const url = `/api/v1/namespaces/${namespace}/services/${service}`
+      // XXX (ricardoapl) It seems PATCH won't allow for the removal of existing ports
+      const headers = {
+        'Content-Type': 'application/strategic-merge-patch+json'
       }
+      const body = this.getServiceBody()
       console.log(body)
-      this.$kubernetes.patch(url, body)
+      this.$kubernetes.patch(url, body, { headers: headers })
         .then(response => {
           console.log(response)
-          this.$store.dispatch(type + '/get' + type.charAt(0).toUpperCase() + type.slice(1))
+          // XXX (ricardoapl) This is some serious voodoo!
+          const type = this.service.spec.type
+          const action = `${type.toLowerCase()}s/get${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}s`
+          this.$store.dispatch(action)
           this.showModal = false
         })
         .catch(error => {

@@ -77,11 +77,14 @@ export default {
     deleteService: function () {
       const namespace = this.service.metadata.namespace
       const service = this.service.metadata.name
-      const type = this.service.spec.type
       const url = `/api/v1/namespaces/${namespace}/services/${service}`
       this.$kubernetes.delete(url)
         .then(response => {
-          this.$store.dispatch(type + '/get' + type.charAt(0).toUpperCase() + type.slice(1))
+          console.log(response)
+          // XXX (ricardoapl) This is some serious voodoo!
+          const type = this.service.spec.type
+          const action = `${type.toLowerCase()}s/get${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()}s`
+          this.$store.dispatch(action)
           this.showModal = false
         })
         .catch(error => {
