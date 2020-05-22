@@ -191,7 +191,7 @@ export default {
       body.metadata.name = this.name
       body.spec.replicas = parseInt(this.replicas)
       this.containers.forEach(function (container) {
-        // XXX (ricardoapl) HTML always returns text... We should parse somewhere else
+        // XXX (ricardoapl) HTML returns text, so we ought to do some parsing (somewhere)
         container.ports[0].containerPort = parseInt(container.ports[0].containerPort)
       })
       body.spec.template.spec.containers = this.containers

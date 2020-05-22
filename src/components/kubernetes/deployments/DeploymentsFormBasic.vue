@@ -351,8 +351,9 @@ export default {
           ports: []
         }
       }
+      // XXX (ricardoapl) Ewwwww! Code smell!
       this.servicePorts.forEach(function (servicePort) {
-        // XXX (ricardoapl) HTML always returns text... We should parse somewhere else
+        // XXX (ricardoapl) HTML returns text, so we ought to do some parsing (somewhere)
         servicePort.port = parseInt(servicePort.port)
         servicePort.targetPort = parseInt(servicePort.targetPort)
         body.spec.ports.push(servicePort)
