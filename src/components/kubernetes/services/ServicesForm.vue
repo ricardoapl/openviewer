@@ -13,7 +13,7 @@
         switch
         size="lg"
       >
-        Use JSON / YML
+        Use JSON
       </b-form-checkbox>
       <form
         v-if="!jsonYMLCreate"
@@ -205,20 +205,24 @@
         <b-form-textarea
           id="textarea"
           v-model="jsonYMLServiceBody"
-          placeholder="kind: Service
-apiVersion: v1
-metadata:
-  name: service-example
-spec:
-  ports:
-    - name: http
-      port: 80
-      targetPort: 80
-  selector:
-      app: nginx
-  type: LoadBalancer"
+          placeholder="Paste JSON Here"
           rows="12"
         />
+        <div class="card-footer text-center">
+          <button
+            @click="submitForm()"
+            class="btn btn-success mr-2"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            @click="$emit('hide')"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -259,26 +263,39 @@ export default {
       }
     },
     createServiceJsonYML: function (body) {
-      const namespace = this.newService.namespace
+      const namespace = this.body.metadata.namespace || 'default'
       const url = `/api/v1/namespaces/${namespace}/services`
-      this.$kubernetes.post(url, body)
+       const options = {
+        headers: {
+          'Content-Type': 'application/json;',
+          }
+      };
+      this.$kubernetes.post(url, body,options)
         .then(response => {
           console.log(response)
           this.$store.dispatch('clusterips/getClusterips')
           this.$store.dispatch('nodeports/getNodeports')
           this.$store.dispatch('loadbalancers/getLoadbalancers')
+          this.$emit('hide')
         })
         .catch(error => {
           console.log(error)
         })
       // XXX (ricardoapl) Is this really the right place for $emit()?
-      this.$emit('hide')
+      // this.$emit('hide')
+
     },
     createService: function () {
-      const namespace = this.newService.namespace
+      const namespace = this.newService.namespace|| 'default';
       const url = `/api/v1/namespaces/${namespace}/services`
       const body = this.getServiceBody()
-      const promise = this.$kubernetes.post(url, body)
+      console.log(body)
+      const options = {
+        headers: {
+          'Content-Type': 'application/json',
+          }
+      };
+      const promise = this.$kubernetes.post(url, body, options)
         .then(response => {
           console.log(response)
           // XXX (ricardoapl) This is some serious voodoo!
@@ -297,7 +314,6 @@ export default {
         apiVersion: 'v1',
         metadata: {
           name: this.newService.name,
-          namespace: this.newService.namespace
         },
         spec: {
           type: this.newService.type,
