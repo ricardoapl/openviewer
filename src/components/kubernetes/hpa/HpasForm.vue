@@ -279,17 +279,25 @@ export default {
      this.selectedMetrics.forEach(metric => {
       var resourceName = metric.id.split("_",1);
       var resourceTargetType = metric.id.split("_",2);
+      var metricTargetValueKey;
+
+      if(resourceTargetType[1]=='Utilization'){
+        metricTargetValueKey = 'averageUtilization'
+      } else{
+        metricTargetValueKey = 'averageValue'
+      }
       body.spec.metrics.push({
         "type": "Resource",
         "resource": {
               "name": resourceName[0],
               "target": {
                   "type": resourceTargetType[1],
-                  "averageUtilization": Number(metric.value)
               }
             }
       });
-
+      var len = body.spec.metrics.length;
+      body.spec.metrics[len-1].resource.target[metricTargetValueKey]=Number(metric.value);
+      console.log(body)
      });
 
 

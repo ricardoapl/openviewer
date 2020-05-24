@@ -17,7 +17,7 @@ const actions = {
   getHpas ({ commit }) {
     console.log("Getting HPAS")
     commit('setTotalHpas', 0)
-    kaxios.get('/apis/autoscaling/v1/horizontalpodautoscalers')
+    kaxios.get('/apis/autoscaling/v2beta2/horizontalpodautoscalers')
       .then(response => {
         console.log('[Vuex/getHpas] =>', response)
         console.log("HPAS getter")
