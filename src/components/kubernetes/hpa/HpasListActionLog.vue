@@ -6,7 +6,7 @@
       variant="primary"
       data-placement="top"
       data-toggle="tooltip"
-      title="Edit Service"
+      title="See logs"
       @click="showModal = true"
     >
       <svg

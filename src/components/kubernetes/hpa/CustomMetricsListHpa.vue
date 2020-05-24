@@ -201,7 +201,7 @@ export default {
           }
         })
         this.newCustomMetric = {};
-        return
+        return;
       }
       this.selectableCustomPodsMetrics.push({
         name: this.newCustomMetric.name,

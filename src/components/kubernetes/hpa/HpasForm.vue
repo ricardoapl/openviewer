@@ -34,7 +34,7 @@
                 <button :disabled="!selectedDeployment" @click="progress = 33" type="button" class="btn btn-primary mr-5">Next</button>
               </div>
           </div>
-          <div v-if="progress == 33" class="">
+          <div v-show="progress == 33" class="">
             <!-- RESOURCE METRICS -->
             <h4 class="ml-3 mt-5"><i>Pick resource metrics</i></h4>
             <metrics-list-hpa :selectedMetrics="selectedMetrics" @addMetric="addMetric"></metrics-list-hpa>
@@ -51,30 +51,48 @@
           </div>
           <!-- 666 -->
           <div v-if="progress == 66" class="">
-            <h4 class="ml-3 mt-5"><i>Establish target values</i></h4>
-            <span class="mt-3 ml-3">
-              <div class="mt-3 ml-3" v-if="this.selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_Utilization')!=-1">
-                <label for="customRange"><b>CPU Average Utilization:</b></label>
-                <b class="ml-2">{{selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_Utilization')].value}} %</b>
-                <input v-model="selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_Utilization')].value" type="range" class="custom-range" min="0" max="100" id="customRange">
-              </div>
-              <div class="mt-3 ml-3" v-if="this.selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_AverageValue')!=-1">
-                <label for="customRange"><b>CPU Average Utilization:</b></label>
-                <b  class="ml-2">{{selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_AverageValue')].value}}</b>
-                <input v-model="selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_AverageValue')].value" class="form-control" type="number" placeholder="average value for CPU" >
-              </div>
-              <div class="mt-3 ml-3" v-if="this.selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_Utilization')!=-1">
-                <label for="customRange"><b>Memory Average Utilization:</b></label>
-                <b class="ml-2">{{selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_Utilization')].value}} %</b>
-                <input v-model="selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_Utilization')].value" type="range" class="custom-range" min="0" max="100" id="customRange">
-              </div>
-              <div class="mt-3 ml-3" v-if="this.selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_AverageValue')!=-1">
-                <label for="customRange"><b>Memory Average Value:</b></label>
-                <b  class="ml-2">{{selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_AverageValue')].value}}</b>
-                <input v-model="selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_AverageValue')].value" class="form-control" type="number" placeholder="average value for Memory" >              </div>
+            <span v-if="selectedMetrics.length>0">
+              <h4 class="ml-3 mt-5"><i>Establish target values</i></h4>
+              <span class="mt-3 ml-3">
+                <div class="mt-3 ml-3 text-secondary" v-if="this.selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_Utilization')!=-1">
+                  <label for="customRange"><b>CPU Average Utilization:</b></label>
+                  <b class="ml-2">{{selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_Utilization')].value}} %</b>
+                  <input v-model="selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_Utilization')].value" type="range" class="custom-range" min="0" max="100" id="customRange">
+                </div>
+                <div class="mt-3 ml-3 text-secondary" v-if="this.selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_AverageValue')!=-1">
+                  <label for="customRange"><b>CPU Average Utilization:</b></label>
+                  <b  class="ml-2">{{selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_AverageValue')].value}}</b>
+                  <input v-model="selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('cpu_AverageValue')].value" class="form-control" type="number" placeholder="average value for CPU" >
+                </div>
+                <div class="mt-3 ml-3 text-secondary" v-if="this.selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_Utilization')!=-1">
+                  <label for="customRange"><b>Memory Average Utilization:</b></label>
+                  <b class="ml-2">{{selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_Utilization')].value}} %</b>
+                  <input v-model="selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_Utilization')].value" type="range" class="custom-range" min="0" max="100" id="customRange">
+                </div>
+                <div class="mt-3 ml-3 text-secondary" v-if="this.selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_AverageValue')!=-1">
+                  <label for="customRange"><b>Memory Average Value:</b></label>
+                  <b  class="ml-2">{{selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_AverageValue')].value}}</b>
+                  <input v-model="selectedMetrics[selectedMetrics.map(function(x) {return x.id; }).indexOf('memory_AverageValue')].value" class="form-control" type="number" placeholder="average value for Memory" >              </div>
+              </span>
             </span>
-            
-            <!-- TODO: Custom Metrics Values Filling -->
+            <span v-if="selectedCustomPodMetrics.length>0">
+              <h4 class="ml-3 mt-5"><i>Establish target values for custom <span class="text-warning">Pod</span> metrics</i></h4>
+              <span class="mt-3 ml-3">
+                <div class="row mt-3 ml-3 text-secondary" v-for="customMetric in selectedCustomPodMetrics" :key="customMetric.name">
+                  <label for="customRange"><b>Value for Target Type {{customMetric.target.type}}:</b></label>
+                  <input v-model="customMetric.target.value" type="number" class="form-control" >
+                </div>
+              </span>
+            </span>
+            <span v-if="selectedCustomObjectMetrics.length>0">
+              <h4 class="ml-3 mt-5 "><i>Establish target values for custom <span class="text-danger">Object</span> metrics</i></h4>
+              <span class="mt-3 ml-3">
+                <div class="row mt-3 ml-3 text-secondary" v-for="customMetric in selectedCustomObjectMetrics" :key="customMetric.name">
+                  <label for="customRange"><b>Value for Target Type {{customMetric.target.type}}:</b></label>
+                  <input v-model="customMetric.target.value" type="number" class="form-control" >
+                </div>
+              </span>
+            </span>
             <div class="row mt-3">
               <button @click="progress = 33" type="button" class="btn btn-primary ml-5">Back</button>
               <div class="col"></div>
@@ -292,29 +310,72 @@ export default {
   }
 }
 
-     this.selectedMetrics.forEach(metric => {
-      var resourceName = metric.id.split("_",1);
-      var resourceTargetType = metric.id.split("_",2);
-      var metricTargetValueKey;
+      this.selectedMetrics.forEach(metric => {
+        var resourceName = metric.id.split("_",1);
+        var resourceTargetType = metric.id.split("_",2);
+        var metricTargetValueKey;
 
-      if(resourceTargetType[1]=='Utilization'){
-        metricTargetValueKey = 'averageUtilization'
-      } else{
-        metricTargetValueKey = 'averageValue'
+        if(resourceTargetType[1]=='Utilization'){
+          metricTargetValueKey = 'averageUtilization'
+        } else{
+          metricTargetValueKey = 'averageValue'
+        }
+        body.spec.metrics.push({
+          "type": "Resource",
+          "resource": {
+                "name": resourceName[0],
+                "target": {
+                    "type": resourceTargetType[1],
+                }
+              }
+        });
+        var len = body.spec.metrics.length;
+        body.spec.metrics[len-1].resource.target[metricTargetValueKey]=Number(metric.value);
+      });
+
+      if(this.selectedCustomPodMetrics.length>0){
+        this.selectedCustomPodMetrics.forEach(customMetric => {
+
+          body.spec.metrics.push({
+            "type":"Pods",
+             "pods": {
+                "metric": {
+                  "name": customMetric.name
+                },
+                "target": {
+                  "type": customMetric.target.type,
+                  // "averageValue": customMetric.target.value
+                }
+            }
+          })
+      
+          body.spec.metrics[body.spec.metrics.length-1].pods.target[customMetric.target.type.charAt(0).toLowerCase()+customMetric.target.type.slice(1)]=Number(customMetric.target.value);
+        })
       }
-      body.spec.metrics.push({
-        "type": "Resource",
-        "resource": {
-              "name": resourceName[0],
+      if(this.selectedCustomObjectMetrics.length>0){
+        this.selectedCustomObjectMetrics.forEach(customMetric => {
+      
+          body.spec.metrics.push({
+            "type":"Object",
+            "object": {
+              "metric": {
+                "name": customMetric.name
+              },
               "target": {
-                  "type": resourceTargetType[1],
+                "type": customMetric.target.type,
+                // "averageValue": customMetric.target.value
+              },
+              "describedObject": {
+                "apiVersion":customMetric.object.apiVersion,
+                "kind": customMetric.object.kind,
+                "name": customMetric.object.name
               }
             }
-      });
-      var len = body.spec.metrics.length;
-      body.spec.metrics[len-1].resource.target[metricTargetValueKey]=Number(metric.value);
-      console.log(body)
-     });
+          })
+        
+          body.spec.metrics[body.spec.metrics.length-1].object.target[customMetric.target.type.charAt(0).toLowerCase()+customMetric.target.type.slice(1)]=Number(customMetric.target.value);
+        })
+      }
       return body
     },
     submitForm: function () {

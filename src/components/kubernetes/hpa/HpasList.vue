@@ -53,14 +53,14 @@
         <div v-for="(metric,index) in selectedHpa.spec.metrics" :key="index">
           <div class="col-sm ">
             
-            <div class="">
+            <div v-if="metric.resource" class="">
 
-              <div :class="{ opacity: !selectedHpa.status.currentMetrics }" class="col mb-3 ml-3" style="width:300px">
+              <div :class="{ opacity: !selectedHpa.status.currentMetrics }" class="col mb-3 ml-3" style="width:460px">
                 <div class="card text-center">
                     <div class="card-body">
                     <div class="mt-2">
                         <span class="badge badge-success">
-                          {{metric.type}}
+                          {{metric.type}} metric
                         </span>
                         <p class="mt-2 lead">
                           {{metric.resource.target.type}} of {{metric.resource.name.toUpperCase()}}
@@ -68,6 +68,53 @@
                     </div>
                     <div v-if="selectedHpa.status.currentMetrics" style="font-size:20px" class="col-sm d-inline text-danger">
                       {{selectedHpa.status.currentMetrics[index].resource?selectedHpa.status.currentMetrics[index].resource.current[selectedHpa.spec.metrics[index].resource.target.type=='Utilization'?'averageUtilization':'averageValue']:'?'}}/{{selectedHpa.spec.metrics[index].resource.target.type=='Utilization'?selectedHpa.spec.metrics[index].resource.target.averageUtilization+'%':selectedHpa.spec.metrics[index].resource.target.averageValue}}
+                    </div>
+                    <div v-else class="row mt-3 ml-3">
+                      No current metrics could be retrieved
+                    </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          
+            <div v-if="metric.pods" class="">
+              <div :class="{ opacity: !selectedHpa.status.currentMetrics }" class="col mb-3 ml-3" style="width:460px">
+                <div class="card text-center">
+                    <div class="card-body">
+                    <div class="mt-2">
+                        <span class="badge badge-warning">
+                          {{metric.type}} custom metric
+                        </span>
+                        <p class="mt-2 lead">
+                          {{metric.pods.target.type}} of {{metric.pods.metric.name}}
+                        </p>
+                    </div>
+                    <div v-if="selectedHpa.status.currentMetrics" style="font-size:20px" class="col-sm d-inline text-danger">
+                      {{selectedHpa.status.currentMetrics[index].pods?'averageValue':'?'}}/{{selectedHpa.spec.metrics[index].pods.target.averageValue}}
+                    </div>
+                    <div v-else class="row mt-3 ml-3">
+                      No current metrics could be retrieved
+                    </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="metric.object" class="">
+              <div :class="{ opacity: !selectedHpa.status.currentMetrics }" class="col mb-3 ml-3" style="width:460px">
+                <div class="card text-center">
+                    <div class="card-body">
+                    <div class="mt-2">
+                        <span class="badge badge-danger">
+                          {{metric.type}} custom metric
+                        </span>
+                        <p class="mt-2 lead">
+
+                          {{metric.object.target.type}} of {{metric.object.metric.name}}
+                        </p>
+                    </div>
+                    <div v-if="selectedHpa.status.currentMetrics" style="font-size:20px" class="col-sm d-inline text-danger">
+                      {{selectedHpa.status.currentMetrics[index].object?selectedHpa.status.currentMetrics[index].object.current[selectedHpa.spec.metrics[index].object.target.type=='Value'?'value':'averageValue']:'?'}}/{{selectedHpa.spec.metrics[index].object.target.type=='Value'?selectedHpa.spec.metrics[index].object.target.value:selectedHpa.spec.metrics[index].object.target.averageValue}}
                     </div>
                     <div v-else class="row mt-3 ml-3">
                       No current metrics could be retrieved
