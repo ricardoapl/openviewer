@@ -10,51 +10,30 @@
       :items="filteredHpas"
       :fields="fields"
     >
-      <!-- <template v-slot:cell(labels)="row">
-        <template v-for="(key, value) in row.item.metadata.labels">
-          <span
-            :key="key"
-            class="badge badge-info"
-          >
-            {{ value + ': ' + key }}
+      <template v-slot:cell(scaleTargetRef)="row">
+        <div class="text-center">
+          <span class="badge badge-warning">
+          {{ row.item.spec.scaleTargetRef.kind }}
           </span>
-        </template>
-      </template> -->
-      <!-- <template v-slot:cell(ports)="row">
-        <template v-for="port in row.item.spec.ports">
-          <span
-            :key="port.name"
-            class="badge badge-primary"
-          >
-            <span v-if="port.port">{{ 'Port: ' + port.port }}</span>
-            <span v-if="port.targetPort">{{ ' Target Port: ' + port.targetPort }}</span>
-            <span v-if="port.protocol">{{ ' Protocol: ' + port.protocol }}</span>
-          </span>
-        </template>
-      </template> -->
-      <!-- <template v-slot:cell(selector)="row">
-        <span v-if="row.item.spec.selector">
-          <template v-for="(key, value) in row.item.spec.selector">
-            <span
-              :key="key"
-              class="badge badge-secondary"
-            >
-              {{ value + ': ' + key }}
-            </span>
-          </template>
+          <p>{{ row.item.spec.scaleTargetRef.name }}</p>
+        </div>
+      </template> 
+      <template v-slot:cell(currentReplicas)="row">
+        <span v-if="row.item.status.currentReplicas!=row.item.status.desiredReplicas" class="badge badge-danger">
+          attention
         </span>
-        <template v-else>
-          No Selector
-        </template>
-      </template> -->
+        {{row.item.status.currentReplicas}}/{{row.item.status.desiredReplicas}}
+      </template>
       <template v-slot:cell(actions)="row">
-        <b-button-group>
-          <hpas-list-action-delete :hpa="row.item" />
-          <!-- <services-list-action-edit :hpa="row.item" /> -->
-        </b-button-group>
+        <div class="text-center">
+          <b-button-group>
+            <hpas-list-action-delete :hpa="row.item" />
+            <!-- <services-list-action-edit :hpa="row.item" /> -->
+            <hpas-list-action-log :hpa="row.item" />
+          </b-button-group>
+        </div>
       </template>
     </b-table>
-
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
@@ -62,18 +41,26 @@
       aria-controls="my-table"
       align="right"
     />
+
+    <hr>
+    
+
+
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 import HpasListActionDelete from './HpasListActionDelete.vue'
 // import ServicesListActionEdit from './ServicesListActionEdit.vue'
+import HpasListActionLog from './HpasListActionLog.vue'
 
 export default {
   name: 'HpasList',
   components: {
     HpasListActionDelete,
-    // ServicesListActionEdit
+    // ServicesListActionEdit,
+    HpasListActionLog
   },
   props: [
     'namespace',
@@ -91,25 +78,22 @@ export default {
           key: 'metadata.namespace',
           label: 'Namespace'
         },
+        { key: 'metadata.creationTimestamp', label: 'Created', formatter: 'created' },
         {
           key: 'spec.minReplicas',
-          label: 'MIN Replicas'
+          label: 'Min Replicas'
+        },
+        {
+          key: 'currentReplicas',
+          label: 'Current Replicas'
         },
         {
           key: 'spec.maxReplicas',
-          label: 'MAX Replicas'
+          label: 'Max Replicas'
         },
         {
-          key: 'spec.targetCPUUtilizationPercentage',
-          label: 'TargetCPU'
-        },
-        {
-          key: 'spec.scaleTargetRef.kind',
-          label: 'Target Kind'
-        },
-        {
-          key: 'spec.scaleTargetRef.name',
-          label: 'Target Name'
+          key: 'scaleTargetRef',
+          label: 'Target Info'
         },
         {
           key: 'actions',
@@ -138,6 +122,9 @@ export default {
   mounted () {
   },
   methods: {
+    created: function (timestamp) {
+      return moment(timestamp).fromNow()
+    }
   }
 }
 </script>

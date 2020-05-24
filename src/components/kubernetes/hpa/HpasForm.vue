@@ -75,7 +75,6 @@
             </span>
             
             <!-- TODO: Custom Metrics Values Filling -->
-
             <div class="row mt-3">
               <button @click="progress = 33" type="button" class="btn btn-primary ml-5">Back</button>
               <div class="col"></div>
@@ -144,7 +143,7 @@
             @click="submitForm()"
             class="btn btn-success mr-2"
           >
-            Save
+            Create
           </button>
           <button
             type="button"
@@ -185,8 +184,6 @@ export default {
       selectedMetrics:[],
       selectedCustomMetrics:[],
       jsonYMLHPABody: '',
-
-
       jsonYMLCreate: false,
     }
   },
@@ -299,8 +296,6 @@ export default {
       body.spec.metrics[len-1].resource.target[metricTargetValueKey]=Number(metric.value);
       console.log(body)
      });
-
-
       return body
     },
     submitForm: function () {
