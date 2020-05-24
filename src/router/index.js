@@ -188,6 +188,15 @@ const routes = [
       requiresAuth: true,
       isKubernetes: true
     }
+  },
+  {
+    path: '/kubernetes/clusters',
+    name: 'Clusters',
+    component: () => import('../components/kubernetes/clusters/ClustersView.vue'),
+    meta: {
+      requiresAuth: false,
+      isKubernetes: true
+    }
   }
 ]
 

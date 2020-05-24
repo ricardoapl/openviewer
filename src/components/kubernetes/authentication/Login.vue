@@ -120,12 +120,22 @@
       >
         Cancel
       </button>
+      <br>
+      <button
+        type="button"
+        class="btn text-light mt-4 mb-2"
+        style="background-color:#326de6"
+        @click="$router.push({ name: 'Clusters'})"
+      >
+        Cluster management
+      </button>
     </form>
   </div>
 </template>
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { mapState } from 'vuex'
 export default {
   name: 'Login',
   data () {
@@ -146,6 +156,9 @@ export default {
         this.$v.address.$error || this.$v.token.$error || this.serverErrors
       )
     }
+  },
+  created () {
+    this.address = this.$store.state.clusters.clusterServer || 'https://127.0.0.1:6443'
   },
   methods: {
     probeApi: function () {
