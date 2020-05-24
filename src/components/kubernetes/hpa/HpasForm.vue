@@ -41,12 +41,12 @@
             <hr>
             <!-- CUSTOM METRICS -->
             <h4 class="ml-3"><i>Specify custom metrics</i></h4>
-            <custom-metrics-list-hpa :selectedCustomMetrics="selectedCustomMetrics" @addCustomMetric="addCustomMetric"></custom-metrics-list-hpa>
+            <custom-metrics-list-hpa :selectedCustomPodMetrics="selectedCustomPodMetrics" :selectedCustomObjectMetrics="selectedCustomObjectMetrics" @addCustomObjectMetric="addCustomObjectMetric" @addCustomPodMetric="addCustomPodMetric"></custom-metrics-list-hpa>
             <div class="row mt-3">
               <button @click="progress = 0" type="button" class="btn btn-primary ml-5">Back</button>
               <div class="col"></div>
               <div class="col"></div>
-              <button :disabled="selectedMetrics.length==0 && selectedCustomMetrics.length==0" @click="progress = 66" type="button" class="btn btn-primary mr-5">Next</button>
+              <button :disabled="selectedMetrics.length==0 && (selectedCustomPodMetrics.length==0) && (selectedCustomObjectMetrics.length==0)" @click="progress = 66" type="button" class="btn btn-primary mr-5">Next</button>
             </div>
           </div>
           <!-- 666 -->
@@ -182,7 +182,8 @@ export default {
       selectedDeployment: null,
       newHPA: {},
       selectedMetrics:[],
-      selectedCustomMetrics:[],
+      selectedCustomPodMetrics:[],
+      selectedCustomObjectMetrics:[],
       jsonYMLHPABody: '',
       jsonYMLCreate: false,
     }
@@ -208,8 +209,25 @@ export default {
         this.selectedMetrics.push(obj)
       }
     },
-    addCustomMetric(){  
-      console.log("Not implemented yet")
+    addCustomPodMetric(customPodMetric){
+      console.log("addCustomPodMetric")
+      console.log(this.selectedCustomPodMetrics)
+      var index = this.selectedCustomPodMetrics.map(function(x) {return x.name; }).indexOf(customPodMetric.name);
+      if(index!=-1){
+        console.log("FOUND")
+        this.selectedCustomPodMetrics.splice(index,1)
+      } else{
+        console.log("NOT FOUND")
+        this.selectedCustomPodMetrics.push(customPodMetric);
+      }
+    },
+    addCustomObjectMetric(customObjectMetric){
+      var index = this.selectedCustomObjectMetrics.map(function(x) {return x.name; }).indexOf(customObjectMetric.name);
+      if(index!=-1){
+        this.selectedCustomObjectMetrics.splice(index,1)
+      } else{
+        this.selectedCustomObjectMetrics.push(customObjectMetric);
+      }
     },
     createHPAJsonYML: function (body) {
       console.log(body)
@@ -246,7 +264,8 @@ export default {
           this.$store.dispatch('hpas/getHpas')
           this.newHPA={};
           this.selectedMetrics=[];
-          this.selectedCustomMetrics=[];
+          this.selectedCustomPodMetrics=[];
+          this.selectedCustomObjectMetrics=[];
         })
         .catch(error => {
           console.log(error)

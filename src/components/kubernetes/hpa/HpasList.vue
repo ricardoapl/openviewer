@@ -138,43 +138,6 @@ export default {
           label: 'Actions'
         }
       ],
-      series: [{
-        name: "Current Value",
-        data: []
-      }, {
-        name: "Target Value",
-        data: []
-      }],
-      chartOptions: {
-        chart: {
-          type: 'bar',
-          height: 430
-        },
-        plotOptions: {
-          bar: {
-            horizontal: true,
-            dataLabels: {
-              position: 'top',
-            },
-          }
-        },
-        dataLabels: {
-          enabled: true,
-          offsetX: -6,
-          style: {
-            fontSize: '12px',
-            colors: ['#fff']
-          }
-        },
-        stroke: {
-          show: true,
-          width: 1,
-          colors: ['#fff']
-        },
-        xaxis: {
-          categories: [],
-        },
-      },
     }
   },
   computed: {
@@ -210,35 +173,6 @@ export default {
     },
     onRowSelected(items) {
       this.selectedHpa = items[0];
-      // CHART ATTEMPT
-      // var arrayX = [];
-      // var series_0 = [];
-      // var series_1 = [];
-      // if(!this.selectedHpa){
-      //   return;
-      // }
-      // if(this.selectedHpa.status.currentMetrics){
-      //   this.selectedHpa.status.currentMetrics.forEach((currMetric,indexMetric)=>{
-      //     var resourceType =  this.selectedHpa.spec.metrics[indexMetric].resource.target.type;
-      //     var resourceName = this.selectedHpa.spec.metrics[indexMetric].resource.name;
-      //     if(resourceType && resourceName){
-      //       if(resourceType=='Utilization'){
-      //       arrayX.push(resourceName+'_'+resourceType);
-      //       series_0.push(this.currentValue(currMetric,resourceType));
-      //       series_1.push(this.currentTarget(currMetric,indexMetric,resourceType));
-      //     }
-      //   }
-      //   })
-      // }
-
-      // this.chartOptions.xaxis.categories = [];
-      // this.series[0].data = [];
-      // this.series[1].data = [];
-
-      // this.chartOptions.xaxis.categories = arrayX;
-      // this.series[0].data = series_0;
-      // this.series[1].data = series_1;
-
     },
   }
 }
@@ -247,7 +181,7 @@ export default {
 <style scoped>
 
 .opacity{
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 </style>
