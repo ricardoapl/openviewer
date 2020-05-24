@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     filteredDeployments () {
-      if (this.namespace === '*') {
+      if (this.namespace === '*' || this.namespace == undefined) {
         return this.$store.state.deployments.deployments
       } else {
         return this.$store.state.deployments.deployments.filter((deployment) => {

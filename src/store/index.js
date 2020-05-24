@@ -19,6 +19,7 @@ import pods from './modules/kubernetes/pods'
 import clusterips from './modules/kubernetes/services/clusterips'
 import nodeports from './modules/kubernetes/services/nodeports'
 import loadbalancers from './modules/kubernetes/services/loadbalancers'
+import hpas from './modules/kubernetes/hpas'
 
 Vue.use(Vuex)
 
@@ -40,6 +41,7 @@ export default new Vuex.Store({
     deployments,
     clusterips,
     nodeports,
-    loadbalancers
+    loadbalancers,
+    hpas
   }
 })

@@ -249,7 +249,7 @@ export default {
     }
   },
   mounted () {
-    console.log('DeploymentsForm created and mounted')
+    console.log('ServicesForm created and mounted')
   },
   methods: {
     addPort: function () {
@@ -263,7 +263,7 @@ export default {
       }
     },
     createServiceJsonYML: function (body) {
-      const namespace = this.body.metadata.namespace || 'default'
+      const namespace = body.metadata.namespace || 'default'
       const url = `/api/v1/namespaces/${namespace}/services`
        const options = {
         headers: {
@@ -332,12 +332,15 @@ export default {
     },
     submitForm: function () {
       if (this.jsonYMLCreate) {
-        this.createServiceJsonYML(this.jsonYMLServiceBody)
-      }
-      this.createService()
+        this.createServiceJsonYML(JSON.parse(this.jsonYMLServiceBody))
+        
+      } else{
+        this.createService()
         .then(() => {
-          this.$emit('hide')
-        })
+            this.$emit('hide')
+          })
+      }
+        
     }
   }
 }

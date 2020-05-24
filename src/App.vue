@@ -408,6 +408,14 @@
           </li>
           <li class="nav-item">
             <router-link
+              :to="{ name: 'Hpa'}"
+              class="nav-link"
+            >
+              HPA
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
               :to="{ name: 'Workloads'}"
               class="nav-link"
             >

@@ -163,6 +163,15 @@ const routes = [
     }
   },
   {
+    path: '/kubernetes/hpa',
+    name: 'Hpa',
+    component: () => import('../components/kubernetes/hpa/HpasView.vue'),
+    meta: {
+      requiresAuth: true,
+      isKubernetes: true
+    }
+  },
+  {
     path: '/kubernetes/workloads',
     name: 'Workloads',
     component: () => import('../components/kubernetes/workloads/WorkloadsView.vue'),
