@@ -170,71 +170,29 @@ export default {
               dataId: 'nodes',
               component: 'nodes-list'
             },
-            // {
-            //   name:"Persistent Volumes",
-            //   status:false,
-            //   dataId:"pvolumes",
-            //   component:""
-            // },
             {
               name: 'Roles',
               status: true,
               dataId: 'roles',
               component: 'roles-list'
             }
-            // {
-            //   name:"Storage Classes",
-            //   status:false,
-            //   dataId:"sclasses",
-            //   component:""
-            // },
           ]
         },
         {
           label: 'Workloads',
           options: [
-            // {
-            //   name:"Cron Jobs",
-            //   status:false,
-            //   dataId:"cjobs",
-            //   component:""
-            // },
             {
               name: 'Deployments',
               status: true,
               dataId: 'deployments',
               component: 'deployments-list'
             },
-            // {
-            //   name:"Jobs",
-            //   status:false,
-            //   dataId:"jobs",
-            //   component:""
-            // },
             {
               name: 'Pods',
               status: true,
               dataId: 'pods',
               component: 'pods-list'
             }
-            // {
-            //   name:"Replica Sets",
-            //   status:false,
-            //   dataId:"rsets",
-            //   component:""
-            // },
-            // {
-            //   name:"Replication Controllers",
-            //   status:false,
-            //   dataId:"rcontrollers",
-            //   component:""
-            // },
-            // {
-            //   name:"Stateful Sets",
-            //   status:false,
-            //   dataId:"ssets",
-            //   component:""
-            // },
           ]
         },
         {

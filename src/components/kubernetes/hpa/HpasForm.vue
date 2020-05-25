@@ -79,7 +79,8 @@
               <h4 class="ml-3 mt-5"><i>Establish target values for custom <span class="text-warning">Pod</span> metrics</i></h4>
               <span class="mt-3 ml-3">
                 <div class="row mt-3 ml-3 text-secondary" v-for="customMetric in selectedCustomPodMetrics" :key="customMetric.name">
-                  <label for="customRange"><b>Value for Target Type {{customMetric.target.type}}:</b></label>
+                  <p>{{customMetric.name}} -> </p>
+                  <p ><b> Value for Target Type {{customMetric.target.type}}:</b></p>
                   <input v-model="customMetric.target.value" type="number" class="form-control" >
                 </div>
               </span>
@@ -88,7 +89,8 @@
               <h4 class="ml-3 mt-5 "><i>Establish target values for custom <span class="text-danger">Object</span> metrics</i></h4>
               <span class="mt-3 ml-3">
                 <div class="row mt-3 ml-3 text-secondary" v-for="customMetric in selectedCustomObjectMetrics" :key="customMetric.name">
-                  <label for="customRange"><b>Value for Target Type {{customMetric.target.type}}:</b></label>
+                  <p>{{customMetric.name}} -> </p>
+                  <p for="customRange"><b> Value for Target Type {{customMetric.target.type}}:</b></p>
                   <input v-model="customMetric.target.value" type="number" class="form-control" >
                 </div>
               </span>
@@ -284,6 +286,7 @@ export default {
           this.selectedMetrics=[];
           this.selectedCustomPodMetrics=[];
           this.selectedCustomObjectMetrics=[];
+          this.$emit('hide')
         })
         .catch(error => {
           console.log(error)
